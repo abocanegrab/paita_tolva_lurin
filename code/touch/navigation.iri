@@ -1,0 +1,24 @@
+elsif (EventWidget = img8 or EventWidget = img52 or EventWidget = img99 or EventWidget = img119 or EventWidget = img126) then -- menu principal
+    PrincipalMenuScreen;
+elsif (EventWidget = img51) then -- pantalla proceso
+    ProcesoScreen;
+elsif (EventWidget = img54 or EventWidget = img19 or EventWidget = lbl20 or EventWidget = img67 or EventWidget = img84) then -- menu mnto
+    DataMenuScreen;
+elsif (EventWidget = img21 or EventWidget = lbl22)  then
+    ConfigScreen;
+elsif (EventWidget = img38 or EventWidget = lbl39)  then -- mnto transporte
+    TransporteScreen;
+elsif (EventWidget = img44 or EventWidget = lbl45)  then -- mnto uso
+    UsoScreen;
+elsif (EventWidget = img40 or EventWidget = lbl41)  then -- mnto embarca
+    EmbarcaScreen;
+elsif (EventWidget = img46 or EventWidget = lbl47)  then -- mnto empresa
+    EmpresaScreen;
+elsif (EventWidget = img42 or EventWidget = lbl43)  then -- mnto especie
+    EspecieScreen;
+elsif (EventWidget = img48 or EventWidget = lbl49)  then -- mnto balanza
+    BalanzaScreen;
+elsif (EventWidget = img26 or EventWidget = lbl27)  then -- utiles
+    UtilesScreen;
+elsif (EventWidget = img24 or EventWidget = lbl25)  then -- utiles
+    ReporteScreen;

@@ -1,0 +1,134 @@
+function GetTransporte(id: integer) : typResponseTransporte;
+identifier : integer;
+data : typTransporte;
+result : typResponseTransporte;
+codeResult : SysCode; 
+begin
+    codeResult := DBExec("Select * from Transpor where Codigo = " + IntegerToString(id,0), identifier);
+    if (codeResult = SysOk) then
+        if (identifier > 0) then
+            DBColumnInt(identifier, 1, data.codigo);
+            DBColumnString(identifier, 2, data.nombre);
+            DBColumnInt(identifier, 3, data.incluye);
+            result.HasError := BoolFalse;
+            result.HasData := BoolTrue;
+            result.data := data;
+        else
+            result.HasError := BoolFalse;
+            result.HasData := BoolFalse;
+        end if;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+function ListTransporte : typResponseTransportes;
+identifier : integer;
+data : typTransportes;
+result : typResponseTransportes;
+codeResult : SysCode; 
+index: integer:= 0;
+begin
+    codeResult := DBExec("Select * from Transpor", identifier);
+    Logger("select transport:" + syscodetostring(codeResult) +"-ident:"+ integertostring(identifier, 0));
+    if (codeResult = SysOk) then
+        if (identifier > 0) then
+            while (codeResult = SysOk) 
+            loop
+                index:=index+1;
+                DBColumnInt(identifier, 1, data[index].codigo);
+                DBColumnString(identifier, 2, data[index].nombre);
+                DBColumnInt(identifier, 3, data[index].incluye);
+                codeResult:=DBNext(identifier);
+            end loop;
+
+            gbTotalTransporte:= index;
+            result.HasError := BoolFalse;
+            result.HasData := BoolTrue;
+            result.data := data;
+        else
+            result.HasError := BoolFalse;
+            result.HasData := BoolFalse;
+        end if;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+        Logger("error transport:" + DBErrMsg);
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+function PostTransporte(Transporte: typTransporte) : typResponseTransporte;
+identifier : integer;
+result : typResponseTransporte;
+codeResult : SysCode; 
+query : string;
+begin
+    query := "insert into Transpor (Codigo, Nombre, Incluye) values (";
+    query := query + "'"+ integertostring(Transporte.codigo,0) +"', ";
+    query := query + "'"+ Transporte.Nombre +"',";
+    query := query + integertostring(Transporte.incluye,0) +")";
+    codeResult := DBExec(query, identifier);
+    Logger("insert transport:" + syscodetostring(codeResult) +"-ident:"+ integertostring(identifier, 0));
+    if (codeResult = SysOk) then
+        result:= GetTransporte(Transporte.codigo);
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+        Logger("error transport:" + DBErrMsg);
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+
+function PutTransporte(Transporte: typTransporte) : typResponseTransporte;
+identifier : integer;
+result : typResponseTransporte;
+codeResult : SysCode; 
+query : string;
+begin
+    query := "update Transpor set ";
+    query := query + "Nombre = '"+ Transporte.Nombre +"', ";
+    query := query + "Incluye = "+ IntegerToString(Transporte.Incluye,0) +" ";
+    query := query + "where Codigo = "+ IntegerToString(Transporte.codigo,0);
+    codeResult := DBExec(query, identifier);
+    Logger("put transport:" + syscodetostring(codeResult) +"-ident:"+ integertostring(identifier, 0));
+    
+    if (codeResult = SysOk) then
+        result:= GetTransporte(Transporte.codigo);
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+        Logger("error transport:" + DBErrMsg);
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+
+function DeleteTransporte(Transporte: typTransporte) : typResponseTransporte;
+identifier : integer;
+result : typResponseTransporte;
+codeResult : SysCode; 
+query : string;
+begin
+    query := "delete from Transpor ";
+    query := query + "where Codigo = "+ IntegerToString(Transporte.codigo,0);
+    codeResult := DBExec(query, identifier);
+    Logger("delete transport:" + syscodetostring(codeResult) +"-ident:"+ integertostring(identifier, 0));
+    
+    if (codeResult = SysOk) then
+        result.HasError := BoolFalse;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+        Logger("error transport:" + DBErrMsg);
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;

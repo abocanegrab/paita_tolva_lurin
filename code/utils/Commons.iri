@@ -1,0 +1,129 @@
+procedure Logger(message : string);
+begin
+    -- DisplayStatus(message);
+    -- ProgramDelay(100);
+    return;
+end;
+
+procedure DefineAndStartTimer(number: integer; duration : real; timeMode: TimerMode);
+begin
+    SetTimer(number, duration);
+    SetTimerMode(number, timeMode);
+    StartTimer(number);
+end;
+
+procedure SendToUSBPrinter(text : string);
+begin
+    Writeout(USBPRN, text);
+end;
+
+procedure SendToUSBPrinterLn(text : string);
+begin
+    Writeout(USBPRN, text);
+    Writeout(USBPRN, Chr$(13));
+    Writeout(USBPRN, Chr$(10));
+end;
+
+procedure DisplayAndClean(val : string);
+begin
+    StopTimer(1);
+    DisplayStatus(val);
+    DefineAndStartTimer(1, 500, TimerOneShot);
+end;
+
+function IsStringNotEmpty (value : string) : BooleanType;
+local : string;
+begin
+    local := Trim$(value, " ");
+    if (Len(local) > 0) then   
+        return BoolTrue;
+    else
+        return BoolFalse;
+    end if;
+end;
+
+function AreStringEqual (value1 : string; value2 : string) : BooleanType;
+local1 : string;
+local2 : string;
+begin
+    local1 := UCase$(Trim$(value1, " "));
+    local2 := UCase$(Trim$(value2, " "));
+    if (local1 = local2) then   
+        return BoolTrue;
+    else
+        return BoolFalse;
+    end if;
+end;
+
+function CleanString (value : string) : string;
+local : string;
+begin
+    return Trim$(value, " ");
+end;
+
+function IsValidInt (value : string) : BooleanType;
+local : string;
+localInt: integer;
+begin
+    local := Trim$(value, " ");
+    localInt := stringtointeger(local);
+    if (localInt > 0) then   
+        return BoolTrue;
+    else
+        return BoolFalse;
+    end if;
+end;
+
+function IsValidReal (value : string) : BooleanType;
+local : string;
+localReal: real;
+begin
+    local := Trim$(value, " ");
+    localReal := stringtointeger(local);
+    if (localReal > 0) then   
+        return BoolTrue;
+    else
+        return BoolFalse;
+    end if;
+end;
+
+procedure HabilitarSP(port : integer);
+begin
+    if (port = 1) then
+        SetSPValue(port, gbConfig.Objetivo);   
+    elsif (port = 2) then
+        SetSPValue(port, gbConfig.Minimo);
+    end if;
+
+    EnableSp(port);
+    SetDigOut(0, port, 1);
+end;
+
+procedure DeshabilitarSP(port : integer);
+begin
+    DisableSp(port);
+    SetDigOut(0, port, 0);
+end;
+
+
+function ObtieneAnio : integer; 
+c_date : datetime;   
+i_anio : integer;
+i_mes : integer;
+i_dia : integer;
+l_fecha : string;
+begin
+    c_date := SystemTime;                 
+    l_fecha := Date$(c_date);
+    i_anio:=StringToInteger(Mid$(l_fecha,7,4));
+    return i_anio;
+end;
+
+function Redondea(peso:real) : string;
+result : string;
+begin
+    result:="";
+    peso:=peso/1000;
+    result:=RealToString(peso, 8, 4);
+    return result; 
+end;

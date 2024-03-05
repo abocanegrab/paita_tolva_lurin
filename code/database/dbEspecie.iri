@@ -1,0 +1,127 @@
+function GetEspecie(id: integer) : typResponseEspecie;
+identifier : integer;
+data : typEspecie;
+result : typResponseEspecie;
+codeResult : SysCode; 
+begin
+    codeResult := DBExec("Select * from Especie where Codigo = " + IntegerToString(id,0), identifier);
+    if (codeResult = SysOk) then
+        if (identifier > 0) then
+            DBColumnInt(identifier, 1, data.codigo);
+            DBColumnString(identifier, 2, data.nombre);
+            result.HasError := BoolFalse;
+            result.HasData := BoolTrue;
+            result.data := data;
+        else
+            result.HasError := BoolFalse;
+            result.HasData := BoolFalse;
+        end if;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg;
+     
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+function ListEspecie : typResponseEspecies;
+identifier : integer;
+data : typEspecies;
+result : typResponseEspecies;
+codeResult : SysCode; 
+index: integer:= 0;
+begin
+    codeResult := DBExec("Select * from Especie", identifier);
+    if (codeResult = SysOk) then
+        if (identifier > 0) then
+            while (codeResult = SysOk) 
+            loop
+                index:=index+1;
+                DBColumnInt(identifier, 1, data[index].codigo);
+                DBColumnString(identifier, 2, data[index].nombre);
+                codeResult:=DBNext(identifier);
+            end loop;
+
+            gbTotalEspecie:= index;
+            result.HasError := BoolFalse;
+            result.HasData := BoolTrue;
+            result.data := data;
+        else
+            result.HasError := BoolFalse;
+            result.HasData := BoolFalse;
+        end if;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+function PostEspecie(Especie: typEspecie) : typResponseEspecie;
+identifier : integer;
+result : typResponseEspecie;
+codeResult : SysCode; 
+query : string;
+begin
+    query := "insert into Especie (Codigo, Nombre) values (";
+    query := query + "'"+ integertostring(Especie.codigo,0) +"', ";
+    query := query + "'"+ Especie.Nombre +"')";
+    codeResult := DBExec(query, identifier);
+    
+    if (codeResult = SysOk) then
+        result:= GetEspecie(Especie.codigo);
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+
+function PutEspecie(Especie: typEspecie) : typResponseEspecie;
+identifier : integer;
+result : typResponseEspecie;
+codeResult : SysCode; 
+query : string;
+begin
+    query := "update Especie set ";
+    query := query + " Nombre = '"+ Especie.Nombre +"'";
+    query := query + " where Codigo = "+ IntegerToString(Especie.codigo,0);
+    codeResult := DBExec(query, identifier);
+    Logger("put transport:" + syscodetostring(codeResult) +"-ident:"+ integertostring(identifier, 0));
+    
+    if (codeResult = SysOk) then
+        result:= GetEspecie(Especie.codigo);
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+        Logger("error especie:" + DBErrMsg);
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+function DeleteEspecie(Especie: typEspecie) : typResponseEspecie;
+identifier : integer;
+result : typResponseEspecie;
+codeResult : SysCode; 
+query : string;
+begin
+    query := "delete from Especie ";
+    query := query + " where Codigo = "+ IntegerToString(Especie.codigo,0);
+    codeResult := DBExec(query, identifier);
+    Logger("delete Especie:" + syscodetostring(codeResult) +"-ident:"+ integertostring(identifier, 0));
+    
+    if (codeResult = SysOk) then
+        result.HasError := BoolFalse;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+        Logger("error especie:" + DBErrMsg);
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;

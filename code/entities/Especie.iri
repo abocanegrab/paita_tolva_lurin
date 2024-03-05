@@ -1,0 +1,21 @@
+type typEspecie is record 
+   codigo : integer;
+   nombre  : string;
+   sap : string;
+end record;
+
+type typEspecies is array [100] of typEspecie;
+
+type typResponseEspecie is record
+    HasError: BooleanType;
+    HasData: BooleanType;
+    ErrorMessage: string;
+    data: typEspecie;
+end record;
+
+type typResponseEspecies is record
+    HasError: BooleanType;
+    HasData: BooleanType;
+    ErrorMessage: string;
+    data: typEspecies;
+end record;

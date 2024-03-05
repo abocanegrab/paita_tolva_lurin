@@ -1,0 +1,198 @@
+--We have a function to convert a hex string to an integer:
+
+  ----------------------------------------------------------------------------
+  -- Function Name     : HexToInteger
+  -- Purpose           : This function convert a hex ascii string to an
+  --                     integer value
+  -- Value Parameters  : hstr - input string
+  -- Variable Params   : None
+  -- Return Parameter  : The integer value of the hex string. -1 indicates
+  --                     invalid character encountered
+  -- Side Effects      : None
+  ----------------------------------------------------------------------------
+
+  function HexToInteger(hstr : string ) : integer;
+
+    pos   : integer := 1;
+    val   : integer := 0;
+    ch    : integer;
+
+    begin
+
+      while (pos <= Len(hstr))
+      loop
+        val := val * 16;
+        ch := Asc(Mid$(hstr,pos,1)) - 48;
+        if (ch >= 0) and
+           (ch <= 9) then
+          val := val + ch;
+        else
+          ch := ch - 7;
+          if (ch >= 10) and
+             (ch <= 15) then
+            val := val + ch;
+          else
+            return -1;
+          end if;
+        end if;
+        pos := pos + 1;
+      end loop;
+      return val;
+  end;
+
+--As to the blank removal, that depends. 
+--I have functions that will strip leading or trailing blanks. I do not have a function that will remove all the blanks in a string.
+
+  ----------------------------------------------------------------------------
+  --  Function Name     : Locate
+  --                    :
+  --  Purpose           : Returns the starting location in "input_string" of
+  --                    : the first occurrence of the string "match_string"
+  --                    :
+  --  Value Parameters  : input_string  : the string to be searched
+  --                    : match_string  : the string to be found
+  --  Variable Params   : None
+  --  Return Parameter  : first location of "match_string" in "input_string"
+  --  Side Effects      : None
+  ----------------------------------------------------------------------------
+
+  function Locate( input_string : string;
+                   match_string : string ) : integer;
+
+    position     : integer;
+    end_position : integer;
+
+
+    begin
+
+      position := 1;
+      end_position := Len(input_string) + 1 - Len(match_string) ;
+
+      while position <= end_position
+      loop
+        if match_string = Mid$(input_string, position, Len(match_string)) then
+          return position;
+        end if;
+        position := position + 1;
+      end loop;
+      return 0;
+  end;
+
+
+
+  ----------------------------------------------------------------------------
+  --  Function Name     : TrimLeft$
+  --                    :
+  --  Purpose           : Strips off all leading occurrences in "input_string"
+  --                    : of any characters in the string "trim_chars".
+  --                    :
+  --  Value Parameters  : input_string  : the string to be trimmed
+  --                    : trim_chars    : a string of the characters to be
+  --                    :                 removed
+  --  Variable Params   : None
+  --  Return Parameter  : Trimmed string
+  --  Side Effects      : None
+  ----------------------------------------------------------------------------
+
+  function TrimLeft$( input_string : string;
+                      trim_chars   : string ) : string;
+
+    result   : string;
+    position : integer := 1;
+
+    begin
+
+      while (position <= Len(input_string))
+      loop
+
+
+        -- If the current character is not in the trim list
+        if ( Locate(trim_chars, Mid$(input_string, position, 1)) = 0 ) then
+
+          -- return remainder of input string
+          result := Mid$(input_string, position, Len(input_string));
+          return result;
+
+        end if;
+
+        position := position + 1;
+
+
+      end loop;
+
+      return "";
+
+  end;
+
+
+  ----------------------------------------------------------------------------
+  --  Function Name     : TrimRight$
+  --                    :
+  --  Purpose           : Strips off all trailing occurrences in "input_string"
+  --                    : of the characters in "trim_chars".
+  --                    :
+  --  Value Parameters  : input_string  : the string to be trimmed
+  --                    : trim_chars    : a string of the characters to be
+  --                    :                 removed
+  --  Variable Params   : None
+  --  Return Parameter  : Trimmed string
+  --  Side Effects      : None
+  ----------------------------------------------------------------------------
+
+  function TrimRight$( input_string : string;
+                       trim_chars   : string ) : string;
+
+    result   : string;
+    position : integer;
+
+    begin
+
+      position := Len(input_string);
+      while (position > 0)
+      loop
+
+        -- If the current character is not in the trim list
+        if (Locate(trim_chars,Mid$(input_string, position, 1)) = 0) then
+
+          -- return start of input string
+          result := Left$(input_string, position);
+          return result;
+
+        end if;
+
+        position := position - 1;
+
+
+      end loop;
+
+      return "";
+
+  end;
+
+
+  ----------------------------------------------------------------------------
+  --  Function Name     : Trim$
+  --                    :
+  --  Purpose           : Strips off all leading and trailing occurrences in
+  --                    : "input_string" of the characters in "trim_chars".
+  --                    :
+  --  Value Parameters  : input_string  : the string to be trimmed
+  --                    : trim_chars    : a string of the characters to be
+  --                    :                 removed
+  --  Variable Params   : None
+  --  Return Parameter  : Trimmed string
+  --  Side Effects      : None
+  ----------------------------------------------------------------------------
+
+  function Trim$( input_string : string;
+                  trim_chars   : string ) : string;
+
+    result : string;
+
+    begin
+
+      result := TrimRight$(input_string, trim_chars);
+      result := TrimLeft$(result, trim_chars);
+      return result;
+
+  end;

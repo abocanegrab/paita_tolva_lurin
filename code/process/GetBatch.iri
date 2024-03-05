@@ -1,0 +1,34 @@
+procedure ProcesaBatch;
+residuo : real;                                         
+lFecha : datetime; 
+currentCal : typCalibracion;  
+begin
+    currentCal:= defDbCalibra;
+
+    -- GetGross(1, Primary, residuo);
+    -- gbPesoCaptura := gbPesoCaptura - residuo; 
+    gbRecupera.batch := gbRecupera.batch + 1;
+    gbRecupera.Acumulado := gbRecupera.Acumulado + gbPesoCaptura;    
+    gbRecupera.estado := 0;
+    lFecha:=SystemTime;
+    if gbFinal=0 then
+        if gbPesoCaptura < (gbConfig.Objetivo * 0.8) then
+            PrintEvent(3);
+            SetDigOut(0, 8, 1);
+            DefineAndStartTimer(7, 500, TimerOneShot);
+        end if;    
+    end if;
+    
+    -- Save Detalle
+    PostDetalle(lFecha, currentCal); 
+    PrintDetalle(lFecha, currentCal);
+    
+    SetLabelText(lbl15, IntegerToString(gbRecupera.batch, 0));
+    SetLabelText(lbl16, RealToString(gbRecupera.Acumulado, 0, 1)); 
+    if gbFinal=1 then
+        ValidaFinalizado;
+    else
+        DefineAndStartTimer(4, gbConfig.TReinicio * 100, TimerOneShot);
+        DisplayStatus(CONST_MESSAGE_REINI);
+    end if;
+end;

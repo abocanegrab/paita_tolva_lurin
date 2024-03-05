@@ -1,0 +1,228 @@
+procedure SaveCrud;
+begin
+    if (gbScreenActive=EmbarcaSc) then
+        if (gbTypeCrud = AddCrud) then
+            PostEmbarcacion(tmpEmbarca);
+            gbTotalEmbarca:=gbTotalEmbarca+1;
+            gbPosCrud:=gbTotalEmbarca;
+        elsif (gbTypeCrud = UpdateCrud) then
+            PutEmbarcacion(tmpEmbarca);
+        end if;
+        gbListEmbarca[gbPosCrud]:=tmpEmbarca;
+    elsif (gbScreenActive=EspecieSc) then
+        if (gbTypeCrud = AddCrud) then
+            PostEspecie(tmpEspecie);
+            gbTotalEspecie:=gbTotalEspecie+1;
+            gbPosCrud:=gbTotalEspecie;
+        elsif (gbTypeCrud = UpdateCrud) then
+            PutEspecie(tmpEspecie);
+        end if;
+        gbListEspecie[gbPosCrud]:=tmpEspecie;
+    elsif (gbScreenActive=UsoSc) then
+        if (gbTypeCrud = AddCrud) then
+            PostUso(tmpUso);
+            gbTotalUso:=gbTotalUso+1;
+            gbPosCrud:=gbTotalUso;
+        elsif (gbTypeCrud = UpdateCrud) then
+            PutUso(tmpUso);
+        end if;
+        gbListUso[gbPosCrud]:=tmpUso;
+    elsif (gbScreenActive=TransporteSc) then
+        if (gbTypeCrud = AddCrud) then
+            PostTransporte(tmpTransporte);
+            gbTotalTransporte:=gbTotalTransporte+1;
+            gbPosCrud:=gbTotalTransporte;
+        elsif (gbTypeCrud = UpdateCrud) then
+            PutTransporte(tmpTransporte);
+        end if;
+        gbListTransporte[gbPosCrud]:=tmpTransporte;
+    end if;
+    gbActionCrud := InitCrud;
+    DisplayCrud;
+end;
+
+procedure BorrarCrud;
+begin
+    if (gbScreenActive=EmbarcaSc) then
+        DeleteEmbarcacion(tmpEmbarca);
+        gbTotalEmbarca:=gbTotalEmbarca-1;
+        gbPosCrud:=1;
+    elsif (gbScreenActive=EspecieSc) then
+        DeleteEspecie(tmpEspecie);
+        gbTotalEspecie:=gbTotalEspecie-1;
+        gbPosCrud:=1;
+    elsif (gbScreenActive=UsoSc) then
+        DeleteUso(tmpUso);
+        gbTotalUso:=gbTotalUso-1;
+        gbPosCrud:=1;
+    elsif (gbScreenActive=TransporteSc) then
+        DeleteTransporte(tmpTransporte);
+        gbTotalTransporte:=gbTotalTransporte-1;
+        gbPosCrud:=1;
+    end if;
+    gbActionCrud := InitCrud;
+    DisplayCrud;
+end;
+
+procedure CrudGenerico(val : string);
+setValue: string;
+existRecordToEdit: BooleanType;
+begin
+    if gbActionCrud = InitCrud then
+        existRecordToEdit :=  BoolTrue;
+        if (gbScreenActive=EmbarcaSc) then
+            gbLastPrompUsed:= CONST_CRUD_EMB_P_CODE;
+            if (gbTypeCrud = UpdateCrud) then
+                if gbTotalEmbarca >= gbPosCrud then existRecordToEdit :=  BoolTrue; else existRecordToEdit :=  BoolFalse; end if;
+                setValue:= gbListEmbarca[gbPosCrud].Codigo;
+                gbActionCrud := CodigoCrud;
+                tmpEmbarca.Id := gbListEmbarca[gbPosCrud].Id;
+            else
+                gbActionCrud := CodigoCrud; 
+            end if;
+        elsif (gbScreenActive=EspecieSc) then
+            gbLastPrompUsed:= CONST_CRUD_ESP_P_CODE;
+            if (gbTypeCrud = UpdateCrud) then
+                if gbTotalEspecie >= gbPosCrud then existRecordToEdit := BoolTrue; else existRecordToEdit := BoolFalse; end if;
+                setValue:= gbListEspecie[gbPosCrud].Nombre;
+                gbActionCrud := NombreCrud;  
+                tmpEspecie.Codigo := gbListEspecie[gbPosCrud].Codigo;
+            else
+                gbActionCrud := CodigoCrud; 
+            end if;
+        elsif (gbScreenActive=UsoSc) then
+            gbLastPrompUsed:= CONST_CRUD_USO_P_CODE;
+            if (gbTypeCrud = UpdateCrud) then
+                if gbTotalUso >= gbPosCrud then existRecordToEdit := BoolTrue; else existRecordToEdit := BoolFalse; end if;
+                setValue:= gbListUso[gbPosCrud].Nombre;
+                gbActionCrud := NombreCrud;  
+                tmpUso.Codigo := gbListUso[gbPosCrud].Codigo;
+            else
+                gbActionCrud := CodigoCrud; 
+            end if;
+        elsif (gbScreenActive=TransporteSc) then
+            gbLastPrompUsed:= CONST_CRUD_TRA_P_CODE;
+            if (gbTypeCrud = UpdateCrud) then
+                if gbTotalTransporte >= gbPosCrud then existRecordToEdit := BoolTrue; else existRecordToEdit := BoolFalse; end if;
+                setValue:= gbListTransporte[gbPosCrud].Nombre;
+                gbActionCrud := NombreCrud; 
+                tmpTransporte.Codigo := gbListTransporte[gbPosCrud].Codigo;
+            else
+                gbActionCrud := CodigoCrud; 
+            end if;
+        end if;
+        if (existRecordToEdit = BoolTrue) then
+            SetEntry(setValue);
+            PromptUser(gbLastPrompUsed); 
+        else
+            DisplayAndClean(CONST_NO_RECORD_TO_PROCESS);
+        end if;
+    elsif gbActionCrud = CodigoCrud then
+        if IsStringNotEmpty(val) = BoolTrue then 
+            if (gbScreenActive=EmbarcaSc) then
+                tmpEmbarca.Codigo := val;
+                gbLastPrompUsed:= CONST_CRUD_EMB_P_NAME;
+                if (gbTypeCrud = UpdateCrud) then
+                    setValue:= gbListEmbarca[gbPosCrud].Nombre;
+                end if;
+            elsif (gbScreenActive=EspecieSc) then
+                tmpEspecie.Codigo := StringToInteger(val);
+                gbLastPrompUsed:= CONST_CRUD_ESP_P_NAME;
+                if (gbTypeCrud = UpdateCrud) then
+                    setValue:= gbListEspecie[gbPosCrud].Nombre;
+                end if;
+            elsif (gbScreenActive=UsoSc) then
+                tmpUso.Codigo := StringToInteger(val);
+                gbLastPrompUsed:= CONST_CRUD_USO_P_NAME;
+                if (gbTypeCrud = UpdateCrud) then
+                    setValue:= gbListUso[gbPosCrud].Nombre;
+                end if;
+            elsif (gbScreenActive=TransporteSc) then
+                tmpTransporte.Codigo := StringToInteger(val);
+                gbLastPrompUsed:= CONST_CRUD_TRA_P_NAME;
+                if (gbTypeCrud = UpdateCrud) then
+                    setValue:= gbListTransporte[gbPosCrud].Nombre;
+                end if; 
+            end if;
+
+            SetEntry(setValue);
+            PromptUser(gbLastPrompUsed);  
+            gbActionCrud := NombreCrud;  
+        else
+            PromptUser(CONST_DATA_ERROR+gbLastPrompUsed);
+        end if;
+    elsif gbActionCrud = NombreCrud then 
+       if IsStringNotEmpty(val) = BoolTrue then
+            gbActionCrud := InitCrud;            
+            if (gbScreenActive=EmbarcaSc) then
+                tmpEmbarca.Nombre := val;
+                SaveCrud;
+            elsif (gbScreenActive=EspecieSc) then
+                tmpEspecie.Nombre := val;
+                SaveCrud;
+            elsif (gbScreenActive=UsoSc) then
+                tmpUso.Nombre := val;
+                SaveCrud;
+            elsif (gbScreenActive=TransporteSc) then
+                tmpTransporte.Nombre := val;
+                if (gbTypeCrud = UpdateCrud) then
+                    SetEntry(IntegerToString(gbListTransporte[gbPosCrud].Incluye, 0));
+                end if;
+                PromptUser(CONST_CRUD_TRA_P_INCL);  
+                gbActionCrud := IncluyeCrud;
+            end if;
+        else
+            PromptUser(CONST_DATA_ERROR + gbLastPrompUsed);
+        end if;
+    elsif gbActionCrud = IncluyeCrud then 
+       if IsStringNotEmpty(val) = BoolTrue then 
+            tmpTransporte.Incluye := StringToInteger(val);
+            SaveCrud;
+        else
+            PromptUser(CONST_DATA_ERROR + gbLastPrompUsed);
+        end if;
+    end if;
+end;
+
+procedure CrudDelete(val : string);
+existRecordToDelete: BooleanType;
+begin
+    if gbActionCrud = InitCrud then
+        gbTypeCrud := DeleteCrud;
+        gbLastPrompUsed:= CONST_GEN_DELETE_CRUD;
+        if (gbScreenActive=EmbarcaSc) then
+            if gbTotalEmbarca >= gbPosCrud then existRecordToDelete :=  BoolTrue; else existRecordToDelete :=  BoolFalse; end if;
+            gbLastPrompUsed:= gbLastPrompUsed + gbListEmbarca[gbPosCrud].Nombre;
+        elsif (gbScreenActive=EspecieSc) then
+            if gbTotalEspecie >= gbPosCrud then existRecordToDelete := BoolTrue; else existRecordToDelete := BoolFalse; end if;
+            gbLastPrompUsed:= gbLastPrompUsed + gbListEspecie[gbPosCrud].Nombre;
+        elsif (gbScreenActive=UsoSc) then
+            if gbTotalUso >= gbPosCrud then existRecordToDelete := BoolTrue; else existRecordToDelete := BoolFalse; end if;
+            gbLastPrompUsed:= gbLastPrompUsed + gbListUso[gbPosCrud].Nombre;
+        elsif (gbScreenActive=TransporteSc) then
+            if gbTotalTransporte >= gbPosCrud then existRecordToDelete := BoolTrue; else existRecordToDelete := BoolFalse; end if;
+            gbLastPrompUsed:= gbLastPrompUsed + gbListTransporte[gbPosCrud].Nombre;
+        end if;
+
+        if (existRecordToDelete = BoolTrue) then
+            SetEntry(CONST_DEFAULT_SI);
+            PromptUser(gbLastPrompUsed); 
+            gbActionCrud := CodigoCrud;
+        else
+            DisplayAndClean(CONST_NO_RECORD_TO_PROCESS);
+        end if;
+    elsif gbActionCrud = CodigoCrud then
+        if AreStringEqual(val, CONST_DEFAULT_SI) = BoolTrue then 
+            if (gbScreenActive=EmbarcaSc) then
+                tmpEmbarca := gbListEmbarca[gbPosCrud];
+            elsif (gbScreenActive=EspecieSc) then
+                tmpEspecie := gbListEspecie[gbPosCrud];
+            elsif (gbScreenActive=UsoSc) then
+                tmpUso := gbListUso[gbPosCrud];
+            elsif (gbScreenActive=TransporteSc) then
+                tmpTransporte := gbListTransporte[gbPosCrud];
+            end if;
+            BorrarCrud;
+        end if;
+    end if;
+end;

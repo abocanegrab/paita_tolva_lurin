@@ -1,0 +1,105 @@
+function GetCalibracion : typResponseCalibracion;
+identifier : integer;
+data : typCalibracion;
+result : typResponseCalibracion;
+codeResult : SysCode; 
+begin
+    codeResult := DBExec("Select * from Calibra", identifier);
+    Logger("select Calibra:"+ syscodetostring(codeResult)+",ident:"+integertostring(identifier,0));
+    if (codeResult = SysOk) then
+        if (identifier > 0) then
+            Logger("select Calibra:"+ syscodetostring(codeResult)+",ident:"+integertostring(identifier,0));
+            DBColumnInt(identifier, 1, data.Wzero);
+            DBColumnReal(identifier, 2, data.Wval);
+            DBColumnInt(identifier, 2, data.Wspan);
+            DBColumnReal(identifier, 3, data.Factor);
+            DBColumnString(identifier, 4, data.FeCal);
+            result.HasError := BoolFalse;
+            result.HasData := BoolTrue;
+            result.data := data;
+        else
+            result.HasError := BoolFalse;
+            result.HasData := BoolFalse;
+        end if;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+        Logger("error transport:" + DBErrMsg);
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+function PostCalibracion(Calibracion: typCalibracion) : typResponseCalibracion;
+identifier : integer;
+result : typResponseCalibracion;
+codeResult : SysCode; 
+query : string;
+begin
+    query := "insert into Calibra (Wzero, Wval, Wspan, Factor, FeCal) values (";
+    query := query + IntegerToString(Calibracion.Wzero,0) +", ";
+    query := query + RealToString(Calibracion.Wval, 0, 8) +", ";
+    query := query + IntegerToString(Calibracion.Wspan,0) +", ";
+    query := query + RealToString(Calibracion.Factor,0, 8) +", ";
+    query := query + "'"+ Calibracion.FeCal +"')";
+    codeResult := DBExec(query, identifier);
+    Logger("insert Calibra:"+ syscodetostring(codeResult)+",ident:"+integertostring(identifier,0));
+    
+    if (codeResult = SysOk) then
+        result:= GetCalibracion;
+    else
+        Logger("inserterror:"+ DBErrMsg);
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+        Logger("error transport:" + DBErrMsg);
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+
+function PutCalibracion(Calibracion: typCalibracion) : typResponseCalibracion;
+identifier : integer;
+result : typResponseCalibracion;
+codeResult : SysCode; 
+query : string;
+begin
+    query := "update Calibra set ";
+    query := query + "Wzero = "+ IntegerToString(Calibracion.Wzero, 0) +", ";
+    query := query + "Wval = "+ RealToString(Calibracion.Wval, 0, 8) +", ";
+    query := query + "Wspan = "+ IntegerToString(Calibracion.Wspan, 0) +", ";
+    query := query + "Factor = "+ RealToString(Calibracion.Factor, 0, 8) +", ";
+    query := query + "FeCal = '"+ Calibracion.FeCal +"'";
+    codeResult := DBExec(query, identifier);
+    
+    if (codeResult = SysOk) then
+        result:= GetCalibracion;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+        Logger("error transport:" + DBErrMsg);
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+function PutFechaCalibracion(fecha: string) : typResponseCalibracion;
+identifier : integer;
+result : typResponseCalibracion;
+codeResult : SysCode; 
+query : string;
+begin
+    query := "update Calibra set ";
+    query := query + "FeCal = '"+ fecha +"'";
+    codeResult := DBExec(query, identifier);
+    
+    if (codeResult = SysOk) then
+        result:= GetCalibracion;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+        Logger("error calibra:" + DBErrMsg);
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;

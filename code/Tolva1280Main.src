@@ -1,0 +1,107 @@
+program Tolva1280Main;
+
+#include Tolva1280Main.iri
+#include utils\Trim.iri
+#include constants\constants.iri
+
+--Entities
+#include entities\Balanza.iri
+#include entities\Configuracion.iri
+#include entities\Empresa.iri
+#include entities\Embarcacion.iri
+#include entities\Especie.iri
+#include entities\Recupera.iri
+#include entities\TipoTransporte.iri
+#include entities\Uso.iri
+#include entities\Calibracion.iri
+#include entities\Temporal.iri
+#include entities\Detalle.iri
+#include entities\Pesaje.iri
+#include entities\Alerta.iri
+#include entities\TicketEmbarca.iri
+
+--Global vars
+#include global\enums.iri
+#include global\vars.iri
+#include global\temps.iri
+#include utils\Commons.iri
+
+#include constants\DefaultDbValues.iri
+
+--Database connections
+#include database\Retro.iri
+#include database\dbBalanza.iri
+#include database\dbConfiguracion.iri
+#include database\dbEmpresa.iri
+#include database\dbEspecie.iri
+#include database\dbUso.iri
+#include database\dbEmbarcacion.iri
+#include database\dbTransporte.iri
+#include database\dbCalibracion.iri
+#include database\dbRecupera.iri
+#include database\dbAlerta.iri
+#include database\dbTicketEmbarca.iri
+
+--Impresion directa de bd
+#include printer\CopyTicketRetro.iri
+#include printer\CopyTicket.iri
+
+#include database\dbDetalle.iri
+#include database\dbPesaje.iri
+
+#include utils\Screens.iri
+#include process\CleanTolva.iri
+
+#include printer\Alert.iri
+#include printer\Ticket.iri
+#include printer\Calibra.iri
+
+#include handlers\FlechasHandler.iri
+#include handlers\IOProgramming.iri
+
+#include data-operations\CrudOperation.iri
+#include data-operations\ConfigOperation.iri
+#include data-operations\EmpresaOperation.iri
+#include data-operations\BalanzaOperation.iri
+#include data-operations\ProcesoOperation.iri
+#include data-operations\CalibraOperation.iri
+#include data-operations\PrinterOperation.iri
+
+#include process\IniciaFinaliza.iri
+#include process\GetBatch.iri
+
+#include handlers\SetPoints.iri
+#include handlers\Timers.iri
+
+handler WidgetClicked;
+sys : SysCode;
+begin
+    if 1 = 0 then
+        return;
+    #include touch\navigation.iri
+    #include touch\actions.iri
+    #include touch\crud-actions.iri
+    end if;
+end;
+
+#include handlers\UserEntryHandler.iri
+
+#include init\FillFirstData.iri
+#include init\ValidRestart.iri
+#include init\ValidCalibration.iri
+#include init\InitSystem.iri
+
+handler zerokeypressed; 
+scode : syscode;
+begin 
+    scode := ZeroScale(1);
+end;
+
+handler tarekeypressed; 
+begin 
+    DisplayAndClean("Tara deshabilitada");
+end;  
+
+begin
+    #include init\Start1280.iri
+end Tolva1280Main;

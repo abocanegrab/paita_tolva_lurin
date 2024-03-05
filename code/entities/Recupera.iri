@@ -1,0 +1,32 @@
+type typRecupera is record 
+    ticket : integer;
+    codEmbarca   : string;
+    nomEmbarca   : string;
+    codEspecie  : integer;
+    nomEspecie  : string;
+    codUso : integer;
+    nomUso : string;
+    codTransporte : integer;
+    nomTransporte : string;
+    incluyeTransporte : integer;
+    Proveedor : string;
+    fecInicio : datetime;
+    batch: integer;
+    acumulado: real;
+    estado: integer;
+    eventos: integer;
+    wzero: integer;
+    wspan: integer;
+    wval: real;
+    factor: real;
+    objetivo: real;
+    iniciado: BooleanType;
+   Anio : integer;
+end record;
+
+-- type typResponseRecupera is record
+--     HasError: BooleanType;
+--     HasData: BooleanType;
+--     ErrorMessage: string;
+--     data: typRecupera;
+-- end record;

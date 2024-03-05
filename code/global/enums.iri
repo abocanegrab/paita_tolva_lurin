@@ -1,0 +1,47 @@
+type enumEstado is (Activo, Inactivo, Pausado);
+
+type enumCrudActions is (InitCrud, CodigoCrud, NombreCrud, IncluyeCrud);
+
+type enumCrudType is (AddCrud, UpdateCrud, DeleteCrud);
+
+type enumConfigActions is (
+    InitPObjConfig, PesoObjConfig,
+    InitPesosConfig, CapMaxConfig, PesoMinConfig,
+    InitTiemposConfig, EstabilConfig, ReinConfig, 
+    InitErrorConfig, Error1Config, Error2Config);
+
+type enumBalanzaActions is (InitBalanza, SerieBalanza, ModeloBalanza,
+    NombreBalanza, NumBalanza, FlujoBalanza);
+
+type enumScreen is (ProcesoSc, MenuPrincipalSc, DataMenuSc, EmbarcaSc,
+    EspecieSc, UsoSc, TransporteSc, EmpresaSc, BalanzaSc,
+    ConfigSc, UtilesSc, ReporteSc);
+
+type enumEmpresaActions is (
+    InitEmpresa, RazonEmpresa,
+    DireccionEmpresa, RUCEmpresa, TelefonoEmpresa,
+    EIPEmpresa, NPLEmpresa,
+    InitTicketEmpresa, TicketEmpresa);
+
+type enumProcesoActions is (
+    InitProceso, TransporteProceso, PlacaProceso, MatriculaProceso, NombreEmbProceso,
+    EspecieProceso, UsoProceso, ProveedorProceso);
+
+type enumButtonProcesoActions is (
+    DataButtonProceso, IniciarButtonProceso, FinalizarButtonProceso,
+    PausaReanudaButtonProceso, ObjetivoButtonProceso, LimpiezaButtonProceso,
+    NumeroTicketButtonProceso, AsociaEmbarcaButtonProceso);
+
+type enumLimpiaTolvaActions is (
+    InitLimpia, TiempoLimpia, FinalizaLimpia
+);
+
+type enumCalibracionActions is (
+    InitCalibracion, FechaCalibraAction
+);
+
+type enumAsociaEmbarcaActions is (
+    InitAsocia, BuscaMatriculaAsocia, AgregaEmbarcaAsocia, PreguntaAsocia
+);
+
+type enumPrinterActions is ( InitPrinter, ImprimirPrinter, InitSearchPrinter, ImprimirOnlyOne );

@@ -1,0 +1,12 @@
+procedure CrudCalibracion(val : string);
+response: typResponseCalibracion;
+fecha : string;
+begin
+    if gbCalibraProceso = InitCalibracion then
+        gbLastPrompUsed:=CONST_CALIBRA_P_DATE;
+        PromptUser(gbLastPrompUsed);
+        gbCalibraProceso := FechaCalibraAction; 
+    elsif gbCalibraProceso = FechaCalibraAction then
+        response := PutFechaCalibracion(val);
+    end if;
+end;

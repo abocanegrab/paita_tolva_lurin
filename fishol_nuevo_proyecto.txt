@@ -1,0 +1,40 @@
+Enviar y recibir
+
+Numero de parte ya viene con especie. No se elige.
+
+El área (tipo de proceso) es un dato general que es configurable. 
+El sistema va a enviar un listado de areas, y el operador define o confirma el área. (viene del sistema corp).
+
+El tipo de producto esta relacionado a la especie y el área.
+tipo de parte de produccion, especie (amarrado al anterior), cuadrilla y tipo de producto, 
+TARA, operador.
+
+Se tiene una sublista de cuadrillas segun el parte y la especie.
+
+Al cerrar los partes de producción se debe de 
+
+Se va a grabar el detalle de cada pesaje y se maneja con inicio y fin.
+
+Especie: Codigo y Nombre
+Producto: Codigo y Nombre
+Cuadrilla: Codigo y Nombre
+Asociada a la especie. Se filtra segun ingreso.
+
+Codigo de parte de produccion. Esto viaja a todos los equipos.
+Se puede generar a cualquier hora del día. Se elige el codigo de producion.
+
+Llenar maestros de forma remota.
+
+tipos de especie: 100
+cuadrillas: 100 
+tipos de producto: 500
+operador: dni solo texto
+
+
+Se va a acceder a las tablas para enviar datos.
+
+el envio automatico de los datos.
+
+la captura como siempre.
+
+Solo para los tres equipos no normados por produce

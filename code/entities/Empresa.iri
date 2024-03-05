@@ -1,0 +1,16 @@
+type typEmpresa is record 
+   Razon : string;
+   Direccion   : string;
+   RUC   : string;
+   Telefono  : string;
+   EIP : string;
+   NPL : string;
+   Ticket: integer;
+end record;
+
+type typResponseEmpresa is record
+    HasError: BooleanType;
+    HasData: BooleanType;
+    ErrorMessage: string;
+    data: typEmpresa;
+end record;

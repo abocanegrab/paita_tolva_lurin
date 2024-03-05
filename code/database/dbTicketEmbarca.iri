@@ -1,0 +1,94 @@
+function ListTicketEmbarca(ticket : integer) : typResponseTicketEmbarcas;
+identifier : integer;
+data : typTicketEmbarcas;
+result : typResponseTicketEmbarcas;
+codeResult : SysCode; 
+index: integer:= 0;
+query : string;
+begin
+    query := "Select t2.codigo, t2.Nombre, t1.fecha ";
+    query := query +" from TicketEm t1";
+    query := query +" left join Embarca t2 on t2.codigo = t1.codEmbar";
+    query := query +" where t1.Ticket = " + IntegerToString(ticket, 0);
+    query := query +" order by t1.fecha";
+    codeResult := DBExec(query, identifier);
+    Logger("list asocia:"+ syscodetostring(codeResult)+",ident:"+integertostring(identifier,0));
+    if (codeResult = SysOk) then
+        if (identifier > 0) then
+            while (codeResult = SysOk) 
+            loop
+                index:=index+1;
+                Logger("loop asocia index:" + integertostring(index, 0));
+                DBColumnString(identifier, 1, data[index].codEmbar);
+                DBColumnstring(identifier, 2, data[index].Embarcacion);
+                DBColumnDT(identifier, 3, data[index].fecha);
+                codeResult:=DBNext(identifier);
+                Logger("list asocia next:"+ syscodetostring(codeResult) + "- index: " + integertostring(index, 0));
+            end loop;
+            
+            result.Count:= index;
+            result.HasError := BoolFalse;
+            result.HasData := BoolTrue;
+            result.data := data;
+        else
+            result.HasError := BoolFalse;
+            result.HasData := BoolFalse;
+            Logger("list asocia: no Data");
+        end if;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+        Logger("select embDBErrMsg:"+ DBErrMsg);
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+procedure FreeTableSpace;
+identifier : integer;
+query : string;
+codeResult : SysCode;
+total : integer;
+begin
+    query := "Select count(1) ";
+    query := query +" from TicketEm";
+    codeResult := DBExec(query, identifier);
+    if (codeResult = SysOk) then return; end if;
+    if (identifier = 0) then return; end if;
+    
+    DBColumnInt(identifier, 1, total);
+    DBFinalize(identifier);
+
+    if (total <> CONST_MAX_TICKETEMB) then return; end if;
+
+    query := "delete from TicketEm where ticket = (Select ticket from TicketEm order by fecha asc limit 1)";
+    codeResult := DBExec(query, identifier);
+    DBFinalize(identifier);
+end;
+
+function PostTicketEmbarca(TicketEmbarca: typTicketEmbarca) : typResponseTicketEmbarca;
+identifier : integer;
+result : typResponseTicketEmbarca;
+codeResult : SysCode; 
+query : string;
+fecha : datetime;
+begin
+    FreeTableSpace;
+    fecha := systemtime;
+    query := "Insert into TicketEm (Ticket, codEmbar, fecha) values (";
+    query := query + IntegerToString(TicketEmbarca.ticket,0) +", ";
+    query := query + "'" + TicketEmbarca.codEmbar + "', ";
+    query := query + DTToString(fecha) +") ";
+    codeResult := DBExec(query, identifier);
+    Logger("insert TicketEm:"+ syscodetostring(codeResult)+",ident:"+integertostring(identifier,0));
+    
+    if (codeResult = SysOk) then
+        result.HasError := BoolFalse;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+        Logger("select TicketEm DBErrMsg:"+ DBErrMsg);
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;

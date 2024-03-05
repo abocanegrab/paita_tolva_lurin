@@ -1,0 +1,42 @@
+handler UserEntry;
+userValue : string; 
+begin    
+    userValue := CleanString(GetEntry);
+    ClosePrompt;
+    if EventKey = EnterKey then   
+        if gbScreenActive = EmbarcaSc or gbScreenActive = EspecieSc
+        or gbScreenActive = UsoSc or gbScreenActive = TransporteSc then
+            if (gbTypeCrud = DeleteCrud) then
+                CrudDelete(userValue);
+            else
+                CrudGenerico(userValue);
+            end if;
+        elsif gbScreenActive = EmpresaSc then 
+            CrudEmpresa(userValue); 
+        elsif gbScreenActive = BalanzaSc then
+            CrudBalanza(userValue); 
+        elsif gbScreenActive = ConfigSc then
+            CrudConfig(userValue); 
+        elsif gbScreenActive = ProcesoSc then
+            if (gbButtonProceso = DataButtonProceso) then
+                ProcesoOperacion(userValue);
+            elsif (gbButtonProceso = IniciarButtonProceso) then
+                IniciaProceso(userValue);
+            elsif (gbButtonProceso = FinalizarButtonProceso) then
+                CierreProceso(userValue);
+            elsif (gbButtonProceso = ObjetivoButtonProceso) then
+                CrudConfig(userValue); 
+            elsif (gbButtonProceso = LimpiezaButtonProceso) then
+                LimpiezaTolvaOperation(userValue); 
+            elsif (gbButtonProceso = NumeroTicketButtonProceso) then
+                CrudEmpresa(userValue);
+            elsif (gbButtonProceso = AsociaEmbarcaButtonProceso) then
+                AsociaEmbarca(userValue);
+            end if;
+        elsif gbScreenActive = UtilesSc then
+            CrudCalibracion(userValue);
+        elsif gbScreenActive = ReporteSc then
+            RePrinterOperation(userValue);
+        end if;
+    end if;                                          
+end; 

@@ -1,0 +1,128 @@
+CONST_ERROR_GETTING_DATA: string := "No se pudo obtener la información";
+CONST_MAIN_MESSAGE: string := "Sistema de Pesaje Flores";
+CONST_CRUD_CODE: string := "Codigo";
+CONST_CRUD_NAME: string := "Nombre";
+CONST_CRUD_TRANSP_THIRD: string := "Incluye";
+CONST_CRUD_EMB_CODE: string := "Matricula";
+CONST_CRUD_EMB_NAME: string := "Embarcacion";
+CONST_CRUD_TITLE_EMB: string :="Gestión de Embarcaciones";
+CONST_CRUD_TITLE_ESP: string :="Gestión de Especies";
+CONST_CRUD_TITLE_USO: string :="Gestión de Usos";
+CONST_CRUD_TITLE_TRA: string :="Gestión de Transportes";
+-- CRUD
+CONST_CRUD_EMB_P_CODE: string :="Ingresar la Placa";
+CONST_CRUD_EMB_P_NAME: string :="Nombre de la Embarcacion";
+
+CONST_CRUD_ESP_P_CODE: string :="Ingresar el Codigo de Especie";
+CONST_CRUD_ESP_P_NAME: string :="Ingresar el nombre de la Especie";
+
+CONST_CRUD_USO_P_CODE: string :="Ingresar el Codigo del Uso";
+CONST_CRUD_USO_P_NAME: string :="Ingresar el nombre del Uso";
+
+CONST_CRUD_TRA_P_CODE: string :="Ingresar el Codigo de Tipo de Transporte";
+CONST_CRUD_TRA_P_NAME: string :="Ingresar el nombre del tipo de transporte";
+CONST_CRUD_TRA_P_INCL: string :="Incluye Embarcaciones? (1) SI, (0) NO";
+
+CONST_DATA_ERROR: string := "Dato incorrecto! ";
+CONST_DATA_NO_EXIST: string := "Dato no existe! ";
+CONST_GEN_DELETE_CRUD: string := "Seguro de eliminar: ";
+CONST_NO_RECORD_TO_PROCESS : string := "No hay registro disponible";
+-- end CRUD
+
+-- CRUD CONFIG
+CONST_CRUD_CONF_P_PEOB : string := "Ingresar Peso Objetivo";
+CONST_CRUD_CONF_P_MAXI : string := "Ingresar Capacidad Maxima";
+CONST_CRUD_CONF_P_MINI : string := "Ingresar Peso Minimo";
+CONST_CRUD_CONF_P_TEST : string := "Ingresar Tiempo Estabilidad";
+CONST_CRUD_CONF_P_TREI : string := "Ingresar Tiempo Reinicio";
+CONST_CRUD_CONF_P_ERR1 : string := "Ingresar Error 1";
+CONST_CRUD_CONF_P_ERR2 : string := "Ingresar Error 2";
+-- END CRUD CONFIG
+
+-- CRUD EMPRESA
+CONST_CRUD_EMPR_P_RAZO : string := "Ingresar Razón Social";
+CONST_CRUD_EMPR_P_DIRE : string := "Ingresar Dirección";
+CONST_CRUD_EMPR_P_RUC_ : string := "Ingresar RUC";
+CONST_CRUD_EMPR_P_TELE : string := "Ingresar Teléfono";
+CONST_CRUD_EMPR_P_EIP_ : string := "Ingresar EIP";
+CONST_CRUD_EMPR_P_NPL_ : string := "Ingresar NPL";
+CONST_CRUD_EMPR_P_TICK : string := "Ingresar Ticket";
+-- END CRUD EMPRESA
+
+-- CRUD BALANZA
+CONST_CRUD_BALA_P_SERI : string := "Ingresar Serie de Balanza";
+CONST_CRUD_BALA_P_MODE : string := "Ingresar Modelo";
+CONST_CRUD_BALA_P_NOMB : string := "Ingresar Nombre de Equipo";
+CONST_CRUD_BALA_P_NUME : string := "Ingresar Número";
+CONST_CRUD_BALA_P_FLUJ : string := "Ingresar Flujo de procesamiento";
+-- END CRUD BALANZA
+
+-- EVENTOS
+CONST_EVENT_1 : string := "COMPUERTAS ABIERTAS";
+CONST_EVENT_2 : string := "INTERV NO AUTORIZADA";
+CONST_EVENT_3 : string := "FALLA DE CELDAS";
+CONST_EVENT_4 : string := "PROBLEMA EN LA RED ELECTRICA";
+
+-- PROCESO
+CONST_PROCESO_P_TRAN : string := "Ingresar Codigo de Tipo de Transporte";
+CONST_PROCESO_P_PLAC : string := "Ingresar Placa del Transporte";
+CONST_PROCESO_P_MATR : string := "Ingresar Matricula de la Embarcacion";
+CONST_PROCESO_P_MNOM : string := "Ingresar el Nombre de la Embarcación";
+CONST_PROCESO_P_ESPE : string := "Ingresar Codigo de Especie";
+CONST_PROCESO_P_USO : string := "Ingresar Codigo de Uso";
+CONST_PROCESO_P_PRO : string := "Ingresar el Proveedor";
+CONST_MESSAGE_CARGA : string := "Cargando producto...";
+CONST_MESSAGE_ESTAB : string := "Estabilizando...";
+CONST_MESSAGE_DESCA : string := "Descargando producto ...";
+CONST_MESSAGE_REINI : string := "Reinciando proceso...";
+CONST_MESSAGE_FIN_ : string := "Proceso finalizado...";
+
+-- LIMPIEZA TOLVA
+CONST_LIMPIEZA_P_TIME : string := "Tiempo de limpieza (mins)";
+CONST_DEFAULT_LIMPIEZA_TIME: string := "10";
+
+-- ACTUALIZAR FECHA CALIBRA
+CONST_CALIBRA_P_DATE : string := "Ingresar fecha de calibración";
+
+
+-- ASOCIA EMBARCACION
+CONST_ASOCIAEMB_P_MATRI : string := "Ingrese Matricula a asociar";
+CONST_ASOCIAEMB_P_NOMBR : string := "Ingrese nombre de embarcacion";
+CONST_ASOCIAEMB_P_SEGUIR : string := "¿Desea asociar otro?";
+CONST_ASOCIAEMB_P_ERROR : string := "Valor incorrecto. Ingrese una matricula";
+
+CONST_PROCESO_INICIAR: string := "¿Desea iniciar el proceso?";
+CONST_PROCESO_FINALIZAR: string := "¿Desea finalizar el proceso?";
+CONST_DEFAULT_SI: string := "S";
+CONST_DEFAULT_NO: string := "N";
+
+CONST_ADV_PRINT: string := "ADV";
+
+CONST_IMAGE_START: string :="actions/start.png";
+CONST_IMAGE_STOP: string :="actions/finish.png";
+CONST_IMAGE_PAUSE: string :="actions/pause.png";
+CONST_IMAGE_CONTINUE: string :="actions/continue.png";
+CONST_IMAGE_DATA: string :="actions/data.png";
+
+CONST_IMAGE_MENU: string :="menu/menu.png";
+CONST_IMAGE_MENU_BACK: string :="menu/back.png";
+CONST_IMAGE_MENU_COMPANY: string :="menu/company.png";
+CONST_IMAGE_MENU_CRUD: string :="menu/crud.png";
+CONST_IMAGE_MENU_OPTIONS: string :="menu/options.png";
+CONST_IMAGE_MENU_SCALE: string :="menu/scale.png";
+CONST_IMAGE_MENU_SHIPS: string :="menu/ships.png";
+CONST_IMAGE_MENU_USES: string :="menu/uses.png";
+CONST_IMAGE_MENU_ESPECIE: string :="menu/especies.png";
+
+--PRINT
+CONST_PRINT_DEFAULT_VALUE: string := "1";
+CONST_PRINT_PROMPT_PRINT: string := "Ingresar la cantidad de últimos tickets a imprimir. (Vacio para todos)";
+CONST_PRINT_INIT_PRINT: string := "Reimpriendo tickets...(apagar para detener)";
+CONST_PRINT_FIN_PRINT: string := "Reimpresion finalizada...";
+
+--PRINT A DEMANDA
+CONST_PRINT_ON_DEMAND_PROMPT : string := "Ingresa el numero de ticket a reimiprimir";
+CONST_PRINT_ON_DEMAND_ERROR : string := "Numero de ticket incorrecto";
+CONST_PRINT_ON_DEMAND_ERROR_SEARCH : string := "Ticket no existe para reimpresion";
+
+CONST_MAX_TICKETEMB : integer := 300;

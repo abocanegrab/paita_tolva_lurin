@@ -1,0 +1,199 @@
+function GetConfig : typResponseConfiguracion;
+identifier : integer;
+data : typConfiguracion;
+result: typResponseConfiguracion;
+codeResult : SysCode; 
+begin
+    codeResult := DBExec("Select * from Config", identifier);
+    if (codeResult = SysOk) then
+        if (identifier > 0) then
+            DBColumnReal(identifier, 1, data.Objetivo);
+            DBColumnReal(identifier, 2, data.Minimo);
+            DBColumnReal(identifier, 3, data.Maximo);
+            DBColumnReal(identifier, 4, data.TEstabilidad);
+            DBColumnReal(identifier, 5, data.TReinicio);
+            DBColumnReal(identifier, 6, data.TError1);
+            DBColumnReal(identifier, 7, data.TError2);
+            result.HasError := BoolFalse;
+            result.HasData := BoolTrue;
+            result.data := data;
+        else
+            result.HasError := BoolFalse;
+            result.HasData := BoolFalse;
+        end if;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+function PostConfig(config: typConfiguracion) : typResponseConfiguracion;
+identifier : integer;
+result : typResponseConfiguracion;
+codeResult : SysCode; 
+query : string;
+begin
+    query := "insert into Config (Objetivo, Minimo, Maximo, TEstabil, TRein, TError1, TError2) values (";
+    query := query + realtostring(config.Objetivo,0,10) +",";
+    query := query + realtostring(config.Minimo,0,10) +",";
+    query := query + realtostring(config.Maximo,0,10) +",";
+    query := query + realtostring(config.TEstabilidad,0,10) +",";
+    query := query + realtostring(config.TReinicio,0,10) +",";
+    query := query + realtostring(config.TError1,0,10) +",";
+    query := query + realtostring(config.TError2,0,10) +")";
+    codeResult := DBExec(query, identifier);
+    
+    if (codeResult = SysOk) then
+        result:= GetConfig;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+function PutConfigObjetivo(config: typConfiguracion) : typResponseConfiguracion;
+identifier : integer;
+result : typResponseConfiguracion;
+codeResult : SysCode; 
+query : string;
+begin
+    query := "update Config set ";
+    query := query + "Objetivo = "+ realtostring(config.Objetivo,0,10) +";";
+    codeResult := DBExec(query, identifier);
+    
+    if (codeResult = SysOk) then
+        result:= GetConfig;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+function PutConfigPesoMax(config: typConfiguracion) : typResponseConfiguracion;
+identifier : integer;
+result : typResponseConfiguracion;
+codeResult : SysCode; 
+query : string;
+begin
+    query := "update Config set ";
+    query := query + "Maximo = "+ realtostring(config.Maximo,0,10) +";";
+    codeResult := DBExec(query, identifier);
+    
+    if (codeResult = SysOk) then
+        result:= GetConfig;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+function PutConfigPesoMin(config: typConfiguracion) : typResponseConfiguracion;
+identifier : integer;
+result : typResponseConfiguracion;
+codeResult : SysCode; 
+query : string;
+begin
+    query := "update Config set ";
+    query := query + "Minimo = "+ realtostring(config.Minimo,0,10) +";";
+    codeResult := DBExec(query, identifier);
+    
+    if (codeResult = SysOk) then
+        result:= GetConfig;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+
+function PutConfigTiempos(config: typConfiguracion) : typResponseConfiguracion;
+identifier : integer;
+result : typResponseConfiguracion;
+codeResult : SysCode; 
+query : string;
+begin
+    query := "update Config set ";
+    query := query + "TEstabil = "+ realtostring(config.TEstabilidad,0,10) +", ";
+    query := query + "TRein = "+ realtostring(config.TReinicio,0,10) +";";
+    codeResult := DBExec(query, identifier);
+    
+    if (codeResult = SysOk) then
+        result:= GetConfig;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+function PutConfigTiempoEstb(config: typConfiguracion) : typResponseConfiguracion;
+identifier : integer;
+result : typResponseConfiguracion;
+codeResult : SysCode; 
+query : string;
+begin
+    query := "update Config set ";
+    query := query + "TEstabil = "+ realtostring(config.TEstabilidad,0,10) +";";
+    codeResult := DBExec(query, identifier);
+    
+    if (codeResult = SysOk) then
+        result:= GetConfig;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+function PutConfigTiempoRein(config: typConfiguracion) : typResponseConfiguracion;
+identifier : integer;
+result : typResponseConfiguracion;
+codeResult : SysCode; 
+query : string;
+begin
+    query := "update Config set ";
+    query := query + "TRein = "+ realtostring(config.TReinicio,0,10) +";";
+    codeResult := DBExec(query, identifier);
+    
+    if (codeResult = SysOk) then
+        result:= GetConfig;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+function PutConfigErrores(config: typConfiguracion) : typResponseConfiguracion;
+identifier : integer;
+result : typResponseConfiguracion;
+codeResult : SysCode; 
+query : string;
+begin
+    query := "update Config set ";
+    query := query + "TError1 = "+ realtostring(config.TError1,0,10) +",";
+    query := query + "TError2 = "+ realtostring(config.TError2,0,10) +";";
+    codeResult := DBExec(query, identifier);
+    
+    if (codeResult = SysOk) then
+        result:= GetConfig;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;

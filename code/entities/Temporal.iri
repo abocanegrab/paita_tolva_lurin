@@ -1,0 +1,13 @@
+type typTemporal is record
+    codEmbarca   : string;
+    nomEmbarca   : string;
+    codEspecie  : integer;
+    nomEspecie  : string;
+    codUso : integer;
+    nomUso : string;
+    codTransporte : integer;
+    nomTransporte : string;
+    incluyeTransporte : integer; -- 1 SI, 0 NO
+    Proveedor : string;
+    estado: integer;
+end record;

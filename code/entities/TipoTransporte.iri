@@ -1,0 +1,21 @@
+type typTransporte is record 
+   codigo : integer;
+   nombre  : string;
+   incluye: integer;
+end record;
+
+type typTransportes is array [100] of typTransporte;
+
+type typResponseTransporte is record
+    HasError: BooleanType;
+    HasData: BooleanType;
+    ErrorMessage: string;
+    data: typTransporte;
+end record;
+
+type typResponseTransportes is record
+    HasError: BooleanType;
+    HasData: BooleanType;
+    ErrorMessage: string;
+    data: typTransportes;
+end record;

@@ -1,0 +1,12 @@
+tmpEmpresa   : typEmpresa;
+tmpConfig    : typConfiguracion;
+tmpBalanza   : typBalanza;
+tmpEmbarca : typEmbarcacion;
+tmpEspecie : typEspecie;
+tmpUso : typUso;
+tmpTransporte : typTransporte; 
+tmpTiempoLimpieza : real;
+tmpTiempoLimpiezaInSeconds : integer;
+
+tmpTicketEmbarca : typTicketEmbarca;
+tmpMatriEmbAsocia : string;

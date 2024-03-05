@@ -1,0 +1,200 @@
+procedure GrabaPesada;
+pesaje : typPesaje;
+lFechaFin : datetime;
+begin
+    lFechaFin:= systemtime;
+    pesaje.Ticket := gbRecupera.ticket;
+    pesaje.CodEmbarca   := gbRecupera.codEmbarca;
+    pesaje.CodEspecie  := gbRecupera.codEspecie;
+    pesaje.CodUso := gbRecupera.codUso;
+    pesaje.codTransporte := gbRecupera.codTransporte;
+    pesaje.FechaInicio := gbRecupera.fecInicio;
+    pesaje.Batch := gbRecupera.batch;
+    pesaje.Acumulado := gbRecupera.acumulado;
+    pesaje.FechaFin := lFechaFin;
+    pesaje.Objetivo := gbRecupera.Objetivo;
+    pesaje.Wzero := gbRecupera.Wzero;
+    pesaje.Wval := gbRecupera.Wval;
+    pesaje.Wspan := gbRecupera.Wspan;
+    pesaje.Factor:= gbRecupera.Factor;
+    pesaje.Proveedor:= gbRecupera.Proveedor;
+    pesaje.Anio:= gbRecupera.Anio;
+    PostPesaje(pesaje);
+    CleanRecupera;
+end;
+
+procedure DefineAndSaveRecupera;
+fecha : datetime;
+currentCal: typCalibracion;
+begin
+    currentCal:= defDbCalibra;
+    fecha := systemtime;
+
+    gbEmpresa.Ticket := gbEmpresa.Ticket + 1;
+    PutTicketEmpresa(gbEmpresa);
+
+    gbRecupera.ticket := gbEmpresa.Ticket;
+    gbRecupera.codEmbarca := gbTemporal.codEmbarca;
+    gbRecupera.nomEmbarca := gbTemporal.nomEmbarca;
+    gbRecupera.codEspecie := gbTemporal.codEspecie;
+    gbRecupera.nomEspecie := gbTemporal.nomEspecie;
+    gbRecupera.codUso := gbTemporal.codUso;
+    gbRecupera.nomUso := gbTemporal.nomUso;
+    gbRecupera.codTransporte := gbTemporal.codTransporte;
+    gbRecupera.nomTransporte := gbTemporal.nomTransporte;
+    gbRecupera.incluyeTransporte := gbTemporal.incluyeTransporte;
+    gbRecupera.fecInicio := fecha;
+    gbRecupera.batch := 0;
+    gbRecupera.acumulado := 0;
+    gbRecupera.estado := 0;
+    gbRecupera.eventos := 0;
+    gbRecupera.wzero := currentCal.WZero;
+    gbRecupera.wspan := currentCal.Wspan;
+    gbRecupera.wval := currentCal.Wval;
+    gbRecupera.factor := currentCal.Factor;
+    gbRecupera.objetivo := gbConfig.Objetivo;
+    gbRecupera.Proveedor := gbTemporal.Proveedor;
+    gbRecupera.Anio := ObtieneAnio;
+    gbRecupera.iniciado := BoolTrue;
+end;
+
+procedure PausaReanuda;  
+begin
+    if(gbProceso = Activo)then  
+        DeshabilitarSP(1);
+        DeshabilitarSP(2);
+    
+        ShowPausaReanudaTicket(BoolTrue);
+        gbProceso:= Pausado;
+    elsif gbProceso = Pausado then
+        DeshabilitarSP(1);
+        DeshabilitarSP(2);
+
+        if (gbRecupera.estado = 1) then
+            HabilitarSP(2);
+        else
+            HabilitarSP(1);
+        end if;
+
+        ShowPausaReanudaTicket(BoolFalse);
+        gbProceso:= Activo;
+    end if;  
+    ProcesoScreen;
+end;
+
+
+procedure FinalizaProceso;
+begin
+    PrintFooter;
+    gbProceso:=Inactivo;
+    ProcesoScreen;   
+    gbFinal:=0;   
+    gbTemporal.estado := 0;
+    GrabaPesada;
+    SetActionButtons;
+    DisplayTemporal;
+    DisplayAndClean(CONST_MESSAGE_FIN_);
+end;
+
+
+procedure AsociaEmbarca(val : string);
+responseEmbarca : typResponseEmbarcacion;
+requestEmbarca : typEmbarcacion;
+begin
+    gbButtonProceso := AsociaEmbarcaButtonProceso;
+    if (gbAsociaProceso = InitAsocia) then
+        PromptUser(CONST_ASOCIAEMB_P_MATRI);
+        gbAsociaProceso:=BuscaMatriculaAsocia;
+    elsif (gbAsociaProceso = BuscaMatriculaAsocia) then    
+        if (IsStringNotEmpty(val) = BoolTrue) then
+            responseEmbarca := GetEmbarcacion(val);
+            if (responseEmbarca.HasData = BoolTrue and responseEmbarca.HasError = BoolFalse) then
+                tmpTicketEmbarca.Ticket:= gbRecupera.Ticket;
+                tmpTicketEmbarca.codEmbar:= responseEmbarca.Data.codigo;
+                tmpTicketEmbarca.Embarcacion:= responseEmbarca.Data.nombre;
+                PostTicketEmbarca(tmpTicketEmbarca);
+                SetEntry(CONST_DEFAULT_SI);
+                PromptUser(CONST_ASOCIAEMB_P_SEGUIR);
+                gbAsociaProceso:=PreguntaAsocia;
+            else
+                tmpMatriEmbAsocia := val;
+                PromptUser(CONST_ASOCIAEMB_P_NOMBR); 
+                gbAsociaProceso:=AgregaEmbarcaAsocia;
+            end if;
+        else
+            PromptUser(CONST_ASOCIAEMB_P_ERROR); 
+            gbAsociaProceso:=BuscaMatriculaAsocia; 
+        end if; 
+    elsif (gbAsociaProceso=AgregaEmbarcaAsocia) then 
+        requestEmbarca.nombre:=val;  
+        requestEmbarca.codigo:=tmpMatriEmbAsocia;
+        PostEmbarcacion(requestEmbarca); 
+
+        tmpTicketEmbarca.Ticket:=gbRecupera.Ticket;
+        tmpTicketEmbarca.codEmbar:=requestEmbarca.codigo;
+        tmpTicketEmbarca.Embarcacion:=requestEmbarca.nombre;
+        PostTicketEmbarca(tmpTicketEmbarca);
+
+        SetEntry(CONST_DEFAULT_SI);
+        PromptUser(CONST_ASOCIAEMB_P_SEGUIR);
+        gbAsociaProceso:=PreguntaAsocia;  
+        
+    elsif (gbAsociaProceso=PreguntaAsocia) then 
+        if(UCase$(val)=CONST_DEFAULT_SI) then
+            PromptUser(CONST_ASOCIAEMB_P_MATRI);
+            gbAsociaProceso := BuscaMatriculaAsocia;  
+        else
+            FinalizaProceso;    
+        end if;
+    end if;
+end;
+
+
+procedure ValidaFinalizado;
+begin
+    if (gbRecupera.incluyeTransporte = 1) then
+        gbAsociaProceso := InitAsocia;
+        AsociaEmbarca("");
+    else
+        FinalizaProceso;    
+    end if;  
+end;
+
+procedure CierreProceso(val: string);
+begin
+    if AreStringEqual(val, CONST_DEFAULT_SI) = BoolTrue then 
+        DeshabilitarSP(1);
+        DeshabilitarSP(2);
+        DisplayStatus(CONST_MESSAGE_ESTAB);
+        DefineAndStartTimer(8, gbConfig.TEstabilidad * 100, TimerOneShot);
+        gbFinal:= 1;
+    end if;
+end;
+
+procedure IniciaSecuencia;
+begin
+    SetSPValue(1, gbConfig.Objetivo);   
+    SetSPValue(2, gbConfig.Minimo);
+    
+    DeshabilitarSP(1);
+    DeshabilitarSP(2);
+    HabilitarSP(1);
+    DisplayStatus(CONST_MESSAGE_CARGA);
+end;
+
+
+procedure IniciaProceso(val : string);
+begin
+    if UCase$(val)= CONST_DEFAULT_SI then 
+        gbProceso:=Activo; 
+        DefineAndSaveRecupera;
+        SetLabelText(lbl14, IntegerToString(gbRecupera.ticket, 0));
+        SetLabelText(lbl15, IntegerToString(gbRecupera.batch, 0));
+        SetLabelText(lbl16, RealToString(gbRecupera.acumulado, 0, 1));              
+        gbNumAlerta:=0;
+        PrintHeader;           
+        gbFinal:=0;
+        IniciaSecuencia;
+        SetActionButtons;
+    end if;
+end;

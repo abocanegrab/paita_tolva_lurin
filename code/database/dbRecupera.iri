@@ -1,0 +1,209 @@
+-- function GetRecupera : typResponseRecupera;
+-- identifier : integer;
+-- data : typRecupera;
+-- result : typResponseRecupera;
+-- codeResult : SysCode; 
+-- query : string;
+-- begin
+    
+--     query := "Select t1.ticket, t1.codEmbar, t2.Nombre as nomEmbar, ";
+--     query := query + "t1.codEspec, t3.Nombre as nomEspecie, t1.codUso, t4.Nombre as nomUso, ";
+--     query := query + "t1.codTrans, t5.Nombre as nomTrans, t5.incluye, ";
+--     query := query + "t1.fInicio, t1.batch, t1.acumula, t1.estado, t1.eventos, t1.wzero, ";
+--     query := query + "t1.wspan, t1.wval, t1.factor, t1.objetivo ";
+--     query := query + "from Recupera t1 ";
+--     query := query + "left join Embarca t2 on t1.codEmbar = t2.Codigo ";
+--     query := query + "left join Especie t3 on t1.codEspec = t3.Codigo ";
+--     query := query + "left join Uso t4 on t1.codUso = t4.Codigo ";
+--     query := query + "left join Transpor t5 on t1.codTrans = t5.Codigo ";
+--     codeResult := DBExec(query, identifier);
+--     if (codeResult = SysOk) then
+--         if (identifier > 0) then
+--             Logger("select recupera:"+ syscodetostring(codeResult)+",ident:"+integertostring(identifier,0));
+--             DBColumnInt(identifier, 1, data.ticket);
+--             DBColumnString(identifier, 2, data.codEmbarca);
+--             DBColumnString(identifier, 3, data.nomEmbarca);
+--             DBColumnInt(identifier, 4, data.codEspecie);
+--             DBColumnString(identifier, 5, data.nomEspecie);
+--             DBColumnInt(identifier, 6, data.codUso);
+--             DBColumnString(identifier, 7, data.nomUso);
+--             DBColumnInt(identifier, 8, data.codTransporte);
+--             DBColumnString(identifier, 9, data.nomTransporte);
+--             DBColumnInt(identifier, 10, data.incluyeTransporte);
+--             DBColumnDT(identifier, 11, data.fecInicio);
+--             DBColumnInt(identifier, 12, data.batch);
+--             DBColumnReal(identifier, 13, data.acumulado);
+--             DBColumnInt(identifier, 14, data.estado);
+--             DBColumnInt(identifier, 15, data.eventos);
+--             DBColumnInt(identifier, 16, data.wzero);
+--             DBColumnInt(identifier, 17, data.wspan);
+--             DBColumnReal(identifier, 18, data.wval);
+--             DBColumnReal(identifier, 19, data.factor);
+--             DBColumnReal(identifier, 20, data.objetivo);
+
+--             Logger("select recupera incluye: ->"+integertostring(data.incluyeTransporte,0));
+
+--             result.HasError := BoolFalse;
+--             result.HasData := BoolTrue;
+--             result.data := data;
+--         else
+--             result.HasError := BoolFalse;
+--             result.HasData := BoolFalse;
+--         end if;
+--     else
+--         result.HasError := BoolTrue;
+--         result.ErrorMessage := DBErrMsg; 
+--         Logger("DBErrMsg recupera:"+ DBErrMsg);
+--     end if;
+--     DBFinalize(identifier);
+--     return result;
+-- end;
+
+-- function PostRecupera(Recupera: typRecupera) : typResponseRecupera;
+-- identifier : integer;
+-- result : typResponseRecupera;
+-- codeResult : SysCode; 
+-- query : string;
+-- begin
+--     query := query + "insert into Recupera ";
+--     query := query + "(ticket, codEmbar, codEspec, codUso, codTrans, ";
+--     query := query + "fInicio, batch, acumula, estado, eventos, wzero, ";
+--     query := query + "wspan, wval, factor, objetivo) values (";
+--     query := query + IntegerToString(Recupera.ticket, 0) +", ";
+--     query := query + "'" + Recupera.codEmbarca +"', ";
+--     query := query + IntegerToString(Recupera.codEspecie, 0) +", ";
+--     query := query + IntegerToString(Recupera.codUso, 0) +", ";
+--     query := query + IntegerToString(Recupera.codTransporte, 0) +", ";
+--     query := query + DTToString(Recupera.fecInicio) +",";
+--     query := query + IntegerToString(Recupera.batch, 0) +", ";
+--     query := query + RealToString(Recupera.acumulado, 0, 10) +", ";
+--     query := query + IntegerToString(Recupera.estado, 0) +", ";
+--     query := query + IntegerToString(Recupera.eventos, 0) +", ";
+--     query := query + IntegerToString(Recupera.wzero, 0) +",";
+--     query := query + IntegerToString(Recupera.wspan, 0) +", ";
+--     query := query + RealToString(Recupera.wval, 0, 10) +", ";
+--     query := query + RealToString(Recupera.factor, 0, 10) +", ";
+--     query := query + RealToString(Recupera.objetivo, 0, 10) +")";
+--     codeResult := DBExec(query, identifier);
+--     Logger("insert recupera:"+ syscodetostring(codeResult)+",ident:"+integertostring(identifier,0));
+--     Logger("insert recupera codtranspo:"+integertostring(Recupera.codTransporte,0));
+    
+--     if (codeResult = SysOk) then
+--         result:= GetRecupera;
+--     else
+--         result.HasError := BoolTrue;
+--         result.ErrorMessage := DBErrMsg;
+--         Logger("Recupera DBErrMsg:"+ DBErrMsg);
+    
+--     end if;
+--     DBFinalize(identifier);
+--     return result;
+-- end;
+
+
+-- function PutRecupera(Recupera: typRecupera) : typResponseRecupera;
+-- identifier : integer;
+-- result : typResponseRecupera;
+-- codeResult : SysCode; 
+-- query : string;
+-- begin
+--     query := query + "update Recupera set ";
+--     query := query + "ticket = " + IntegerToString(Recupera.ticket, 0) +", ";
+--     query := query + "codEmbar = '" + Recupera.codEmbarca +"', ";
+--     query := query + "codEspec = " + IntegerToString(Recupera.codEspecie, 0) +", ";
+--     query := query + "codUso = "+IntegerToString(Recupera.codUso, 0) +", ";
+--     query := query + "codTrans = "+ IntegerToString(Recupera.codTransporte, 0) +", ";
+--     query := query + "fInicio = "+ DTToString(Recupera.fecInicio) +",";
+--     query := query + "batch = "+ IntegerToString(Recupera.batch, 0) +", ";
+--     query := query + "acumula = "+ RealToString(Recupera.acumulado, 0, 10) +", ";
+--     query := query + "estado = " + IntegerToString(Recupera.estado, 0) +", ";
+--     query := query + "eventos = " + IntegerToString(Recupera.eventos, 0) +", ";
+--     query := query + "wzero = " + IntegerToString(Recupera.wzero, 0) +",";
+--     query := query + "wspan = " + IntegerToString(Recupera.wspan, 0) +", "; 
+--     query := query + "wval = " + RealToString(Recupera.wval, 0, 10) +", ";
+--     query := query + "factor = " + RealToString(Recupera.factor, 0, 10) +", ";
+--     query := query + "objetivo = " + RealToString(Recupera.objetivo, 0, 10);
+--     codeResult := DBExec(query, identifier);
+--     Logger("update recupera:"+ syscodetostring(codeResult)+",ident:"+integertostring(identifier,0));
+    
+--     if (codeResult = SysOk) then
+--         result:= GetRecupera;
+--     else
+--         result.HasError := BoolTrue;
+--         result.ErrorMessage := DBErrMsg;
+--         Logger("Recupera DBErrMsg:"+ DBErrMsg);
+    
+--     end if;
+--     DBFinalize(identifier);
+--     return result;
+-- end;
+
+-- function PutRecuperaEstado(estado : integer) : typResponseRecupera;
+-- identifier : integer;
+-- result : typResponseRecupera;
+-- codeResult : SysCode; 
+-- query : string;
+-- begin
+--     query := "update Recupera set Estado = "+ IntegerToString(estado, 0);
+--     codeResult := DBExec(query, identifier);
+    
+--     if (codeResult = SysOk) then
+--         result.HasError := BoolFalse;
+--     else
+--         result.HasError := BoolTrue;
+--         result.ErrorMessage := DBErrMsg; 
+--         Logger("Recupera put estado DBErrMsg:"+ DBErrMsg);
+--     end if;
+--     DBFinalize(identifier);
+--     return result;
+-- end;
+
+
+-- function PutRecuperaPeso(batch : integer; acumulado : real; estado : integer) : typResponseRecupera;
+-- identifier : integer;
+-- result : typResponseRecupera;
+-- codeResult : SysCode; 
+-- query : string;
+-- begin
+--     query := "update Recupera set ";
+--     query := query + "batch = "+ integertostring(batch, 0) +", ";
+--     query := query + "acumula = "+ realtostring(acumulado, 0, 8) +", ";
+--     query := query + "estado = "+ integertostring(estado, 0);
+--     codeResult := DBExec(query, identifier);
+    
+--     if (codeResult = SysOk) then
+--         result.HasError := BoolFalse;
+--     else
+--         result.HasError := BoolTrue;
+--         result.ErrorMessage := DBErrMsg; 
+--     end if;
+--     DBFinalize(identifier);
+--     return result;
+-- end;
+
+
+procedure CleanRecupera;
+begin
+    gbRecupera.ticket := 0;
+    gbRecupera.codEmbarca   := "";
+    gbRecupera.nomEmbarca   := "";
+    gbRecupera.codEspecie  := 0;
+    gbRecupera.nomEspecie  := "";
+    gbRecupera.codUso := 0;
+    gbRecupera.nomUso := "";
+    gbRecupera.codTransporte := 0;
+    gbRecupera.nomTransporte := "";
+    gbRecupera.incluyeTransporte := 0;
+    gbRecupera.fecInicio := systemtime;
+    gbRecupera.batch:= 0;
+    gbRecupera.acumulado:= 0;
+    gbRecupera.estado:= 0;
+    gbRecupera.eventos:= 0;
+    gbRecupera.wzero:= 0;
+    gbRecupera.wspan:= 0;
+    gbRecupera.wval:= 0;
+    gbRecupera.factor:= 0;
+    gbRecupera.objetivo:= 0;
+    gbRecupera.iniciado := BoolFalse;
+end;
+

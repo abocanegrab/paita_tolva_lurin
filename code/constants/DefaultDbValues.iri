@@ -1,0 +1,106 @@
+--Empresa
+function defBdEmpresa: typEmpresa;
+local : typEmpresa;
+begin
+    local.Razon:="Empresa de Prueba";
+    local.Direccion:="Direccion de Prueba";
+    local.RUC:="12345678901";
+    local.Telefono:="Telefono de Prueba";
+    local.EIP:="123456789";
+    local.NPL:="1234";
+    local.Ticket:= 0;
+    return local;
+end;
+
+--Balanza
+function defBdBalanza: typBalanza;
+local : typBalanza;
+begin
+    local.Nombre:="Tolva de Residuos";
+    local.Serie:="1000001";
+    local.Modelo:="1280";
+    local.Numero:=1;
+    local.Flujo:="100m3/hora";
+
+    return local;
+end;
+
+--Config
+function defDbConfig: typConfiguracion;
+local : typConfiguracion;
+begin
+    local.Objetivo:=1500;
+    local.Minimo:=20;
+    local.Maximo:=2000;
+    local.TEstabilidad:=1.5;
+    local.TReinicio:=1.2;
+    local.TError1:=0.5;
+    local.TError2:=0.5;
+
+    return local;
+end;
+
+--Embarcacion
+function defDbEmbarca: typEmbarcacion;
+local : typEmbarcacion;
+begin
+    local.Codigo:="99999";
+    local.Nombre:="Prueba";
+
+    return local;
+end;
+
+--Especie
+function defDbEspecie: typEspecie;
+local : typEspecie;
+begin
+    local.Codigo:=1;
+    local.Nombre:="Anchoveta";
+    local.Sap := "0";
+
+    return local;
+end;
+
+--Uso
+function defDbUso: typUso;
+local : typUso;
+begin
+    local.Codigo:=1;
+    local.Nombre:="Conserva";
+    local.Sap := "0";
+
+    return local;
+end;
+
+--Transporte
+function defDbTransporte: typTransporte;
+local : typTransporte;
+begin
+    local.Codigo:=1;
+    local.Nombre:="Embarcacion";
+    local.incluye:=0;
+
+    return local;
+end;
+
+--Calibration actual
+function defDbCalibra: typCalibracion;
+local : typCalibracion;
+lccd    : integer; --wzero
+lccw    : integer; --wspan
+wval    : real;    --wval
+factor  : real;
+begin
+    GetLCCW(1,lccd); --span
+    GetWVal(1,wval);
+    GetLCCD(1,lccw); --zero
+    factor:= (lccw-lccd)/wval;
+        
+    local.WZero:=lccd;
+    local.Wval:=wval;
+    local.Wspan:=lccw;
+    local.Factor:=factor;
+    local.FeCal:=Date$(SystemTime) + " - " + Time$(SystemTime);
+
+    return local;
+end;

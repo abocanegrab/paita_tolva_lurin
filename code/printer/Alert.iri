@@ -1,0 +1,65 @@
+function GenerateAlertObject(date: datetime; tipo: integer): typAlerta;
+alerta: typAlerta;
+begin
+    if gbProceso = Activo then
+        gbNumAlerta:= gbNumAlerta + 1;
+        alerta.Ticket:= gbRecupera.Ticket;
+        alerta.Orden:= gbNumAlerta;
+    else
+        alerta.Ticket:= 0;
+        alerta.Orden:= 0;
+    end if;
+    
+    alerta.Fecha:= date;
+    alerta.idTipoAlerta:= tipo; 
+    return alerta;
+end;
+
+procedure PrintEvent(tipo : integer);
+lFecha : datetime;
+alerta: typAlerta;
+evento :  string;
+begin
+    if (tipo = 1) then
+        evento := CONST_EVENT_1;
+    elsif (tipo = 2) then
+        evento := CONST_EVENT_2;
+    elsif (tipo = 3) then
+        evento := CONST_EVENT_3;
+    elsif (tipo = 4) then
+        evento := CONST_EVENT_4;
+    end if;
+
+    if gbProceso = Activo or gbProceso = Pausado then
+        lFecha:=SystemTime;
+        SendToUSBPrinterLn("----------------------------------");  
+        SendToUSBPrinterLn("EVENTO: " + evento);  
+        
+        if (tipo = 3) then
+        SendToUSBPrinterLn("Capturado         : " + IntegerToString(gbPesoCaptura,0)+" Kg");
+        SendToUSBPrinterLn("Control           : " + IntegerToString(gbConfig.Objetivo* 0.8, 0)+" Kg");
+        end if;
+
+        SendToUSBPrinterLn("Fecha             : " +Date$(lFecha));
+        SendToUSBPrinterLn("Hora              : " +Time$(lFecha));
+        SendToUSBPrinterLn("----------------------------------"); 
+        alerta:= GenerateAlertObject(lFecha, tipo);
+        PostAlerta(alerta);
+    end if;
+
+    DisplayAndClean(evento);
+end;
+
+procedure ShowPausaReanudaTicket(isPaused: BooleanType);                                  
+lFecha : datetime; 
+begin
+    lFecha:=SystemTime;
+    SendToUSBPrinterLn("=================================");
+    if (isPaused = BoolTrue) then
+        SendToUSBPrinterLn("**       PROCESO EN PAUSA      **");
+    else
+        SendToUSBPrinterLn("**      PROCESO REANUDADO      **");
+    end if; 
+    SendToUSBPrinterLn("HORA: "+Time$(lFecha) +" FECHA: "+Date$(lFecha));  --19:58    
+    SendToUSBPrinterLn("=================================");   
+end;      

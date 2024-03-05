@@ -1,0 +1,126 @@
+function GetUso(id: integer) : typResponseUso;
+identifier : integer;
+data : typUso;
+result : typResponseUso;
+codeResult : SysCode; 
+begin
+    codeResult := DBExec("Select * from Uso where Codigo = " + IntegerToString(id,0), identifier);
+    if (codeResult = SysOk) then
+        if (identifier > 0) then
+            DBColumnInt(identifier, 1, data.codigo);
+            DBColumnString(identifier, 2, data.nombre);
+            result.HasError := BoolFalse;
+            result.HasData := BoolTrue;
+            result.data := data;
+        else
+            result.HasError := BoolFalse;
+            result.HasData := BoolFalse;
+        end if;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+function ListUso : typResponseUsos;
+identifier : integer;
+data : typUsos;
+result : typResponseUsos;
+codeResult : SysCode; 
+index: integer:= 0;
+begin
+    codeResult := DBExec("Select * from Uso", identifier);
+    if (codeResult = SysOk) then
+        if (identifier > 0) then
+            while (codeResult = SysOk) 
+            loop
+                index:=index+1;
+                DBColumnInt(identifier, 1, data[index].codigo);
+                DBColumnString(identifier, 2, data[index].nombre);
+                codeResult:=DBNext(identifier);
+            end loop;
+
+            gbTotalUso:= index;
+            result.HasError := BoolFalse;
+            result.HasData := BoolTrue;
+            result.data := data;
+        else
+            result.HasError := BoolFalse;
+            result.HasData := BoolFalse;
+        end if;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+function PostUso(Uso: typUso) : typResponseUso;
+identifier : integer;
+result : typResponseUso;
+codeResult : SysCode; 
+query : string;
+begin
+    query := "insert into Uso (Codigo, Nombre) values (";
+    query := query + "'"+ integertostring(Uso.codigo,0) +"', ";
+    query := query + "'"+ Uso.Nombre +"') ";
+    codeResult := DBExec(query, identifier);
+    
+    if (codeResult = SysOk) then
+        result:= GetUso(Uso.codigo);
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+
+function PutUso(Uso: typUso) : typResponseUso;
+identifier : integer;
+result : typResponseUso;
+codeResult : SysCode; 
+query : string;
+begin
+    query := "update Uso set ";
+    query := query + "Nombre = '"+ Uso.Nombre +"'";
+    query := query + " where Codigo = "+ IntegerToString(Uso.codigo,0);
+    codeResult := DBExec(query, identifier);
+    Logger("put Uso:" + syscodetostring(codeResult) +"-ident:"+ integertostring(identifier, 0));
+    
+    if (codeResult = SysOk) then
+        result:= GetUso(Uso.codigo);
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+        Logger("error Uso:" + DBErrMsg);
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+function DeleteUso(Uso: typUso) : typResponseUso;
+identifier : integer;
+result : typResponseUso;
+codeResult : SysCode; 
+query : string;
+begin
+    query := "delete from Uso ";
+    query := query + " where Codigo = "+ IntegerToString(Uso.codigo,0);
+    codeResult := DBExec(query, identifier);
+    Logger("delete Uso:" + syscodetostring(codeResult) +"-ident:"+ integertostring(identifier, 0));
+    
+    if (codeResult = SysOk) then
+        result.HasError := BoolFalse;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+        Logger("error Uso:" + DBErrMsg);
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;

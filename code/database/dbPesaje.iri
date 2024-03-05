@@ -1,0 +1,244 @@
+function GetPesaje(id: integer) : typResponsePesaje;
+identifier : integer;
+data : typPesaje;
+result : typResponsePesaje;
+codeResult : SysCode;
+query : string; 
+begin
+    query := "Select t1.Ticket, t1.codEmbar, t2.Nombre, t1.codEspec, t3.Nombre, ";
+    query := query +"t1.codUso, t4.Nombre, t1.codTrans, t5.Nombre, t1.fechaIni, t1.batch, ";
+    query := query +"t1.acum, t1.fechaFin, t1.objetivo, t1.wzero, t1.wval, t1.wspan, ";
+    query := query +"t1.factor, t1.prove, t1.anio ";
+    query := query +" from Pesadas t1";
+    query := query +" left join Embarca t2 on t2.codigo = t1.codEmbar";
+    query := query +" left join Especie t3 on t3.codigo = t1.codEspec";
+    query := query +" left join Uso t4 on t4.codigo = t1.codUso";
+    query := query +" left join Transpor t5 on t5.codigo = t1.codTrans";
+    query := query +"where Ticket =";
+    codeResult := DBExec(query + IntegerToString(id, 0), identifier);
+    Logger("get pesa:"+ syscodetostring(codeResult)+",ident:"+integertostring(identifier,0));
+    if (codeResult = SysOk) then
+        if (identifier > 0) then
+            DBColumnInt(identifier, 1, data.Ticket);
+                DBColumnString(identifier, 2, data.CodEmbarca);
+                DBColumnstring(identifier, 3, data.Embarcacion);
+                DBColumnInt(identifier, 4, data.CodEspecie);
+                DBColumnstring(identifier, 5, data.Especie);
+                DBColumnInt(identifier, 6, data.CodUso);
+                DBColumnstring(identifier, 7, data.Uso);
+                DBColumnInt(identifier, 8, data.codTransporte);
+                DBColumnstring(identifier, 9, data.Transporte);
+                DBColumnDT(identifier, 10, data.FechaInicio);
+                DBColumnInt(identifier, 11, data.Batch);
+                DBColumnReal(identifier, 12, data.Acumulado);
+                DBColumnDT(identifier, 13, data.FechaFin);
+                DBColumnReal(identifier, 14, data.Objetivo);
+                DBColumnInt(identifier, 15, data.Wzero);
+                DBColumnReal(identifier, 16, data.Wval);
+                DBColumnInt(identifier, 17, data.Wspan);
+                DBColumnReal(identifier, 18, data.Factor);
+                DBColumnstring(identifier, 19, data.Proveedor);
+                DBColumnInt(identifier, 20, data.Anio);
+            result.HasError := BoolFalse;
+            result.HasData := BoolTrue;
+            result.data := data;
+        else
+            result.HasError := BoolFalse;
+            result.HasData := BoolFalse;
+        Logger("select pesa DBErrMsg:"+ DBErrMsg);
+        end if;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+function ListPesaje : typResponsePesajes;
+identifier : integer;
+data : typPesajes;
+result : typResponsePesajes;
+codeResult : SysCode; 
+index: integer:= 0;
+query : string;
+begin
+    query := "Select t1.Ticket, t1.codEmbar, t2.Nombre, t1.codEspec, t3.Nombre, ";
+    query := query +"t1.codUso, t4.Nombre, t1.codTrans, t5.Nombre, t1.fechaIni, t1.batch, ";
+    query := query +"t1.acum, t1.fechaFin, t1.objetivo, t1.wzero, t1.wval, t1.wspan, ";
+    query := query +"t1.factor, t1.prove, t1.anio, t5.incluye";
+    query := query +" from Pesadas t1";
+    query := query +" left join Embarca t2 on t2.codigo = t1.codEmbar";
+    query := query +" left join Especie t3 on t3.codigo = t1.codEspec";
+    query := query +" left join Uso t4 on t4.codigo = t1.codUso";
+    query := query +" left join Transpor t5 on t5.codigo = t1.codTrans";
+    codeResult := DBExec(query, identifier);
+    Logger("list pesa:"+ syscodetostring(codeResult)+",ident:"+integertostring(identifier,0));
+    if (codeResult = SysOk) then
+        if (identifier > 0) then
+            while (codeResult = SysOk) 
+            loop
+                index:=index+1;
+                Logger("loop index:" + integertostring(index, 0));
+                DBColumnInt(identifier, 1, data[index].Ticket);
+                DBColumnString(identifier, 2, data[index].CodEmbarca);
+                DBColumnstring(identifier, 3, data[index].Embarcacion);
+                DBColumnInt(identifier, 4, data[index].CodEspecie);
+                DBColumnstring(identifier, 5, data[index].Especie);
+                DBColumnInt(identifier, 6, data[index].CodUso);
+                DBColumnstring(identifier, 7, data[index].Uso);
+                DBColumnInt(identifier, 8, data[index].codTransporte);
+                DBColumnstring(identifier, 9, data[index].Transporte);
+                DBColumnDT(identifier, 10, data[index].FechaInicio);
+                DBColumnInt(identifier, 11, data[index].Batch);
+                DBColumnReal(identifier, 12, data[index].Acumulado);
+                DBColumnDT(identifier, 13, data[index].FechaFin);
+                DBColumnReal(identifier, 14, data[index].Objetivo);
+                DBColumnInt(identifier, 15, data[index].Wzero);
+                DBColumnReal(identifier, 16, data[index].Wval);
+                DBColumnInt(identifier, 17, data[index].Wspan);
+                DBColumnReal(identifier, 18, data[index].Factor);
+                DBColumnstring(identifier, 19, data[index].Proveedor);
+                DBColumnInt(identifier, 20, data[index].Anio);
+                DBColumnInt(identifier, 21, data[index].incluyeTransporte);
+                codeResult:=DBNext(identifier);
+                Logger("list pesa next:"+ syscodetostring(codeResult) + "- index: " + integertostring(index, 0));
+            end loop;
+            
+            gbTotalPesaje:= index;
+            result.HasError := BoolFalse;
+            result.HasData := BoolTrue;
+            result.data := data;
+        else
+            result.HasError := BoolFalse;
+            result.HasData := BoolFalse;
+            Logger("list emb: no Data");
+        end if;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+        Logger("select embDBErrMsg:"+ DBErrMsg);
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+procedure PrintPesajeCustom(val: integer);
+identifier : integer;
+data : typPesaje;
+codeResult : SysCode; 
+index: integer:= 0;
+query : string;
+begin
+    query := "Select t1.Ticket, t1.codEmbar, t2.Nombre, t1.codEspec, t3.Nombre, ";
+    query := query +"t1.codUso, t4.Nombre, t1.codTrans, t5.Nombre, t1.fechaIni, t1.batch, ";
+    query := query +"t1.acum, t1.fechaFin, t1.objetivo, t1.wzero, t1.wval, t1.wspan, ";
+    query := query +"t1.factor, t1.prove, t1.anio, t5.incluye ";
+    query := query +" from Pesadas t1";
+    query := query +" left join Embarca t2 on t2.codigo = t1.codEmbar";
+    query := query +" left join Especie t3 on t3.codigo = t1.codEspec";
+    query := query +" left join Uso t4 on t4.codigo = t1.codUso";
+    query := query +" left join Transpor t5 on t5.codigo = t1.codTrans";
+    query := query +" order by t1.Ticket";
+    
+    if ( val > 0) then
+        query := query +"  desc limit " + IntegerToString(val, 0);
+    end if;
+
+    codeResult := DBExec(query, identifier);
+    Logger("list pesa:"+ syscodetostring(codeResult)+",ident:"+integertostring(identifier,0));
+    if (codeResult = SysOk) then
+        if (identifier > 0) then
+            
+            if ( val > 1) then
+                PrinterHeaderMultiTicket;
+            end if;
+
+            while (codeResult = SysOk) 
+            loop
+                index:=index+1;
+                Logger("loop index:" + integertostring(index, 0));
+                DBColumnInt(identifier, 1, data.Ticket);
+                DBColumnString(identifier, 2, data.CodEmbarca);
+                DBColumnstring(identifier, 3, data.Embarcacion);
+                DBColumnInt(identifier, 4, data.CodEspecie);
+                DBColumnstring(identifier, 5, data.Especie);
+                DBColumnInt(identifier, 6, data.CodUso);
+                DBColumnstring(identifier, 7, data.Uso);
+                DBColumnInt(identifier, 8, data.codTransporte);
+                DBColumnstring(identifier, 9, data.Transporte);
+                DBColumnDT(identifier, 10, data.FechaInicio);
+                DBColumnInt(identifier, 11, data.Batch);
+                DBColumnReal(identifier, 12, data.Acumulado);
+                DBColumnDT(identifier, 13, data.FechaFin);
+                DBColumnReal(identifier, 14, data.Objetivo);
+                DBColumnInt(identifier, 15, data.Wzero);
+                DBColumnReal(identifier, 16, data.Wval);
+                DBColumnInt(identifier, 17, data.Wspan);
+                DBColumnReal(identifier, 18, data.Factor);
+                DBColumnstring(identifier, 19, data.Proveedor);
+                DBColumnInt(identifier, 20, data.Anio);
+                DBColumnInt(identifier, 21, data.incluyeTransporte);
+
+                if (val = 1) then
+                    Logger("una copia");
+                    PrinterCopyHeader(data);
+                    PrintDbDetalle(data.Ticket);
+                    PrinterCopyFooter(data);
+                else
+                    Logger("multiple copia");
+                    PrinterSummary(data);
+                    ProgramDelay(150);
+                end if;
+
+                codeResult:=DBNext(identifier);
+                Logger("list pesa next:"+ syscodetostring(codeResult) + "- index: " + integertostring(index, 0));
+            end loop;
+        else
+            Logger("list emb: no Data");
+        end if;
+    else
+        Logger("select embDBErrMsg:"+ DBErrMsg);
+    end if;
+    DBFinalize(identifier);
+end;
+
+function PostPesaje(Pesaje: typPesaje) : typResponsePesaje;
+identifier : integer;
+result : typResponsePesaje;
+codeResult : SysCode; 
+query : string;
+begin
+    query := "Insert into Pesadas (Ticket, codEmbar, codEspec,";
+    query := query +"codUso, codTrans, fechaIni, batch, ";
+    query := query +"acum, fechaFin, objetivo, wzero, wval, wspan, ";
+    query := query +"factor, prove, anio) values (";
+    query := query + IntegerToString(Pesaje.Ticket,0) +", ";
+    query := query + "'"+ Pesaje.CodEmbarca + "', ";
+    query := query + IntegerToString(Pesaje.CodEspecie, 0) +", ";
+    query := query + IntegerToString(Pesaje.CodUso, 0) +", ";
+    query := query + IntegerToString(Pesaje.codTransporte, 0) +", ";
+    query := query + DTToString(Pesaje.FechaInicio) +", ";
+    query := query + IntegerToString(Pesaje.Batch, 0) +", ";
+    query := query + RealToString(Pesaje.Acumulado, 0, 10) +", ";
+    query := query + DTToString(Pesaje.FechaFin) +", ";
+    query := query + RealToString(Pesaje.Objetivo, 0, 10) +", ";
+    query := query + IntegerToString(Pesaje.Wzero, 0) +", ";
+    query := query + RealToString(Pesaje.Wval, 0, 10) +", ";
+    query := query + IntegerToString(Pesaje.Wspan, 0) +", ";
+    query := query + RealToString(Pesaje.Factor, 0, 10) +", ";
+    query := query + "'" + Pesaje.Proveedor + "', ";
+    query := query + IntegerTostring(Pesaje.Anio, 0) + ")";
+    codeResult := DBExec(query, identifier);
+    Logger("get pesa:"+ syscodetostring(codeResult)+",ident:"+integertostring(identifier,0));
+    
+    if (codeResult = SysOk) then
+        result:= GetPesaje(Pesaje.ticket);
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+        Logger("select pes DBErrMsg:"+ DBErrMsg);
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;

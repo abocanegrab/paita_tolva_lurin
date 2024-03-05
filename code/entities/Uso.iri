@@ -1,0 +1,22 @@
+type typUso is record 
+   codigo : integer;
+   nombre  : string;
+   sap : string;
+end record;
+
+type typUsos is array [100] of typUso;
+
+type typResponseUso is record
+    HasError: BooleanType;
+    HasData: BooleanType;
+    ErrorMessage: string;
+    data: typUso;
+end record;
+
+
+type typResponseUsos is record
+    HasError: BooleanType;
+    HasData: BooleanType;
+    ErrorMessage: string;
+    data: typUsos;
+end record;

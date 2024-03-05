@@ -1,0 +1,85 @@
+procedure CrudEmpresa(val : string);
+response: typResponseEmpresa;
+begin
+    if gbActionEmpresa = InitEmpresa then
+        SetEntry(gbEmpresa.Razon);
+        gbLastPrompUsed:=CONST_CRUD_EMPR_P_RAZO;
+        PromptUser(gbLastPrompUsed);
+        gbActionEmpresa := RazonEmpresa; 
+    elsif gbActionEmpresa = RazonEmpresa then
+        if IsStringNotEmpty(val) = BoolTrue then 
+            tmpEmpresa.Razon := val;
+            SetEntry(gbEmpresa.Direccion);
+            gbLastPrompUsed:=CONST_CRUD_EMPR_P_DIRE;
+            PromptUser(gbLastPrompUsed);  
+            gbActionEmpresa := DireccionEmpresa;
+        else
+            PromptUser(CONST_DATA_ERROR+gbLastPrompUsed);    
+        end if;
+    
+    elsif gbActionEmpresa = DireccionEmpresa then 
+        if IsStringNotEmpty(val) = BoolTrue then 
+            tmpEmpresa.Direccion := val; 
+            gbLastPrompUsed:=CONST_CRUD_EMPR_P_RUC_;
+            SetEntry(gbEmpresa.RUC);
+            PromptUser(gbLastPrompUsed);  
+            gbActionEmpresa := RUCEmpresa; 
+        else
+            PromptUser(CONST_DATA_ERROR+gbLastPrompUsed);  
+        end if;
+    elsif gbActionEmpresa = RUCEmpresa then
+        if IsStringNotEmpty(val) = BoolTrue then 
+            tmpEmpresa.RUC := val;
+            gbLastPrompUsed:=CONST_CRUD_EMPR_P_TELE;
+            SetEntry(gbEmpresa.Telefono);
+            PromptUser(gbLastPrompUsed);  
+            gbActionEmpresa := TelefonoEmpresa;
+        else
+            PromptUser(CONST_DATA_ERROR+gbLastPrompUsed);  
+        end if;
+    
+    elsif gbActionEmpresa = TelefonoEmpresa then
+        if IsStringNotEmpty(val) = BoolTrue then 
+            tmpEmpresa.Telefono := val;
+            SetEntry(gbEmpresa.EIP);
+            gbLastPrompUsed:=CONST_CRUD_EMPR_P_EIP_;
+            PromptUser(gbLastPrompUsed);  
+            gbActionEmpresa := EIPEmpresa; 
+        else
+            PromptUser(CONST_DATA_ERROR+gbLastPrompUsed);  
+        end if;
+    elsif gbActionEmpresa = EIPEmpresa then
+        if IsStringNotEmpty(val) = BoolTrue then 
+            tmpEmpresa.EIP := val;
+            SetEntry(gbEmpresa.NPL);
+            gbLastPrompUsed:=CONST_CRUD_EMPR_P_NPL_;
+            PromptUser(gbLastPrompUsed);  
+            gbActionEmpresa := NPLEmpresa;
+        else
+            PromptUser(CONST_DATA_ERROR+gbLastPrompUsed);  
+        end if;
+    elsif gbActionEmpresa = NPLEmpresa then
+        if IsStringNotEmpty(val) = BoolTrue then 
+            tmpEmpresa.NPL := val;
+            response:= PutEmpresa(tmpEmpresa);
+            gbEmpresa:= response.Data;
+            DisplayEmpresa;
+        else
+            PromptUser(CONST_DATA_ERROR+gbLastPrompUsed);   
+        end if;
+    elsif gbActionEmpresa = InitTicketEmpresa then
+        gbLastPrompUsed:=CONST_CRUD_EMPR_P_TICK;
+        SetEntry(IntegerToString(gbEmpresa.Ticket, 0));
+        PromptNumeric(gbLastPrompUsed);
+        gbActionEmpresa := TicketEmpresa; 
+    elsif gbActionEmpresa = TicketEmpresa then
+        if IsValidInt(val) = BoolTrue then 
+            tmpEmpresa.Ticket := StringToInteger(val);
+            response:= PutTicketEmpresa(tmpEmpresa);
+            gbEmpresa:= response.Data;
+            DisplayEmpresa;
+        else
+            PromptUser(CONST_DATA_ERROR+gbLastPrompUsed);    
+        end if;
+    end if;
+end;

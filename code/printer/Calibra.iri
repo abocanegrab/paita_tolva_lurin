@@ -1,0 +1,22 @@
+procedure PrintCalibracion;
+response : typResponseCalibracion;
+dbCal : typCalibracion;
+begin
+    response:= GetCalibracion;
+    if (response.HasData = BoolTrue and response.HasError = BoolFalse) then
+        dbCal := response.data;
+        SendToUSBPrinterLn("====================================");
+        SendToUSBPrinterLn("        DATOS DE CALIBRACION        ");
+        SendToUSBPrinterLn("Fecha    : " + dbCal.FeCal );
+        SendToUSBPrinterLn("-----------------------------");  
+        SendToUSBPrinterLn("WZERO    : "+ RealToString(dbCal.WZero,0,0));
+        SendToUSBPrinterLn("WSPAN    : "+ RealToString(dbCal.WSpan,0,0)); --WZERO.
+        SendToUSBPrinterLn("WVAL     : "+ RealToString(dbCal.WVal,0,2)); --WZERO.
+        SendToUSBPrinterLn("FACTOR   : "+ RealToString(dbCal.Factor,0,2)); --WZERO.
+        SendToUSBPrinterLn("-----------------------------");
+        SendToUSBPrinterLn("");
+        SendToUSBPrinterLn("=================================");
+    else
+        DisplayAndClean("No se pudo recuperar la calibracion");
+    end if;
+end;

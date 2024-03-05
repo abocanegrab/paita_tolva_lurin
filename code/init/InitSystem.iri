@@ -1,0 +1,6 @@
+procedure InitSystem;
+begin
+    FillFirstData;
+    CheckCalibracion;
+    CheckRestart; 
+end;  

@@ -1,0 +1,7 @@
+BusyShow;
+DeshabilitarSP(1);
+DeshabilitarSP(2);
+gbLimpieza := Inactivo; 
+gbProceso := Inactivo;
+InitSystem;
+ClosePrompt;

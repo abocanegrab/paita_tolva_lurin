@@ -1,0 +1,16 @@
+type typConfiguracion is record 
+   Objetivo : real;
+   Minimo  : real;
+   Maximo  : real;
+   TEstabilidad : real;
+   TReinicio : real;
+   TError1 : real;
+   TError2 : real;
+end record;
+
+type typResponseConfiguracion is record
+    HasError: BooleanType;
+    HasData: BooleanType;
+    ErrorMessage: string;
+    data: typConfiguracion;
+end record;

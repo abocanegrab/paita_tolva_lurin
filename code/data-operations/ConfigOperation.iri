@@ -1,0 +1,116 @@
+function CambiaValorSP (sp :integer; valor: real ): syscode;
+retorna : syscode;   
+bs      : batchstatus;
+begin             
+    retorna:=SetSPValue(sp, valor);  
+    return retorna;
+end;
+
+procedure CrudConfig(val : string);
+response: typResponseConfiguracion;
+begin
+    if gbActionConfig = InitPObjConfig then
+        SetEntry(RealToString(gbConfig.Objetivo, 0, 0));
+        PromptNumeric(CONST_CRUD_CONF_P_PEOB);
+        gbLastPrompUsed:=CONST_CRUD_CONF_P_PEOB;
+        gbActionConfig := PesoObjConfig; 
+    elsif gbActionConfig = InitPesosConfig then
+        SetEntry(RealToString(gbConfig.Maximo, 0, 0));
+        PromptNumeric(CONST_CRUD_CONF_P_MAXI);  
+        gbLastPrompUsed:=CONST_CRUD_CONF_P_MAXI;
+        gbActionConfig := CapMaxConfig; 
+    elsif gbActionConfig = InitTiemposConfig then
+        SetEntry(RealToString(gbConfig.TEstabilidad, 0, 2));
+        PromptNumeric(CONST_CRUD_CONF_P_TEST);  
+        gbLastPrompUsed:=CONST_CRUD_CONF_P_TEST;
+        gbActionConfig := EstabilConfig; 
+    elsif gbActionConfig = InitErrorConfig then
+        SetEntry(RealToString(gbConfig.TError1, 0, 2));
+        PromptNumeric(CONST_CRUD_CONF_P_ERR1);  
+        gbLastPrompUsed:=CONST_CRUD_CONF_P_ERR1;
+        gbActionConfig := Error1Config; 
+    elsif gbActionConfig = PesoObjConfig then
+        if IsStringNotEmpty(val) = BoolTrue then 
+            tmpConfig.Objetivo := StringToReal(val);
+
+            if(CambiaValorSP(1,tmpConfig.Objetivo)=SysOk)then
+                response:= PutConfigObjetivo(tmpConfig);
+                gbConfig:= response.Data;
+                DisplayConfig;
+            else 
+                DisplayAndClean("No se pudo actualizar");
+            end if;
+        else
+            PromptUser(CONST_DATA_ERROR+gbLastPrompUsed);    
+        end if;
+    
+    elsif gbActionConfig = CapMaxConfig then 
+        if IsStringNotEmpty(val) = BoolTrue then 
+            tmpConfig.Maximo := StringToReal(val); 
+            SetEntry(RealToString(gbConfig.Minimo, 0, 0));
+            PromptNumeric(CONST_CRUD_CONF_P_MINI);  
+            gbLastPrompUsed:=CONST_CRUD_CONF_P_MINI;
+            gbActionConfig := PesoMinConfig; 
+        else
+            PromptUser(CONST_DATA_ERROR+gbLastPrompUsed);  
+        end if;
+    elsif gbActionConfig = PesoMinConfig then
+        if IsStringNotEmpty(val) = BoolTrue then 
+
+            response:= PutConfigPesoMax(tmpConfig);
+            gbConfig:= response.Data;
+            
+            tmpConfig.Minimo := StringToReal(val);
+            if(CambiaValorSP(2,tmpConfig.Minimo)=SysOk)then
+                response:= PutConfigPesoMin(tmpConfig);
+                gbConfig:= response.Data;
+            else 
+                DisplayAndClean("No se pudo actualizar peso minimo");
+            end if;
+
+            DisplayConfig;
+        else
+            PromptUser(CONST_DATA_ERROR+gbLastPrompUsed);  
+        end if;
+    
+    elsif gbActionConfig = EstabilConfig then
+        if IsStringNotEmpty(val) = BoolTrue then 
+            tmpConfig.TEstabilidad := StringToReal(val);
+            SetEntry(RealToString(gbConfig.TReinicio, 0, 2));
+            PromptNumeric(CONST_CRUD_CONF_P_TREI);  
+            gbLastPrompUsed:=CONST_CRUD_CONF_P_TREI;
+            gbActionConfig := ReinConfig; 
+        else
+            PromptUser(CONST_DATA_ERROR+gbLastPrompUsed);  
+        end if;
+    elsif gbActionConfig = ReinConfig then
+        if IsStringNotEmpty(val) = BoolTrue then
+            tmpConfig.TReinicio := StringToReal(val);
+            response:= PutConfigTiempos(tmpConfig);
+            gbConfig:= response.Data;
+            DisplayConfig;
+        else
+            PromptNumeric(CONST_DATA_ERROR+gbLastPrompUsed);  
+        end if;
+    elsif gbActionConfig = Error1Config then
+        if IsStringNotEmpty(val) = BoolTrue then 
+            tmpConfig.TError1 := StringToReal(val);
+            SetEntry(RealToString(gbConfig.TError2, 0, 2));
+            PromptNumeric(CONST_CRUD_CONF_P_ERR2);  
+            gbLastPrompUsed:=CONST_CRUD_CONF_P_ERR2;
+            gbActionConfig := Error2Config; 
+        else
+            PromptUser(CONST_DATA_ERROR+gbLastPrompUsed);  
+        end if;
+    elsif gbActionConfig = Error2Config then
+        if IsStringNotEmpty(val) = BoolTrue then 
+            tmpConfig.TError2 := StringToReal(val);
+            response:= PutConfigErrores(tmpConfig);
+            gbConfig:= response.Data;
+            DisplayConfig;
+        else
+            PromptUser(CONST_DATA_ERROR+gbLastPrompUsed);   
+        end if;
+    
+    end if;
+end;

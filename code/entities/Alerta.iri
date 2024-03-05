@@ -1,0 +1,25 @@
+type typAlerta is record 
+   Ticket : integer;
+   Orden   : integer;
+   Fecha : datetime;
+   idTipoAlerta  : integer;
+   TipoAlerta : string;
+   Cantidad: integer;
+end record;
+
+type typAlertas is array[10] of typAlerta;
+
+type typResponseAlerta is record
+    HasError: BooleanType;
+    HasData: BooleanType;
+    ErrorMessage: string;
+    data: typAlerta;
+end record;
+
+type typResponseAlertas is record
+    HasError: BooleanType;
+    HasData: BooleanType;
+    ErrorMessage: string;
+    data: typAlertas;
+    Count: integer;
+end record;

@@ -1,0 +1,41 @@
+gbEmpresa   : typEmpresa;
+gbConfig    : typConfiguracion;
+gbBalanza   : typBalanza; 
+gbLimpieza : enumEstado; 
+gbProceso : enumEstado;
+gbRecupera : stored typRecupera;
+gbTemporal : stored typTemporal;
+gbListEmbarca : typEmbarcaciones;
+gbTotalEmbarca : integer;
+gbListEspecie : typEspecies;
+gbTotalEspecie : integer;
+gbListUso : typUsos;
+gbTotalUso : integer;
+gbListTransporte : typTransportes;
+gbTotalTransporte : integer;
+gbPosCrud : integer;
+
+gbListPesaje : typPesajes;
+gbTotalPesaje : integer;
+
+gbActionCrud : enumCrudActions;
+gbTypeCrud : enumCrudType;
+gbActionConfig : enumConfigActions;
+gbLastPrompUsed : string;
+gbScreenActive : enumScreen;
+gbActionEmpresa : enumEmpresaActions;
+gbActionBalanza : enumBalanzaActions;
+
+gbPesoCaptura : real;
+gbFinal : integer;
+gbSPActual: integer;
+gbStatusIntNoAut: integer;
+gbStatusCompAb: integer;
+gbNumAlerta: integer;
+
+gbActionProceso : enumProcesoActions;
+gbButtonProceso : enumButtonProcesoActions;
+gbActionLimpia : enumLimpiaTolvaActions;
+gbCalibraProceso : enumCalibracionActions;
+gbAsociaProceso : enumAsociaEmbarcaActions;
+gbActionPrinter : enumPrinterActions;

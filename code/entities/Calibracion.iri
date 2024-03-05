@@ -1,0 +1,14 @@
+type typCalibracion is record 
+   Wzero : integer;
+   Wval  : real;
+   Wspan  : integer;
+   Factor  : real;
+   FeCal : string;
+end record;
+
+type typResponseCalibracion is record
+    HasError: BooleanType;
+    HasData: BooleanType;
+    ErrorMessage: string;
+    data: typCalibracion;
+end record;

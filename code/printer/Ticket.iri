@@ -1,0 +1,204 @@
+procedure PrintDetalle(lFecha : datetime; currentCal: typCalibracion);
+begin
+   SendToUSBPrinter(IntegerToString(gbRecupera.batch,4)+Space$(1)); 
+   SendToUSBPrinter(IntegerToString(gbPesoCaptura,6)+Space$(2));
+   SendToUSBPrinter(Redondea(gbRecupera.acumulado)+Space$(2));
+   SendToUSBPrinter(Time$(lFecha));  
+   SendToUSBPrinterLn(RealToString(currentCal.Factor,8,2));   
+end;
+
+procedure PrintTest;                          
+lFecha : datetime;
+begin
+    lFecha:=SystemTime;
+    SendToUSBPrinterLn("************      TEST      ************");  
+    SendToUSBPrinterLn("****************************************");  
+    SendToUSBPrinterLn(gbEmpresa.Razon);  
+    SendToUSBPrinterLn(gbEmpresa.Direccion);  
+    SendToUSBPrinterLn("RUC : "+ gbEmpresa.RUC);      
+    SendToUSBPrinterLn("Tlf.: "+ gbEmpresa.Telefono);  
+    SendToUSBPrinterLn(" ");
+    SendToUSBPrinterLn("Nro. TOLVA      : "+IntegerToString(gbBalanza.Numero,0));   
+    SendToUSBPrinterLn("CAPACIDAD       : "+ IntegerToString(gbConfig.Maximo,0)+" Kg");    
+    SendToUSBPrinterLn("MARCA           : RICE LAKE");
+    SendToUSBPrinterLn("                  WEIGHING SYSTEMS");                               
+    SendToUSBPrinterLn("SERIE BALANZA   : "+ Left$(gbBalanza.serie + Space$(11), 11));         
+    SendToUSBPrinterLn("MODELO          : "+ gbBalanza.Modelo);                             
+    SendToUSBPrinterLn("EMBARCACION     : PRUEBA");                             
+    SendToUSBPrinterLn("MATRICULA       : 99999");                           
+    SendToUSBPrinterLn("FECHA DE INICIO : "+Date$(lFecha));                     
+    SendToUSBPrinterLn("HORA DE INICIO  : "+Time$(lFecha));                   
+    SendToUSBPrinterLn("PESO POR BATCH  : "+ RealToString(gbConfig.Objetivo, 0, 2)+"kg.");
+    SendToUSBPrinterLn("**********FIN TICKET DE PRUEBA**********");                                        
+    SendToUSBPrinterLn("");
+    SendToUSBPrinterLn("");  
+    SendToUSBPrinterLn(""); 
+    SendToUSBPrinterLn("");
+    SendToUSBPrinterLn("");          
+    SendToUSBPrinterLn("");   
+    SendToUSBPrinterLn(Chr$(27)+"¡");   
+    SendToUSBPrinterLn(Chr$(27)+"!"); 
+    SendToUSBPrinterLn(Chr$(27)+Chr$(105));
+end;
+
+procedure PrintHeader;
+currentCal: typCalibracion;
+begin
+    currentCal:= defDbCalibra;
+    SendToUSBPrinterLn(gbEmpresa.Razon);  
+    SendToUSBPrinterLn(gbEmpresa.Direccion);  
+    SendToUSBPrinterLn("RUC : "+ gbEmpresa.RUC);      
+    SendToUSBPrinterLn("Tlf.: "+ gbEmpresa.Telefono);     
+    SendToUSBPrinterLn(" ");
+    SendToUSBPrinterLn("Nro. TOLVA      : "+IntegerToString(gbBalanza.Numero,0));   
+    SendToUSBPrinterLn("CAPACIDAD       : "+ IntegerToString(gbConfig.Maximo,0)+" Kg");   
+    SendToUSBPrinterLn("MARCA           : RICE LAKE");
+    SendToUSBPrinterLn("                  WEIGHING SYSTEMS");                                   
+    SendToUSBPrinterLn("SERIE BALANZA   : "+ Left$(gbBalanza.serie + Space$(11), 11));       
+    SendToUSBPrinterLn("MODELO          : "+ gbBalanza.Modelo);                                        
+    SendToUSBPrinterLn("REPORTE RECEP.  : "+ IntegerToString(gbRecupera.ticket, 0) + "-" + IntegerToString(gbRecupera.Anio, 0));
+    SendToUSBPrinterLn("TIPO TRANSPORTE : "+ gbRecupera.nomTransporte);  
+    if (gbRecupera.incluyeTransporte = 1) then
+    SendToUSBPrinterLn("PLACA VEHICLAR  : "+ gbRecupera.codEmbarca);                           
+    else
+    SendToUSBPrinterLn("EMBARCACION     : "+ Left$(gbRecupera.nomEmbarca,20));                             
+    SendToUSBPrinterLn("MATRICULA       : "+ gbRecupera.codEmbarca);                           
+    end if;
+    SendToUSBPrinterLn("ESPECIE         : "+ gbRecupera.nomEspecie);  
+    SendToUSBPrinterLn("PROVEEDOR       : "+ gbRecupera.Proveedor);                        
+    SendToUSBPrinterLn("TIPO DE USO     : "+ gbRecupera.nomUso);               
+    SendToUSBPrinterLn("FECHA DE INICIO : "+ Date$(gbRecupera.fecInicio));                      
+    SendToUSBPrinterLn("HORA DE INICIO  : "+ Time$(gbRecupera.fecInicio));             
+    SendToUSBPrinterLn("PESO POR BATCH  : "+ RealToString(gbConfig.Objetivo, 0, 2)+"kg.");
+    SendToUSBPrinterLn("COEF. WZERO     : "+ RealToString(currentCal.WZero, 0, 0));
+    SendToUSBPrinterLn("COEF. WSPAN     : "+ RealToString(currentCal.Wspan, 0, 0));
+    SendToUSBPrinterLn("COEF. WVAL      : "+ RealToString(currentCal.Wval, 0, 2));
+    SendToUSBPrinterLn("COEF. FACTOR    : "+ RealToString(currentCal.Factor, 0, 2));
+    SendToUSBPrinterLn("========================================");                                           
+    SendToUSBPrinterLn("NRO  PESO BATCH  ACUMUL  HORA    FACTOR ");  
+    SendToUSBPrinterLn("========================================");
+end;
+
+
+procedure ImprimeDetalles(val : integer);
+acumulado : real;
+response: typResponseDetalles;
+i: integer;
+begin
+    acumulado := 0;
+    response := ListDetalle(val);
+    if (response.HasError = BoolFalse) then
+        if (response.HasData = BoolTrue) then
+            for i := 1 to response.Count
+            loop
+                acumulado:= acumulado + response.Data[i].Peso;
+                SendToUSBPrinter(IntegerToString(response.data[i].Batch,4)+Space$(2)); 
+                SendToUSBPrinter(IntegerToString(response.data[i].Peso,6)+Space$(2));
+                SendToUSBPrinter(Redondea(acumulado)+Space$(2));
+                SendToUSBPrinterLn(Time$(response.data[i].fecha)+Space$(2));
+            end loop;
+        else
+            SendToUSBPrinterLn("No hay datos registrados");
+        end if;
+    end if;
+end;
+
+procedure ImprimeErrores(val : integer);
+i: integer;
+response: typResponseAlertas;
+begin
+    response := ListAlertaGroupByTipo(val);
+    if (response.HasError = BoolFalse) then
+        SendToUSBPrinterLn("========================================");                                        
+        SendToUSBPrinterLn("EVENTO                       OCURRENCIAS");                                      
+        SendToUSBPrinterLn("========================================");
+        if (response.HasData = BoolTrue) then
+            for i := 1 to response.Count
+            loop
+               SendToUSBPrinterLn(Mid$(response.data[i].TipoAlerta+Space$(33),1,33) + IntegerToString(response.data[i].Cantidad,3));
+            end loop;
+        else
+        SendToUSBPrinterLn("-------        SIN EVENTOS       -------");
+        end if;
+    end if;
+    SendToUSBPrinterLn("");
+    SendToUSBPrinterLn("");  
+end;
+
+
+procedure ImprimeEmbarcaciones(val : integer);
+i: integer;
+response: typResponseTicketEmbarcas;
+begin
+    response := ListTicketEmbarca(val);
+    SendToUSBPrinterLn("========================================");                                        
+    SendToUSBPrinterLn("MATRICULA                    EMBARCACION");                                      
+    SendToUSBPrinterLn("========================================");
+    if (response.HasError = BoolFalse) then
+        if (response.HasData = BoolTrue) then
+            for i := 1 to response.Count
+            loop
+               SendToUSBPrinterLn(response.data[i].codEmbar+ "   " + response.data[i].Embarcacion);
+            end loop;
+        else
+            SendToUSBPrinterLn("-------     SIN EMBARCACIONES    -------");
+        end if;
+    end if;
+
+    SendToUSBPrinterLn("");
+    SendToUSBPrinterLn("");  
+    SendToUSBPrinterLn(""); 
+    SendToUSBPrinterLn("");
+    SendToUSBPrinterLn("");          
+    SendToUSBPrinterLn("");   
+    SendToUSBPrinterLn(Chr$(27)+"¡");   
+    SendToUSBPrinterLn(Chr$(27)+"!"); 
+    SendToUSBPrinterLn(Chr$(27)+Chr$(105));
+end;
+
+procedure PrintFooter;
+currentCal: typCalibracion;                      
+lFecha : datetime;
+begin                                              
+    lFecha:=SystemTime;  
+    currentCal:= defDbCalibra;
+    SendToUSBPrinterLn("========================================");  
+    SendToUSBPrinterLn("TOTAL RECIBIDO  : "+Redondea(gbRecupera.acumulado)+" Tn.");
+    SendToUSBPrinterLn("BATCH RECIBIDOS : "+IntegerToString(gbRecupera.batch,0));
+    SendToUSBPrinterLn("REPORTE RECEP.  : "+ IntegerToString(gbRecupera.ticket,0) + "-" + IntegerToString(gbRecupera.Anio, 0));
+    SendToUSBPrinterLn("TIPO TRANSPORTE : "+ gbRecupera.nomTransporte);  
+    if (gbRecupera.incluyeTransporte = 1) then
+    SendToUSBPrinterLn("PLACA VEHICLAR  : "+ gbRecupera.codEmbarca);                           
+    else
+    SendToUSBPrinterLn("EMBARCACION     : "+ gbRecupera.nomEmbarca);                             
+    SendToUSBPrinterLn("MATRICULA       : "+ gbRecupera.codEmbarca);                           
+    end if;
+    SendToUSBPrinterLn("FECHA DE TERMINO: "+ Date$(lFecha));
+    SendToUSBPrinterLn("HORA DE TERMINO : "+ Time$(lFecha));
+    SendToUSBPrinterLn("COEF. WZERO     : "+ RealToString(currentCal.WZero, 0, 0));
+    SendToUSBPrinterLn("COEF. WSPAN     : "+ RealToString(currentCal.Wspan, 0, 0));
+    SendToUSBPrinterLn("COEF. WVAL      : "+ RealToString(currentCal.Wval, 0, 2));
+    SendToUSBPrinterLn("COEF. FACTOR    : "+ RealToString(currentCal.Factor, 0, 2));
+    SendToUSBPrinterLn("");
+    SendToUSBPrinterLn("");
+    ImprimeErrores(gbRecupera.ticket);   
+    
+    SendToUSBPrinterLn("");
+    SendToUSBPrinterLn("");
+    SendToUSBPrinterLn("");
+
+    if (gbRecupera.incluyeTransporte = 1) then
+        ImprimeEmbarcaciones(gbRecupera.ticket);
+    end if;
+    
+    SendToUSBPrinterLn(""); 
+    SendToUSBPrinterLn("");
+    SendToUSBPrinterLn("");          
+    SendToUSBPrinterLn("");   
+    SendToUSBPrinterLn(Chr$(27)+"¡");   
+    SendToUSBPrinterLn(Chr$(27)+"!"); 
+    SendToUSBPrinterLn(Chr$(27)+Chr$(105));
+end;
+
+
+

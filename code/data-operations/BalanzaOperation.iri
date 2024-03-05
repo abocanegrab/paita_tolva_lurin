@@ -1,0 +1,61 @@
+procedure CrudBalanza(val : string);
+response: typResponseBalanza;
+begin
+    if gbActionBalanza = InitBalanza then
+        SetEntry(gbBalanza.Serie);
+        gbLastPrompUsed:=CONST_CRUD_BALA_P_SERI;
+        PromptUser(gbLastPrompUsed);
+        gbActionBalanza := SerieBalanza; 
+    elsif gbActionBalanza = SerieBalanza then
+        if IsStringNotEmpty(val) = BoolTrue then 
+            tmpBalanza.Serie := val;
+            SetEntry(gbBalanza.Modelo);
+            gbLastPrompUsed:=CONST_CRUD_BALA_P_MODE;
+            PromptUser(gbLastPrompUsed);  
+            gbActionBalanza := ModeloBalanza;
+        else
+            PromptUser(CONST_DATA_ERROR+gbLastPrompUsed);    
+        end if;
+    
+    elsif gbActionBalanza = ModeloBalanza then 
+        if IsStringNotEmpty(val) = BoolTrue then 
+            tmpBalanza.Modelo := val; 
+            gbLastPrompUsed:=CONST_CRUD_BALA_P_NOMB;
+            SetEntry(gbBalanza.Nombre);
+            PromptUser(gbLastPrompUsed);  
+            gbActionBalanza := NombreBalanza; 
+        else
+            PromptUser(CONST_DATA_ERROR+gbLastPrompUsed);  
+        end if;
+    elsif gbActionBalanza = NombreBalanza then
+        if IsStringNotEmpty(val) = BoolTrue then 
+            tmpBalanza.Nombre := val;
+            gbLastPrompUsed:=CONST_CRUD_BALA_P_NUME;
+            SetEntry(IntegerToString(gbBalanza.Numero, 0));
+            PromptNumeric(gbLastPrompUsed);  
+            gbActionBalanza := NumBalanza;
+        else
+            PromptUser(CONST_DATA_ERROR+gbLastPrompUsed);  
+        end if;
+    
+    elsif gbActionBalanza = NumBalanza then
+        if IsStringNotEmpty(val) = BoolTrue then 
+            tmpBalanza.Numero := StringToInteger(val);
+            SetEntry(gbBalanza.Flujo);
+            gbLastPrompUsed:=CONST_CRUD_BALA_P_FLUJ;
+            PromptUser(gbLastPrompUsed);  
+            gbActionBalanza := FlujoBalanza; 
+        else
+            PromptUser(CONST_DATA_ERROR+gbLastPrompUsed);  
+        end if;
+    elsif gbActionBalanza = FlujoBalanza then
+        if IsStringNotEmpty(val) = BoolTrue then 
+            tmpBalanza.Flujo := val;
+            response:= PutBalanza(tmpBalanza);
+            gbBalanza:= response.Data;
+            DisplayBalanza;
+        else
+            PromptUser(CONST_DATA_ERROR+gbLastPrompUsed);   
+        end if;
+    end if;
+end;

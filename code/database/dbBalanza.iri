@@ -1,0 +1,83 @@
+function GetBalanza : typResponseBalanza;
+identifier : integer;
+data : typBalanza;
+result : typResponseBalanza;
+codeResult : SysCode; 
+begin
+    codeResult := DBExec("Select * from Balanza", identifier);
+    Logger("select:"+ syscodetostring(codeResult)+",ident:"+integertostring(identifier,0));
+    if (codeResult = SysOk) then
+        if (identifier > 0) then
+            Logger("select:"+ syscodetostring(codeResult)+",ident:"+integertostring(identifier,0));
+            DBColumnString(identifier, 2, data.Serie);
+            DBColumnString(identifier, 3, data.Modelo);
+            DBColumnString(identifier, 1, data.Nombre);
+            DBColumnInt(identifier, 4, data.Numero);
+            DBColumnString(identifier, 5, data.Flujo);
+            result.HasError := BoolFalse;
+            result.HasData := BoolTrue;
+            result.data := data;
+        else
+            result.HasError := BoolFalse;
+            result.HasData := BoolFalse;
+        end if;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+function PostBalanza(balanza: typBalanza) : typResponseBalanza;
+identifier : integer;
+result : typResponseBalanza;
+codeResult : SysCode; 
+query : string;
+begin
+    query := "insert into Balanza (Nombre, Serie, Modelo, Numero, Flujo) values (";
+    query := query + "'" + balanza.Nombre +"', ";
+    query := query + "'" + balanza.Serie +"', ";
+    query := query + "'" + balanza.Modelo +"', ";
+    query := query + IntegerToString(balanza.Numero,0) +", ";
+    query := query + "'" + balanza.Flujo +"')";
+    codeResult := DBExec(query, identifier);
+    Logger("insert:"+ syscodetostring(codeResult)+",ident:"+integertostring(identifier,0));
+    
+    if (codeResult = SysOk) then
+        result:= GetBalanza;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg;
+        Logger("Balanza DBErrMsg:"+ DBErrMsg);
+    
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+function PutBalanza(balanza: typBalanza) : typResponseBalanza;
+identifier : integer;
+result : typResponseBalanza;
+codeResult : SysCode; 
+query : string;
+begin
+    query := "update Balanza set ";
+    query := query + "Serie = '"+ balanza.Serie +"', ";
+    query := query + "Modelo = '"+ balanza.Modelo +"', ";
+    query := query + "Nombre = '"+ balanza.Nombre +"', ";
+    query := query + "Numero = "+ IntegerToString(balanza.Numero,0) +", ";
+    query := query + "Flujo = '"+ balanza.Flujo +"'";
+    codeResult := DBExec(query, identifier);
+    
+    if (codeResult = SysOk) then
+        result:= GetBalanza;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+

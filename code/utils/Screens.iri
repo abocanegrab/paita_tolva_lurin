@@ -1,0 +1,364 @@
+procedure DisplayTemporal;
+begin
+    if (gbTemporal.estado = 1) then
+        SetLabelText(lbl29, gbTemporal.nomTransporte);
+        SetLabelText(lbl5, gbTemporal.nomEmbarca);
+        SetLabelText(lbl6, gbTemporal.nomEspecie);
+        SetLabelText(lbl7, gbTemporal.nomUso);
+    else
+        SetLabelText(lbl29, "");
+        SetLabelText(lbl5, "");
+        SetLabelText(lbl6, "");
+        SetLabelText(lbl7, "");
+    end if;
+    
+    SetLabelText(lbl14, integertostring(gbEmpresa.Ticket,0));
+end;
+
+procedure DisplayEmpresa;
+begin
+    SetLabelText(lbl74, gbEmpresa.Razon);
+    SetLabelText(lbl75, gbEmpresa.Direccion);
+    SetLabelText(lbl76, gbEmpresa.RUC);
+    SetLabelText(lbl77, gbEmpresa.EIP);
+    SetLabelText(lbl78, gbEmpresa.Telefono);
+    SetLabelText(lbl79, gbEmpresa.NPL);
+
+    if (gbProceso = Inactivo) then
+        SetLabelText(lbl14, integertostring(gbEmpresa.Ticket,0));
+    end if;
+end;
+
+procedure DisplayBalanza;
+begin
+    SetLabelText(lbl86, gbBalanza.Serie);
+    SetLabelText(lbl91, gbBalanza.Modelo);
+    SetLabelText(lbl92, gbBalanza.Nombre);
+    SetLabelText(lbl93, IntegerToString(gbBalanza.Numero, 0));
+    SetLabelText(lbl94, gbBalanza.Flujo);
+end;
+
+procedure DisplayConfig;
+begin
+    SetLabelText(lbl101, RealToString(gbConfig.Objetivo, 0, 0));
+    SetLabelText(lbl106, RealToString(gbConfig.Minimo, 0, 0));
+    SetLabelText(lbl104, RealToString(gbConfig.Maximo, 0, 0));
+    SetLabelText(lbl109, RealToString(gbConfig.TEstabilidad, 0, 2));
+    SetLabelText(lbl113, RealToString(gbConfig.TReinicio, 0, 2));
+    SetLabelText(lbl110, RealToString(gbConfig.TError1, 0, 2));
+    SetLabelText(lbl114, RealToString(gbConfig.TError2, 0, 2));
+    SetLabelText(lbl118, RealToString(gbConfig.Objetivo, 0, 0));
+end;
+
+procedure DisplayPesajeRetro;
+fechaInicio : string;
+fechaFin : string;
+transporte : typTransporte;
+especie : string;
+uso : string;
+embarca : string;
+begin
+    transporte := GetOldTransporte(T_Pesaje.codTrans);
+    especie := GetOldEspecie(T_Pesaje.codEspec);
+    uso := GetOldUso(T_Pesaje.codUso);
+    embarca := GetOldEmbarcacion(T_Pesaje.codEmbar);
+
+    fechaInicio:= Date$(T_Pesaje.FechaIni) + " " + Time$(T_Pesaje.FechaIni);
+    fechaFin:= Date$(T_Pesaje.FechaFin) + " " + Time$(T_Pesaje.FechaFin);
+    SetLabelText(lbl135, IntegerToString(T_Pesaje.Ticket, 0));
+    SetLabelText(lbl136, transporte.Nombre);
+    SetLabelText(lbl138, especie);
+    SetLabelText(lbl139, uso);
+    SetLabelText(lbl145, fechaInicio + " - " + fechaFin);
+    SetLabelText(lbl142, IntegerToString(T_Pesaje.Batch, 0));
+    SetLabelText(lbl143, RealToString(T_Pesaje.Acum, 0, 0));
+    if (transporte.incluye = 1) then
+    SetLabelText(lbl132, "Placa");
+    SetLabelText(lbl137, T_Pesaje.CodEmbar);
+    else
+    SetLabelText(lbl132, "Embarcacion");
+    SetLabelText(lbl137, T_Pesaje.CodEmbar + "-" + embarca);
+    end if;
+end;
+
+procedure DisplayPesaje;
+fechaInicio : string;
+fechaFin : string;
+begin
+    fechaInicio:= Date$(gbListPesaje[gbPosCrud].FechaInicio) + " " + Time$(gbListPesaje[gbPosCrud].FechaInicio);
+    fechaFin:= Date$(gbListPesaje[gbPosCrud].FechaFin) + " " + Time$(gbListPesaje[gbPosCrud].FechaFin);
+    SetLabelText(lbl135, IntegerToString(gbListPesaje[gbPosCrud].Ticket, 0));
+    SetLabelText(lbl136, gbListPesaje[gbPosCrud].Transporte);
+    SetLabelText(lbl138, gbListPesaje[gbPosCrud].Especie);
+    SetLabelText(lbl139, gbListPesaje[gbPosCrud].Uso);
+    SetLabelText(lbl145, fechaInicio + " - " + fechaFin);
+    SetLabelText(lbl142, IntegerToString(gbListPesaje[gbPosCrud].Batch, 0));
+    SetLabelText(lbl143, RealToString(gbListPesaje[gbPosCrud].Acumulado, 0, 0));
+    if (gbListPesaje[gbPosCrud].incluyeTransporte = 1) then
+    SetLabelText(lbl132, "Placa");
+    SetLabelText(lbl137, gbListPesaje[gbPosCrud].CodEmbarca);
+    else
+    SetLabelText(lbl132, "Embarcacion");
+    SetLabelText(lbl137, gbListPesaje[gbPosCrud].CodEmbarca + "-" + gbListPesaje[gbPosCrud].Embarcacion);
+    end if;
+end;
+
+procedure DisplayCrud;
+value1 : string;
+value2 : string;
+value3 : string;
+begin
+    if (gbScreenActive=EmbarcaSc) then
+        if (gbTotalEmbarca > 0) then
+            value1 := T_Embarcacion.Codigo; --gbListEmbarca[gbPosCrud].Codigo;
+            value2 := T_Embarcacion.Nombre; --gbListEmbarca[gbPosCrud].Nombre;
+        else
+            value1 := "";
+            value2 := ""; 
+        end if;
+    elsif (gbScreenActive=EspecieSc) then
+        if (gbTotalEspecie > 0) then
+            value1 := IntegerToString(gbListEspecie[gbPosCrud].Codigo, 0);
+            value2 := gbListEspecie[gbPosCrud].Nombre;
+        else
+            value1 := "";
+            value2 := ""; 
+        end if;
+    elsif (gbScreenActive=UsoSc) then
+        if (gbTotalUso > 0) then
+            value1 := IntegerToString(gbListUso[gbPosCrud].Codigo, 0);
+            value2 := gbListUso[gbPosCrud].Nombre;
+        else
+            value1 := "";
+            value2 := ""; 
+        end if;
+    elsif (gbScreenActive=TransporteSc) then
+        if (gbTotalTransporte > 0) then
+            value1 := IntegerToString(gbListTransporte[gbPosCrud].Codigo, 0);
+            value2 := gbListTransporte[gbPosCrud].Nombre;
+            if (gbListTransporte[gbPosCrud].Incluye = 1) then
+                value3 := "SI";
+            else
+                value3 := "NO";
+            end if;
+        else
+            value1 := "";
+            value2 := "";
+            value3 := "";
+        end if;
+    end if;
+    SetLabelText(lbl58, value1);
+    SetLabelText(lbl59, value2);
+    SetLabelText(lbl60, value3);
+end;
+
+procedure FillEmbarca;
+response : typResponseEmbarcaciones;
+begin
+    response:= ListEmbarcacion;
+    if (response.HasError = BoolFalse) then
+        if (response.HasData = BoolTrue) then
+            gbListEmbarca:= response.data;
+            DisplayCrud;
+        end if;
+    end if;
+end;
+
+procedure FillEmbarcaRetro;
+begin
+    T_Embarcacion.GetFirst;
+    DisplayCrud;
+end;
+
+procedure FillEspecie;
+response : typResponseEspecies;
+begin
+    response:= ListEspecie;
+    if (response.HasError = BoolFalse) then
+        if (response.HasData = BoolTrue) then
+            gbListEspecie:= response.data;
+            DisplayCrud;
+        end if;
+    end if;
+end;
+
+procedure FillUso;
+response : typResponseUsos;
+begin
+    response:= ListUso;
+    if (response.HasError = BoolFalse) then
+        if (response.HasData = BoolTrue) then
+            gbListUso:= response.data;
+            DisplayCrud;
+        end if;
+    end if;
+end;
+
+procedure FillTransporte;
+response : typResponseTransportes;
+begin
+    response:= ListTransporte;
+    if (response.HasError = BoolFalse) then
+        if (response.HasData = BoolTrue) then
+            gbListTransporte:= response.data;
+            DisplayCrud;
+        end if;
+    end if;
+end;
+
+procedure FillPesaje;
+response : typResponsePesajes;
+begin
+    response:= ListPesaje;
+    if (response.HasError = BoolFalse) then
+        if (response.HasData = BoolTrue) then
+            gbListPesaje:= response.data;
+            DisplayPesaje;
+        end if;
+    end if;
+end;
+
+procedure FillPesajeRetro;
+begin
+    T_Pesaje.GetFirst;
+    DisplayPesajeRetro;
+end;
+
+procedure SetActionButtons;
+begin
+    if (gbProceso = Inactivo) then
+        if (gbTemporal.estado = 0) then
+            SetWidgetVisibility(img30, Voff);
+            SetImageWidgetPath(img31, CONST_IMAGE_DATA);
+            SetWidgetVisibility(img33, VOn);
+        else
+            SetWidgetVisibility(img30, VOn);
+            SetImageWidgetPath(img30, CONST_IMAGE_START);
+            SetImageWidgetPath(img31, CONST_IMAGE_DATA);
+            SetWidgetVisibility(img33, VOn);
+        end if;
+    elsif (gbProceso = Activo) then
+        SetImageWidgetPath(img30, CONST_IMAGE_PAUSE);
+        SetImageWidgetPath(img31, CONST_IMAGE_STOP);
+        SetWidgetVisibility(img33, VOff);
+    elsif (gbProceso = Pausado) then
+        SetImageWidgetPath(img30, CONST_IMAGE_CONTINUE);
+        SetImageWidgetPath(img31, CONST_IMAGE_STOP);
+        SetWidgetVisibility(img33, VOff);
+    end if;
+end;
+
+procedure ProcesoScreen;
+begin
+    SelectScreen(1);
+    SetActionButtons;
+    gbScreenActive:=ProcesoSc;
+    SetLabelText(lbl118, RealToString(gbConfig.Objetivo, 0, 0));
+end;
+
+procedure PrincipalMenuScreen;
+begin
+    SelectScreen(2);
+    gbScreenActive:=MenuPrincipalSc;
+end;
+
+procedure DataMenuScreen;
+begin
+    SelectScreen(3);
+    gbScreenActive:=DataMenuSc;
+end;
+
+procedure EmbarcaScreen;
+begin
+    gbPosCrud:=1;
+    gbScreenActive:=EmbarcaSc;
+    SetLabelText(lbl50, CONST_CRUD_TITLE_EMB);
+    SetLabelText(lbl55, CONST_CRUD_EMB_CODE);
+    SetLabelText(lbl56, CONST_CRUD_EMB_NAME);
+    SetWidgetVisibility(lbl57, Voff);
+    SetWidgetVisibility(lbl60, Voff);
+    SelectScreen(4);
+    BusyShow;
+    FillEmbarcaRetro;
+    BusyHide;
+end;
+procedure EspecieScreen;
+begin
+    gbPosCrud:=1;
+    gbScreenActive:=EspecieSc;
+    SetLabelText(lbl50, CONST_CRUD_TITLE_ESP);
+    SetLabelText(lbl55, CONST_CRUD_CODE);
+    SetLabelText(lbl56, CONST_CRUD_NAME);
+    SetWidgetVisibility(lbl57, Voff);
+    SetWidgetVisibility(lbl60, Voff);
+    SelectScreen(4);
+    BusyShow;
+    FillEspecie;
+    BusyHide;
+end;
+procedure UsoScreen;
+begin
+    gbPosCrud:=1;
+    gbScreenActive:=UsoSc;
+    SetLabelText(lbl50, CONST_CRUD_TITLE_USO);
+    SetLabelText(lbl55, CONST_CRUD_CODE);
+    SetLabelText(lbl56, CONST_CRUD_NAME);
+    SetWidgetVisibility(lbl57, Voff);
+    SetWidgetVisibility(lbl60, Voff);
+    SelectScreen(4);
+    BusyShow;
+    FillUso;
+    BusyHide;
+end;
+procedure TransporteScreen;
+begin
+    BusyShow;
+    gbPosCrud:=1;
+    gbScreenActive:=TransporteSc;
+    SetLabelText(lbl50, CONST_CRUD_TITLE_TRA);
+    SetLabelText(lbl55, CONST_CRUD_CODE);
+    SetLabelText(lbl56, CONST_CRUD_NAME);
+    SetLabelText(lbl57, CONST_CRUD_TRANSP_THIRD);
+    SetWidgetVisibility(lbl57, Von);
+    SetWidgetVisibility(lbl60, Von);
+    SelectScreen(4);
+    FillTransporte;
+    BusyHide;
+end;
+
+procedure EmpresaScreen;
+begin
+    SelectScreen(5);
+    DisplayEmpresa;
+    gbScreenActive:=EmpresaSc;
+end;
+
+procedure BalanzaScreen;
+begin
+    SelectScreen(6);
+    DisplayBalanza;
+    gbScreenActive:=BalanzaSc;
+end;
+
+procedure ConfigScreen;
+begin
+    SelectScreen(7);
+    DisplayConfig;
+    gbScreenActive:=ConfigSc;
+end;
+
+procedure UtilesScreen;
+begin
+    SelectScreen(8);
+    gbScreenActive:=UtilesSc;
+end;
+
+procedure ReporteScreen;
+begin
+    BusyShow;
+    SelectScreen(9);
+    gbScreenActive:=ReporteSc;
+    gbPosCrud:=1;
+    FillPesajeRetro;
+    BusyHide;
+end;

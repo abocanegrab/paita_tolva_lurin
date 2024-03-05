@@ -1,0 +1,107 @@
+procedure PrintCopyRetro;
+begin
+    PrinterCopyHeaderRetro;
+    PrintDbDetalle(T_Pesaje.ticket);
+    PrinterCopyFooterRetro;
+end;
+
+procedure ReimpresionData(numTickets: integer);
+i:integer:=0;    
+j:integer:=0;
+begin
+    --BotonKey("","","","","");
+    if numTickets = 1 then
+        T_Pesaje.Sort(Pesadas_Ticket);
+        T_Pesaje.GetLast;
+        PrintCopyRetro;
+    elsif numTickets > 1 then
+        T_Pesaje.Sort(Pesadas_Ticket);
+        T_Pesaje.GetFirst;
+        while T_Pesaje.GetNext=SysOk
+        loop 
+            i:=i+1;
+        end loop;
+        if(i>numTickets) then
+            i:=i-numTickets;
+        else
+            i:=0;
+        end if;
+        
+        T_Pesaje.Sort(Pesadas_Ticket);
+        T_Pesaje.GetFirst;
+        if(i>0) then
+            while(j<i)
+            loop
+                j:=j+1;
+                T_Pesaje.GetNext;
+            end loop;
+        end if;
+        PrinterHeaderMultiTicketRetro;
+        PrinterSummaryRetro;
+        ProgramDelay(200);
+        while T_Pesaje.GetNext=SysOk
+        loop
+            PrinterSummaryRetro;
+            ProgramDelay(200);
+        end loop;
+    elsif numTickets = -1 then
+        if(T_Pesaje.GetFirst=SysOk)then
+            T_Pesaje.ticket :=  numTickets;
+            if T_Pesaje.FindFirst(Pesadas_Ticket)=SysOk then
+                return;
+                --rep_TICKET_copia;
+            else
+                DisplayStatus("No existe registro");
+            end if;  
+        else
+            DisplayStatus("No hay registro");
+        end if;
+    end if;
+end;
+
+
+procedure ReImpresionNumero(ticket: integer);
+codeResult : SysCode;
+begin
+    --BotonKey("","","","","");
+
+    T_Pesaje.Ticket:= ticket;
+    codeResult := T_Pesaje.FindFirst(Pesadas_Ticket);
+
+    if (codeResult = SysOk) then   
+        PrintCopyRetro;
+    else
+        DisplayAndClean(CONST_PRINT_ON_DEMAND_ERROR_SEARCH);
+    end if;
+end;
+
+procedure RePrinterOperation(val : string);
+num: integer;
+begin
+    if gbActionPrinter = InitPrinter then
+        SetEntry(CONST_PRINT_DEFAULT_VALUE);
+        PromptUser(CONST_PRINT_PROMPT_PRINT);
+        gbActionPrinter := ImprimirPrinter; 
+    elsif gbActionPrinter = ImprimirPrinter then
+        if (Len(val) > 0) then
+            num:= StringToInteger(val);
+        else
+            num:= 0;
+        end if;
+        DisplayStatus(CONST_PRINT_INIT_PRINT);
+        ReimpresionData(num);
+        DisplayAndClean(CONST_PRINT_FIN_PRINT);
+    elsif gbActionPrinter = InitSearchPrinter then
+        PromptUser(CONST_PRINT_ON_DEMAND_PROMPT);
+        gbActionPrinter := ImprimirOnlyOne; 
+    elsif gbActionPrinter = ImprimirOnlyOne then
+        if (Len(val) > 0) then
+            num:= StringToInteger(val);
+            DisplayStatus(CONST_PRINT_INIT_PRINT);
+            ReImpresionNumero(num);
+            DisplayAndClean(CONST_PRINT_FIN_PRINT);
+        else
+            DisplayAndClean(CONST_PRINT_ON_DEMAND_ERROR);
+        end if;
+    end if;
+end;

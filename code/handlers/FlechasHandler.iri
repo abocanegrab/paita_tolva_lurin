@@ -1,0 +1,81 @@
+procedure DisplayFromArrows;
+begin
+    if (gbScreenActive=ReporteSc) then
+        DisplayPesajeRetro;
+    else 
+        DisplayCrud;
+    end if;
+end;
+
+procedure MoverAdelante;
+max : integer;
+begin
+    if (gbScreenActive=EmbarcaSc) then
+        max:=gbTotalEmbarca;
+        GetNextEmbarca;
+    elsif (gbScreenActive=EspecieSc) then
+        max:=gbTotalEspecie;
+    elsif (gbScreenActive=UsoSc) then
+        max:=gbTotalUso;
+    elsif (gbScreenActive=TransporteSc) then
+        max:=gbTotalTransporte;
+    elsif (gbScreenActive=ReporteSc) then
+        max:=gbTotalPesaje;
+        GetNextPesaje;
+    end if;
+
+    if (gbPosCrud = max) then 
+        gbPosCrud:=1;
+    else
+        gbPosCrud:=gbPosCrud+1;
+    end if;
+    DisplayFromArrows;
+end;
+
+procedure MoverAtras;
+begin
+    --Retro code
+    if (gbScreenActive=EmbarcaSc) then
+        GetPrevEmbarca;
+    elsif (gbScreenActive=ReporteSc) then
+        GetPrevPesaje;
+    end if;
+    -- En retro code
+
+    if (gbPosCrud = 1) then 
+        if (gbScreenActive=EmbarcaSc) then
+            gbPosCrud:=gbTotalEmbarca;
+        elsif (gbScreenActive=EspecieSc) then
+            gbPosCrud:=gbTotalEspecie;
+        elsif (gbScreenActive=UsoSc) then
+            gbPosCrud:=gbTotalUso;
+        elsif (gbScreenActive=TransporteSc) then
+            gbPosCrud:=gbTotalTransporte;
+        elsif (gbScreenActive=ReporteSc) then
+            gbPosCrud:=gbTotalPesaje;
+        end if;
+    else
+        gbPosCrud:=gbPosCrud-1;
+    end if;
+    DisplayFromArrows;    
+end;
+
+handler NavleftKeyPressed;
+begin
+    MoverAtras;
+end;
+
+handler NavRightKeyPressed;
+begin  
+    MoverAdelante;
+end;
+
+handler NavUpKeyPressed;
+begin
+    MoverAtras;
+end;
+
+handler NavDownKeyPressed;
+begin 
+    MoverAdelante;
+end;    

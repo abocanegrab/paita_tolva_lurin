@@ -1,0 +1,57 @@
+elsif (EventWidget = img31) then -- datos / finalizar
+    if (gbProceso = Inactivo) then
+        gbButtonProceso := DataButtonProceso;
+        gbActionProceso := InitProceso;
+        ProcesoOperacion("");
+    else
+        gbButtonProceso := FinalizarButtonProceso;
+        SetEntry(CONST_DEFAULT_SI);
+        PromptUser(CONST_PROCESO_FINALIZAR);
+    end if;
+elsif (EventWidget = img30) then -- iniciar / pausar / reanudar
+    if (gbLimpieza = Inactivo) then
+        if (gbProceso = Inactivo) then
+            if (gbTemporal.estado = 1) then
+                gbButtonProceso := IniciarButtonProceso;
+                SetEntry(CONST_DEFAULT_SI);
+                PromptUser(CONST_PROCESO_INICIAR);
+            else
+                DisplayAndClean("Ingresar datos para procesar");
+            end if;
+        else
+            PausaReanuda;
+        end if;
+    else
+        DisplayAndClean("Equipo en Limpieza");
+    end if;
+elsif (EventWidget = bar9) then -- futuro reporte grafico
+    return;
+elsif (EventWidget = img32) then -- peso objetivo
+    gbActionConfig:=InitPObjConfig;
+    gbButtonProceso := ObjetivoButtonProceso;
+    CrudConfig("");
+elsif (EventWidget = img33) then -- limpieza tolva
+    if (gbLimpieza = Inactivo) then
+        gbActionLimpia:=InitLimpia;
+    else
+        gbActionLimpia:=FinalizaLimpia;
+    end if;
+    gbButtonProceso := LimpiezaButtonProceso;
+    LimpiezaTolvaOperation("");
+elsif (EventWidget = lbl122) then -- ingresar fecha cal
+    gbCalibraProceso := InitCalibracion;
+    CrudCalibracion("");
+elsif (EventWidget = lbl123) then -- reimprimir calibracion
+    PrintCalibracion;
+elsif (EventWidget = lbl10 or EventWidget = lbl14) then -- edit ticket number
+    if (gbProceso = Inactivo) then
+        gbButtonProceso := NumeroTicketButtonProceso;
+        gbActionEmpresa := InitTicketEmpresa;
+        CrudEmpresa("");
+    end if;
+elsif (EventWidget = lbl127) then
+    gbActionPrinter := InitPrinter;  
+    RePrinterOperation("");
+elsif (EventWidget = lbl63) then
+    gbActionPrinter := InitSearchPrinter;  
+    RePrinterOperation("");

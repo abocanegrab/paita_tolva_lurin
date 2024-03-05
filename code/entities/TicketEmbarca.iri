@@ -1,0 +1,23 @@
+type typTicketEmbarca is record 
+   ticket: integer;
+   codEmbar : string;
+   Embarcacion  : string;
+   fecha    : datetime;
+end record;
+
+type typTicketEmbarcas is array [20] of typTicketEmbarca;
+
+type typResponseTicketEmbarca is record
+    HasError: BooleanType;
+    HasData: BooleanType;
+    ErrorMessage: string;
+    data: typTicketEmbarca;
+end record;
+
+type typResponseTicketEmbarcas is record
+    HasError: BooleanType;
+    HasData: BooleanType;
+    ErrorMessage: string;
+    data: typTicketEmbarcas;
+    Count: integer;
+end record;

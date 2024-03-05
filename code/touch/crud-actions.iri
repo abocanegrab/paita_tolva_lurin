@@ -1,0 +1,32 @@
+elsif (EventWidget = img61) then -- agregar crud
+    gbActionCrud := InitCrud;
+    gbTypeCrud := AddCrud;
+    CrudGenerico("");
+elsif (EventWidget = img64) then -- editar crud
+    gbActionCrud := InitCrud;
+    gbTypeCrud := UpdateCrud;
+    CrudGenerico("");
+elsif (EventWidget = img62)  then -- eliminar crud
+    gbActionCrud := InitCrud;
+    gbTypeCrud := DeleteCrud;
+    CrudDelete("");
+elsif (EventWidget = img80)  then -- editar empresa
+    gbActionEmpresa := InitEmpresa;
+    CrudEmpresa("");
+elsif (EventWidget = img95)  then -- editar balanza
+    gbActionBalanza := InitBalanza;
+    CrudBalanza("");
+elsif (EventWidget = img96 or EventWidget = img81)  then -- imprimir ticket prueba
+    PrintTest;
+elsif (EventWidget = lbl100)  then -- editar peso objetivo
+    gbActionConfig:=InitPObjConfig;
+    CrudConfig("");
+elsif (EventWidget = lbl115)  then -- editar pesos
+    gbActionConfig:=InitPesosConfig;
+    CrudConfig("");
+elsif (EventWidget = lbl116)  then -- editar tiempos
+    gbActionConfig:=InitTiemposConfig;
+    CrudConfig("");
+elsif (EventWidget = lbl117)  then -- editar errores
+    gbActionConfig:=InitErrorConfig;
+    CrudConfig("");

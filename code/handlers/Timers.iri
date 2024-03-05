@@ -1,0 +1,80 @@
+handler timer1trip;
+begin
+    DisplayStatus("");
+end; 
+
+handler Timer2Trip;
+localIO : integer;
+begin
+    GetDigin(0,3,localIO);
+    if localIO = gbStatusIntNoAut then
+        PrintEvent(1);
+    end if;
+end; 
+
+handler Timer3Trip;
+localIO : integer;
+begin
+    GetDigin(0,4,localIO);
+    if localIO = gbStatusCompAb then
+        if gbProceso = Activo or gbProceso = Pausado then    
+            PrintEvent(2);
+        end if;
+    end if;
+end;    
+
+handler Timer4Trip;
+begin
+    IniciaSecuencia;   
+end; 
+      
+handler Timer5Trip;
+begin
+    tmpTiempoLimpiezaInSeconds := tmpTiempoLimpiezaInSeconds -1;
+    if (tmpTiempoLimpiezaInSeconds >= 0) then
+        ShowRemainingTime(tmpTiempoLimpiezaInSeconds);
+        DefineAndStartTimer(5, 100, TimerOneShot);
+    else
+        StartEndLimpieza;
+    end if;
+end;
+
+
+handler Timer6Trip;
+begin
+    DeshabilitarSP(1);
+    DeshabilitarSP(2);
+    if gbRecupera.estado = 1 then   
+        HabilitarSP(2);
+    else
+        HabilitarSP(1);
+    end if;
+    BusyHide; 
+end;
+
+handler Timer7Trip;
+begin
+    SetDigOut(0, 8, 0);
+end;
+
+handler Timer8Trip;
+begin
+    StopTimer(8);
+    GetGross(1, Primary, gbPesoCaptura);
+    gbRecupera.estado := 1;
+    HabilitarSP(2);
+    DisplayStatus(CONST_MESSAGE_DESCA);
+    DisplayAndClean("ESTABILIZO SP1");
+end;
+
+handler Timer9Trip;
+begin
+    StopTimer(9);
+    DisplayAndClean("ESTABILIZO SP2");
+    ProcesaBatch;
+end;
+
+handler Timer20Trip;
+begin
+    DisplayStatus("incluye->"+integertostring(gbRecupera.incluyeTransporte, 0));
+end;

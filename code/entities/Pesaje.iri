@@ -1,0 +1,39 @@
+type typPesaje is record 
+   Ticket : integer;
+   CodEmbarca   : string;
+   Embarcacion : string;
+   CodEspecie  : integer;
+   Especie : string;
+   CodUso : integer;
+   Uso : string;
+   codTransporte : integer;
+   Transporte : string;
+   incluyeTransporte : integer;
+   Proveedor : string;
+   FechaInicio : datetime;
+   Batch : integer;
+   Acumulado : real;
+   FechaFin : datetime;
+   Objetivo : real;
+   Wzero : integer;
+   Wval : real;
+   Wspan : integer;
+   Factor: real;
+   Anio : integer;
+end record;
+
+type typPesajes is array[2000] of typPesaje;
+
+type typResponsePesaje is record
+    HasError: BooleanType;
+    HasData: BooleanType;
+    ErrorMessage: string;
+    data: typPesaje;
+end record;
+
+type typResponsePesajes is record
+    HasError: BooleanType;
+    HasData: BooleanType;
+    ErrorMessage: string;
+    data: typPesajes;
+end record;

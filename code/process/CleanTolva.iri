@@ -1,0 +1,52 @@
+procedure ShowRemainingTime( timeInSeconds : integer);
+minutes : integer; 
+seconds : integer;
+result : string;
+begin
+    seconds := timeInSeconds mod 60;
+    minutes := (timeInSeconds - seconds) / 60;
+    Logger("total:" + integertostring(timeInSeconds, 0)+ "-second:"+integertostring(seconds,0) + "-min:"+integertostring((timeInSeconds - seconds) / 60,0));
+    if (minutes + seconds > 0) then
+        result:= Right$("0"+IntegerToString(minutes, 0), 2) + ":" + Right$("0"+IntegerToString(seconds, 0), 2);
+    else
+        result:= "00:00";
+    end if;
+    SetLabelText(lbl118, result); 
+end;
+
+procedure StartEndLimpieza;
+begin
+    if (gbLimpieza = Inactivo) then
+        Setdigout(0, 1, 1);
+        Setdigout(0, 2, 1);
+        tmpTiempoLimpiezaInSeconds:=tmpTiempoLimpieza * 60;
+        DefineAndStartTimer(5, 100, TimerOneShot);
+        gbLimpieza := Activo;
+    else
+        Setdigout(0, 1, 0);
+        Setdigout(0, 2, 0);
+        StopTimer(5);
+        gbLimpieza := Inactivo;
+
+        SetLabelText(lbl118, RealToString(gbConfig.Objetivo, 0, 0));
+    end if;
+end;
+
+procedure LimpiezaTolvaOperation(val : string);
+begin
+    if gbActionLimpia = InitLimpia then
+        gbLastPrompUsed:=CONST_LIMPIEZA_P_TIME;
+        SetEntry(CONST_DEFAULT_LIMPIEZA_TIME);
+        PromptNumeric(gbLastPrompUsed);
+        gbActionLimpia := TiempoLimpia; 
+    elsif gbActionLimpia = TiempoLimpia then
+        if IsValidReal(val) = BoolTrue then
+            tmpTiempoLimpieza := stringtoreal(val);
+            StartEndLimpieza;
+        else
+            PromptUser(CONST_DATA_ERROR+gbLastPrompUsed);    
+        end if;
+    elsif gbActionLimpia = FinalizaLimpia then
+        StartEndLimpieza;
+    end if;
+end;

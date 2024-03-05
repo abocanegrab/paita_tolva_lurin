@@ -1,0 +1,25 @@
+type typDetalle is record 
+   Ticket  : integer;
+   Batch  : integer;
+   Peso : real;
+   Fecha : datetime;
+   Objetivo : real;
+   Factor : real;
+end record;
+
+type typDetalles is array [1000] of typDetalle;
+
+type typResponseDetalle is record
+    HasError: BooleanType;
+    HasData: BooleanType;
+    ErrorMessage: string;
+    data: typDetalle;
+end record;
+
+type typResponseDetalles is record
+    HasError: BooleanType;
+    HasData: BooleanType;
+    ErrorMessage: string;
+    data: typDetalles;
+    Count: integer;
+end record;

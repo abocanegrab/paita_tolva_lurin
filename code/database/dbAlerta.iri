@@ -1,0 +1,150 @@
+function GetAlerta(id: integer) : typResponseAlerta;
+identifier : integer;
+data : typAlerta;
+result : typResponseAlerta;
+codeResult : SysCode;
+query : string; 
+begin
+    query := "Select t1.Ticket, t1.Orden, t1.fecha, t1.codTipo, t2.Nombre ";
+    query := query +" from Alerta t1";
+    query := query +" left join TipoAler t2 on t2.codigo = t1.codTipo";
+    query := query +"where t1.Ticket =";
+    codeResult := DBExec(query + IntegerToString(id, 0), identifier);
+    if (codeResult = SysOk) then
+        if (identifier > 0) then
+            DBColumnInt(identifier, 1, data.Ticket);
+            DBColumnInt(identifier, 2, data.Orden);
+            DBColumndt(identifier, 3, data.Fecha);
+            DBColumnInt(identifier, 4, data.idTipoAlerta);
+            DBColumnstring(identifier, 5, data.TipoAlerta);
+            result.HasError := BoolFalse;
+            result.HasData := BoolTrue;
+            result.data := data;
+        else
+            result.HasError := BoolFalse;
+            result.HasData := BoolFalse;
+        end if;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+function ListAlerta(id: integer) : typResponseAlertas;
+identifier : integer;
+data : typAlertas;
+result : typResponseAlertas;
+codeResult : SysCode; 
+index: integer:= 0;
+query : string;
+begin
+    query := "Select t1.Ticket, t1.Orden, t1.fecha, t1.codTipo, t2.Nombre ";
+    query := query +" from Alerta t1";
+    query := query +" left join TipoAler t2 on t2.codigo = t1.codTipo";
+    query := query +"where t1.Ticket =";
+    codeResult := DBExec(query+ IntegerToString(id, 0), identifier);
+    Logger("list pesa:"+ syscodetostring(codeResult)+",ident:"+integertostring(identifier,0));
+    if (codeResult = SysOk) then
+        if (identifier > 0) then
+            while (codeResult = SysOk) 
+            loop
+                index:=index+1;
+                Logger("loop index:" + integertostring(index, 0));
+                DBColumnInt(identifier, 1, data[index].Ticket);
+                DBColumnInt(identifier, 2, data[index].Orden);
+                DBColumndt(identifier, 3, data[index].Fecha);
+                DBColumnInt(identifier, 4, data[index].idTipoAlerta);
+                DBColumnstring(identifier, 5, data[index].TipoAlerta);
+                codeResult:=DBNext(identifier);
+                Logger("list pesa next:"+ syscodetostring(codeResult) + "- index: " + integertostring(index, 0));
+            end loop;
+            
+            result.Count:= index;
+            result.HasError := BoolFalse;
+            result.HasData := BoolTrue;
+            result.data := data;
+        else
+            result.HasError := BoolFalse;
+            result.HasData := BoolFalse;
+            Logger("list emb: no Data");
+        end if;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+        Logger("select embDBErrMsg:"+ DBErrMsg);
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+
+function ListAlertaGroupByTipo(id: integer) : typResponseAlertas;
+identifier : integer;
+data : typAlertas;
+result : typResponseAlertas;
+codeResult : SysCode; 
+index: integer:= 0;
+query : string;
+begin
+    query := "Select t2.Nombre, count(1) ";
+    query := query +" from Alerta t1";
+    query := query +" left join TipoAler t2 on t2.codigo = t1.codTipo";
+    query := query +" where t1.Ticket =" + IntegerToString(id, 0);
+    query := query +" group by t2.Nombre order by t2.Nombre";
+    
+    codeResult := DBExec(query, identifier);
+    Logger("list pesa:"+ syscodetostring(codeResult)+",ident:"+integertostring(identifier,0));
+    if (codeResult = SysOk) then
+        if (identifier > 0) then
+            while (codeResult = SysOk) 
+            loop
+                index:=index+1;
+                Logger("loop index:" + integertostring(index, 0));
+                DBColumnstring(identifier, 1, data[index].TipoAlerta);
+                DBColumnInt(identifier, 2, data[index].Cantidad);
+                codeResult:=DBNext(identifier);
+                Logger("list pesa next:"+ syscodetostring(codeResult) + "- index: " + integertostring(index, 0));
+            end loop;
+            
+            result.Count:= index;
+            result.HasError := BoolFalse;
+            result.HasData := BoolTrue;
+            result.data := data;
+        else
+            result.HasError := BoolFalse;
+            result.HasData := BoolFalse;
+            Logger("list emb: no Data");
+        end if;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+        Logger("select embDBErrMsg:"+ DBErrMsg);
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+function PostAlerta(Alerta: typAlerta) : typResponseAlerta;
+identifier : integer;
+result : typResponseAlerta;
+codeResult : SysCode; 
+query : string;
+begin
+    query := "Insert into Alerta (Ticket, Orden, fecha, codTipo) values (";
+    query := query + IntegerToString(Alerta.Ticket,0) +", ";
+    query := query + IntegerToString(Alerta.Orden, 0) +", ";
+    query := query + DTToString(Alerta.fecha) +", ";
+    query := query + IntegerToString(Alerta.idTipoAlerta, 0) +")";
+    codeResult := DBExec(query, identifier);
+    
+    if (codeResult = SysOk) then
+        result:= GetAlerta(Alerta.ticket);
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;

@@ -1,0 +1,115 @@
+procedure ProcesoOperacion(val : string);
+response: typResponseEmpresa;
+transporte : typResponseTransporte;
+embarcacion: typResponseEmbarcacion;
+requestEmbarca : typEmbarcacion;
+especie: typResponseEspecie;
+uso: typResponseUso;
+begin
+    if gbActionProceso = InitProceso then
+        gbLastPrompUsed:=CONST_PROCESO_P_TRAN;
+        PromptUser(gbLastPrompUsed);
+        gbActionProceso := TransporteProceso; 
+    elsif gbActionProceso = TransporteProceso then
+        if IsStringNotEmpty(val) = BoolTrue then
+            transporte:= GetTransporte(StringToInteger(val));
+            if (transporte.HasData = BoolTrue and transporte.HasError = BoolFalse) then
+                gbTemporal.codTransporte:=  transporte.Data.Codigo;
+                gbTemporal.nomTransporte:=  transporte.Data.Nombre;
+                gbTemporal.incluyeTransporte:=  transporte.Data.incluye;
+                gbTemporal.estado:=  0;
+            
+                if (gbTemporal.incluyeTransporte = 1) then
+                    gbLastPrompUsed:=CONST_PROCESO_P_PLAC;
+                    gbActionProceso := PlacaProceso;
+                else
+                    gbLastPrompUsed:=CONST_PROCESO_P_MATR;
+                    gbActionProceso := MatriculaProceso;
+                end if;
+                PromptUser(gbLastPrompUsed);  
+            else
+                SetEntry(val);
+                PromptUser(CONST_DATA_NO_EXIST+gbLastPrompUsed);    
+            end if;
+        else
+            PromptUser(CONST_DATA_ERROR+gbLastPrompUsed);    
+        end if;
+    elsif gbActionProceso = PlacaProceso then 
+        if IsStringNotEmpty(val) = BoolTrue then 
+            gbTemporal.codEmbarca:=  val;
+            gbTemporal.nomEmbarca:=  val;
+            gbLastPrompUsed := CONST_PROCESO_P_ESPE;
+            gbActionProceso := EspecieProceso;
+            PromptUser(gbLastPrompUsed);
+        else
+            PromptUser(CONST_DATA_ERROR+gbLastPrompUsed);  
+        end if;
+    elsif gbActionProceso = MatriculaProceso then
+        if IsStringNotEmpty(val) = BoolTrue then
+            embarcacion:= GetEmbarcacion(val);
+            if (embarcacion.HasData = BoolTrue and embarcacion.HasError = BoolFalse) then
+                gbTemporal.codEmbarca:=  embarcacion.Data.Codigo;
+                gbTemporal.nomEmbarca:=  embarcacion.Data.Nombre;
+            
+                gbLastPrompUsed:=CONST_PROCESO_P_ESPE;
+                gbActionProceso := EspecieProceso;
+                PromptUser(gbLastPrompUsed);  
+            else
+                gbTemporal.codEmbarca:= val;
+                gbLastPrompUsed:= CONST_PROCESO_P_MNOM;
+                gbActionProceso := NombreEmbProceso;
+                PromptUser(gbLastPrompUsed);  
+            end if;
+        else
+            PromptUser(CONST_DATA_ERROR+gbLastPrompUsed);    
+        end if;
+    elsif gbActionProceso = NombreEmbProceso then
+        if IsStringNotEmpty(val) = BoolTrue then
+            requestEmbarca.Codigo:= gbTemporal.codEmbarca;
+            requestEmbarca.Nombre:= val;
+            embarcacion:= PostEmbarcacion(requestEmbarca);
+            
+            gbTemporal.codEmbarca:=  embarcacion.Data.Codigo;
+            gbTemporal.nomEmbarca:=  embarcacion.Data.Nombre;
+        
+            gbLastPrompUsed:= CONST_PROCESO_P_ESPE;
+            gbActionProceso := EspecieProceso;
+            PromptUser(gbLastPrompUsed);
+        else
+            PromptUser(CONST_DATA_ERROR+gbLastPrompUsed);  
+        end if;
+    elsif gbActionProceso = EspecieProceso then
+        if IsStringNotEmpty(val) = BoolTrue then 
+            especie:= GetEspecie(StringToInteger(val));
+            if (especie.HasData = BoolTrue and especie.HasError = BoolFalse) then
+                gbTemporal.codEspecie:=  especie.Data.Codigo;
+                gbTemporal.nomEspecie:=  especie.Data.Nombre;
+                gbLastPrompUsed:=CONST_PROCESO_P_USO;
+                gbActionProceso := UsoProceso;
+                PromptUser(gbLastPrompUsed);  
+            else
+                SetEntry(val);
+                PromptUser(CONST_DATA_NO_EXIST+gbLastPrompUsed);    
+            end if;
+        else
+            PromptUser(CONST_DATA_ERROR+gbLastPrompUsed);  
+        end if;
+    elsif gbActionProceso = UsoProceso then
+        if IsStringNotEmpty(val) = BoolTrue then 
+            uso:= GetUso(StringToInteger(val));
+            if (uso.HasData = BoolTrue and uso.HasError = BoolFalse) then
+                gbTemporal.codUso:=  uso.Data.Codigo;
+                gbTemporal.nomUso:=  uso.Data.Nombre;
+                gbTemporal.Proveedor :=  val;
+                gbTemporal.estado:=  1;
+                DisplayTemporal;
+                SetActionButtons;  
+            else
+                SetEntry(val);
+                PromptUser(CONST_DATA_NO_EXIST+gbLastPrompUsed);    
+            end if;
+        else
+            PromptUser(CONST_DATA_ERROR+gbLastPrompUsed);   
+        end if;
+    end if;
+end;

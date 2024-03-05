@@ -1,0 +1,17 @@
+handler SP1Trip; 
+begin
+    DeshabilitarSP(1);
+    DeshabilitarSP(2);
+    DisplayStatus(CONST_MESSAGE_ESTAB);
+    DefineAndStartTimer(8, gbConfig.TEstabilidad * 100, TimerOneShot);
+    DisplayAndClean("ALCANZA SP1");
+end;       
+
+handler SP2Trip;
+begin
+    DeshabilitarSP(1);
+    DeshabilitarSP(2);
+    DisplayStatus(CONST_MESSAGE_ESTAB);
+    DefineAndStartTimer(9, gbConfig.TEstabilidad * 100, TimerOneShot);
+    DisplayAndClean("ALCANZA SP2");
+end;   

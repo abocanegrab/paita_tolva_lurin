@@ -1,0 +1,153 @@
+function GetNextId : integer;
+identifier : integer;
+nextId : integer;
+codeResult : SysCode; 
+begin
+    codeResult := DBExec("select ifnull(max(id), 0) + 1 from Embarca", identifier);
+    if (codeResult = SysOk) then
+        if (identifier > 0) then
+            DBColumnInt(identifier, 1, nextId);
+        else
+            nextId := 0;
+        end if;
+    else
+        nextId := 0; 
+    end if;
+    DBFinalize(identifier);
+    return nextId;
+end;
+
+function GetEmbarcacion(id: string) : typResponseEmbarcacion;
+identifier : integer;
+data : typEmbarcacion;
+result : typResponseEmbarcacion;
+codeResult : SysCode; 
+begin
+    codeResult := DBExec("Select * from Embarca where Codigo = '" + id + "'", identifier);
+    if (codeResult = SysOk) then
+        if (identifier > 0) then
+            DBColumnInt(identifier, 1, data.Id);
+            DBColumnstring(identifier, 2, data.codigo);
+            DBColumnString(identifier, 3, data.nombre);
+            result.HasError := BoolFalse;
+            result.HasData := BoolTrue;
+            result.data := data;
+        else
+            result.HasError := BoolFalse;
+            result.HasData := BoolFalse;
+        end if;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+function ListEmbarcacion : typResponseEmbarcaciones;
+identifier : integer;
+data : typEmbarcaciones;
+result : typResponseEmbarcaciones;
+codeResult : SysCode; 
+index: integer:= 0;
+begin
+    codeResult := DBExec("Select * from Embarca", identifier);
+    Logger("list emb:"+ syscodetostring(codeResult)+",ident:"+integertostring(identifier,0));
+    if (codeResult = SysOk) then
+        if (identifier > 0) then
+            while (codeResult = SysOk) 
+            loop
+                index:=index+1;
+                Logger("loop index:" + integertostring(index, 0));
+                DBColumnInt(identifier, 1, data[index].Id);
+                DBColumnString(identifier, 2, data[index].codigo);
+                DBColumnString(identifier, 3, data[index].nombre);
+                codeResult:=DBNext(identifier);
+                Logger("list emb next:"+ syscodetostring(codeResult) + "- index: " + integertostring(index, 0));
+            end loop;
+            
+            gbTotalEmbarca:= index;
+            result.HasError := BoolFalse;
+            result.HasData := BoolTrue;
+            result.data := data;
+        else
+            result.HasError := BoolFalse;
+            result.HasData := BoolFalse;
+            Logger("list emb: no Data");
+        end if;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+        Logger("select embDBErrMsg:"+ DBErrMsg);
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+function PostEmbarcacion(Embarcacion: typEmbarcacion) : typResponseEmbarcacion;
+identifier : integer;
+result : typResponseEmbarcacion;
+codeResult : SysCode; 
+query : string;
+id : integer;
+begin
+    id := GetNextId;
+    query := "insert into Embarca (Id, Codigo, Nombre) values (";
+    query := query + IntegerToString(id, 0) +", ";
+    query := query + "'"+ Embarcacion.codigo +"', ";
+    query := query + "'"+ Embarcacion.Nombre +"')";
+    codeResult := DBExec(query, identifier);
+    
+    if (codeResult = SysOk) then
+        result:= GetEmbarcacion(Embarcacion.codigo);
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+
+function PutEmbarcacion(Embarcacion: typEmbarcacion) : typResponseEmbarcacion;
+identifier : integer;
+result : typResponseEmbarcacion;
+codeResult : SysCode; 
+query : string;
+begin
+    query := "update Embarca set ";
+    query := query + "Nombre = '"+ Embarcacion.Nombre +"', ";
+    query := query + "Codigo = '"+ Embarcacion.codigo +"'";
+    query := query + " where Id = "+ IntegerToString(Embarcacion.Id, 0);
+    codeResult := DBExec(query, identifier);
+    
+    if (codeResult = SysOk) then
+        result:= GetEmbarcacion(Embarcacion.codigo);
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+
+function DeleteEmbarcacion(Embarcacion: typEmbarcacion) : typResponseEmbarcacion;
+identifier : integer;
+result : typResponseEmbarcacion;
+codeResult : SysCode; 
+query : string;
+begin
+    query := "delete from Embarca ";
+    query := query + " where Id = "+ IntegerToString(Embarcacion.Id, 0);
+    codeResult := DBExec(query, identifier);
+    
+    if (codeResult = SysOk) then
+        result.HasError := BoolFalse; 
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;

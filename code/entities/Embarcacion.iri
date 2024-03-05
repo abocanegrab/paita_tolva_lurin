@@ -1,0 +1,21 @@
+type typEmbarcacion is record 
+   id: integer;
+   codigo : string;
+   nombre  : string;
+end record;
+
+type typEmbarcaciones is array [2000] of typEmbarcacion;
+
+type typResponseEmbarcacion is record
+    HasError: BooleanType;
+    HasData: BooleanType;
+    ErrorMessage: string;
+    data: typEmbarcacion;
+end record;
+
+type typResponseEmbarcaciones is record
+    HasError: BooleanType;
+    HasData: BooleanType;
+    ErrorMessage: string;
+    data: typEmbarcaciones;
+end record;

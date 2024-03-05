@@ -1,0 +1,89 @@
+function FillEmpresaData : typEmpresa;
+existData: typResponseEmpresa;
+begin
+    existData := GetEmpresa;
+    if (existData.HasError = BoolFalse and existData.HasData = BoolFalse) then
+        existData:=PostEmpresa(defBdEmpresa);
+    end if;
+
+    return existData.data;
+end;
+
+function FillBalanzaData : typBalanza;
+existData: typResponseBalanza;
+begin
+    existData := GetBalanza;
+    if (existData.HasError = BoolFalse and existData.HasData = BoolFalse) then
+        existData:=PostBalanza(defBdBalanza);
+    end if;
+
+    return existData.data;
+end;
+
+function FillConfigData : typConfiguracion;
+existData: typResponseConfiguracion;
+begin
+    existData := GetConfig;
+    if (existData.HasError = BoolFalse and existData.HasData = BoolFalse) then
+        existData:= PostConfig(defDbConfig);
+    end if;
+
+    return existData.data;
+end;
+
+procedure FillEmbarcacionData;
+existData: typResponseEmbarcaciones;
+begin
+    existData := ListEmbarcacion;
+    if (existData.HasError = BoolFalse and existData.HasData = BoolFalse) then
+        PostEmbarcacion(defDbEmbarca);
+    end if;
+end;
+
+procedure FillUsoData;
+existData: typResponseUsos;
+begin
+    existData := ListUso;
+    if (existData.HasError = BoolFalse and existData.HasData = BoolFalse) then
+        PostUso(defDbUso);
+    end if;
+end;
+
+procedure FillEspecieData;
+existData: typResponseEspecies;
+begin
+    existData := ListEspecie;
+    if (existData.HasError = BoolFalse and existData.HasData = BoolFalse) then
+        PostEspecie(defDbEspecie);
+    end if;
+end;
+
+procedure FillTransporteData;
+existData: typResponseTransportes;
+begin
+    existData := ListTransporte;
+    if (existData.HasError = BoolFalse and existData.HasData = BoolFalse) then
+        PostTransporte(defDbTransporte);
+    end if;
+end;
+
+procedure FillCalibracionData;
+existData: typResponseCalibracion;
+begin
+    existData := GetCalibracion;
+    if (existData.HasError = BoolFalse and existData.HasData = BoolFalse) then
+        PostCalibracion(defDbCalibra);
+    end if;
+end;
+
+procedure FillFirstData;
+begin
+    gbEmpresa:=FillEmpresaData;
+    gbConfig:=FillConfigData;
+    gbBalanza:=FillBalanzaData;
+    FillEmbarcacionData;
+    FillUsoData;
+    FillEspecieData;
+    FillTransporteData;
+    FillCalibracionData;
+end;

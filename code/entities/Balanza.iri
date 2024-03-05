@@ -1,0 +1,14 @@
+type typBalanza is record 
+   Serie : string;
+   Modelo  : string;
+   Nombre  : string;
+   Numero : integer;
+   Flujo : string;
+end record;
+
+type typResponseBalanza is record
+    HasError: BooleanType;
+    HasData: BooleanType;
+    ErrorMessage: string;
+    data: typBalanza;
+end record;

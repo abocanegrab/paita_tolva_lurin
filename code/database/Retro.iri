@@ -1,0 +1,77 @@
+T_Pesaje : PesadasDatabase;
+T_Detalle : DetalleDatabase;
+T_Embarcacion : EmbarcaDatabase;
+T_Especie : EspecieDatabase;
+T_Uso : UsoDatabase;
+T_Transporte : TransporDatabase;
+
+function GetOldEspecie(id : integer) : string;
+begin
+    T_Especie.Codigo := id;
+    if T_Especie.FindFirst(ESpecie_Codigo) = Sysok then
+        return T_Especie.Nombre;
+    end if;
+
+    return "";    
+end;
+
+function GetOldUso(id : integer) : string;
+begin
+    T_Uso.Codigo := id;
+    if T_Uso.FindFirst(Uso_Codigo) = Sysok then
+        return T_Uso.Nombre;
+    end if;
+
+    return "";    
+end;
+
+function GetOldTransporte(id : integer) : typTransporte;
+transporte : typTransporte;
+begin
+    T_Transporte.Codigo := id;
+    if T_Transporte.FindFirst(Transpor_Codigo) = Sysok then
+        transporte.Codigo := T_Transporte.Codigo;
+        transporte.Nombre:= T_Transporte.Nombre;
+        transporte.Incluye := T_Transporte.Incluye;
+    end if;
+
+    return transporte;    
+end;
+
+function GetOldEmbarcacion(id : string) : string;
+begin
+    T_Embarcacion.Codigo := id;
+    if T_Embarcacion.FindFirst(Transpor_Codigo) = Sysok then
+        return T_Embarcacion.Nombre;
+    end if;
+
+    return "";    
+end;
+
+procedure GetNextPesaje;
+begin
+    if (T_Pesaje.getNext <> SysOk) then
+        T_Pesaje.getFirst;
+    end if;
+end;
+
+procedure GetPrevPesaje;
+begin
+    if (T_Pesaje.getPrev <> SysOk) then
+        T_Pesaje.getLast;
+    end if;
+end;
+
+procedure GetNextEmbarca;
+begin
+    if (T_Embarcacion.getNext <> SysOk) then
+        T_Embarcacion.getFirst;
+    end if;
+end;
+
+procedure GetPrevEmbarca;
+begin
+    if (T_Embarcacion.getPrev <> SysOk) then
+        T_Embarcacion.getLast;
+    end if;
+end;

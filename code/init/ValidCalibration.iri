@@ -1,0 +1,12 @@
+procedure CheckCalibracion;
+currentCal : typCalibracion;
+responseCal : typResponseCalibracion;
+dbCal : typCalibracion;
+begin
+    currentCal:= defDbCalibra;
+    responseCal:= GetCalibracion;
+    dbCal := responseCal.data;
+    if(currentCal.Wzero <> dbCal.Wzero or currentCal.Wval <> dbCal.Wval or currentCal.Wspan <> dbCal.Wspan) then
+        PutCalibracion(defDbCalibra);
+    end if;
+end;

@@ -1,0 +1,112 @@
+function PostDetalle(lFecha: datetime; currentCal: typCalibracion) : typResponseDetalle;
+identifier : integer;
+result : typResponseDetalle;
+codeResult : SysCode; 
+query : string;
+begin
+    query := "insert into Detalle (Ticket, Batch, Peso, Fecha, Objetivo, Factor) values (";
+    query := query + IntegerToString(gbRecupera.Ticket, 0) +",";
+    query := query + IntegerToString(gbRecupera.Batch, 0) +",";
+    query := query + RealToString(gbPesoCaptura, 0, 10) +",";
+    query := query + DTToString(lFecha) +",";
+    query := query + RealToString(gbConfig.Objetivo, 0, 10) +",";
+    query := query + RealToString(currentCal.Factor, 0, 10) +")";
+    codeResult := DBExec(query, identifier);
+    
+    if (codeResult = SysOk) then
+        result.HasError := BoolFalse;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+function ListDetalle (ticket : integer) : typResponseDetalles;
+identifier : integer;
+data : typDetalles;
+result : typResponseDetalles;
+codeResult : SysCode; 
+index: integer:= 0;
+query: string;
+begin
+    query:="Select * from Detalle where Ticket = " + IntegerToString(ticket, 0) +" order by batch";
+    codeResult := DBExec(query, identifier);
+    Logger("list det:"+ syscodetostring(codeResult)+",ident:"+integertostring(identifier,0));
+    if (codeResult = SysOk) then
+        if (identifier > 0) then
+            while (codeResult = SysOk) 
+            loop
+                index:=index+1;
+                Logger("loop index:" + integertostring(index, 0));
+                DBColumnInt(identifier, 1, data[index].Ticket);
+                DBColumnInt(identifier, 2, data[index].Batch);
+                DBColumnReal(identifier, 3, data[index].Peso);
+                DBColumnDT(identifier, 4, data[index].Fecha);
+                DBColumnReal(identifier, 5, data[index].Objetivo);
+                DBColumnReal(identifier, 6, data[index].Factor);
+                codeResult:=DBNext(identifier);
+                Logger("list detalle next:"+ syscodetostring(codeResult) + "- index: " + integertostring(index, 0));
+            end loop;
+
+            result.Count := index;
+            result.HasError := BoolFalse;
+            result.HasData := BoolTrue;
+            result.data := data;
+        else
+            result.HasError := BoolFalse;
+            result.HasData := BoolFalse;
+            Logger("list det: no Data");
+        end if;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+        Logger("select detDBErrMsg:"+ DBErrMsg);
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+
+procedure PrintDbDetalle (ticket : integer);
+identifier : integer;
+data : typDetalle;
+result : typResponseDetalles;
+codeResult : SysCode; 
+index: integer:= 0;
+query: string;
+acumulado : real;
+begin
+    acumulado := 0;
+    query:="Select * from Detalle where Ticket = " + IntegerToString(ticket, 0) +" order by batch";
+    codeResult := DBExec(query, identifier);
+    Logger("list det:"+ syscodetostring(codeResult)+",ident:"+integertostring(identifier,0));
+    if (codeResult = SysOk) then
+        if (identifier > 0) then
+            while (codeResult = SysOk) 
+            loop
+                index:=index+1;
+                Logger("loop index:" + integertostring(index, 0));
+                DBColumnInt(identifier, 1, data.Ticket);
+                DBColumnInt(identifier, 2, data.Batch);
+                DBColumnReal(identifier, 3, data.Peso);
+                DBColumnDT(identifier, 4, data.Fecha);
+                DBColumnReal(identifier, 5, data.Objetivo);
+                DBColumnReal(identifier, 6, data.Factor);
+                acumulado := acumulado + data.Peso;
+
+                PrinterCopyDetalles(data, acumulado);
+                ProgramDelay(80);
+
+                codeResult:=DBNext(identifier);
+                Logger("list detalle next:"+ syscodetostring(codeResult) + "- index: " + integertostring(index, 0));
+            end loop;
+        else
+            Logger("list det: no Data");
+        end if;
+    else
+        Logger("select detDBErrMsg:"+ DBErrMsg);
+    end if;
+    DBFinalize(identifier);
+end;

@@ -1,0 +1,39 @@
+procedure CheckRestart;
+begin
+    DeshabilitarSP(1);
+    DeshabilitarSP(2);
+    
+
+    if (gbRecupera.iniciado = BoolTrue) then
+        gbProceso:=Activo;
+        SetLabelText(lbl14,IntegerToString(gbRecupera.ticket,0));
+        SetLabelText(lbl15,IntegerToString(gbRecupera.batch,0));
+        SetLabelText(lbl16,RealToString(gbRecupera.acumulado,0,1));  
+        SetLabelText(lbl5,gbRecupera.codEmbarca);
+        SetLabelText(lbl29,gbRecupera.nomTransporte);
+        SetLabelText(lbl6,gbRecupera.nomEspecie);
+        SetLabelText(lbl7,gbRecupera.nomUso);  
+        PrintEvent(4);
+        DisplayAndClean("REINICIANDO PROCESO...");
+        DefineAndStartTimer(6, 300, TimerOneShot);
+    else
+        gbProceso:=Inactivo;
+        SetLabelText(lbl14, IntegerToString(gbEmpresa.Ticket, 0));
+        if gbTemporal.estado = 1 then
+            SetLabelText(lbl5,gbTemporal.codEmbarca);
+            SetLabelText(lbl29,gbTemporal.nomTransporte);
+            SetLabelText(lbl6,gbTemporal.nomEspecie);
+            SetLabelText(lbl7,gbTemporal.nomUso);
+        else
+            SetLabelText(lbl15,"");
+            SetLabelText(lbl16,"");
+            SetLabelText(lbl5,"");
+            SetLabelText(lbl29,"");
+            SetLabelText(lbl6,"");
+            SetLabelText(lbl7,"");
+        end if;
+        DisplayAndClean(CONST_MAIN_MESSAGE);
+        BusyHide;
+    end if;
+    ProcesoScreen;
+end;

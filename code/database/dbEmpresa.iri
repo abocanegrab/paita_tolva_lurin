@@ -1,0 +1,110 @@
+function GetEmpresa : typResponseEmpresa;
+identifier : integer;
+data : typEmpresa;
+result : typResponseEmpresa;
+codeResult : SysCode; 
+begin
+    codeResult := DBExec("Select * from Empresa", identifier);
+    Logger("select emp:"+ syscodetostring(codeResult)+",ident:"+integertostring(identifier,0));
+    if (codeResult = SysOk) then
+        if (identifier > 0) then
+            Logger("select emp:"+ syscodetostring(codeResult)+",ident:"+integertostring(identifier,0));
+            DBColumnString(identifier, 1, data.Razon);
+            DBColumnString(identifier, 2, data.Direccion);
+            DBColumnString(identifier, 3, data.RUC);
+            DBColumnString(identifier, 4, data.Telefono);
+            DBColumnString(identifier, 5, data.EIP);
+            DBColumnString(identifier, 6, data.NPL);
+            DBColumnInt(identifier, 7, data.Ticket);
+            result.HasError := BoolFalse;
+            result.HasData := BoolTrue;
+            result.data := data;
+        else
+            Logger("ident:"+integertostring(identifier,0));
+            result.HasError := BoolFalse;
+            result.HasData := BoolFalse;
+        end if;
+    else
+        Logger("select emp:"+ syscodetostring(codeResult));
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+function PostEmpresa(empresa: typEmpresa) : typResponseEmpresa;
+identifier : integer;
+result : typResponseEmpresa;
+codeResult : SysCode; 
+query : string;
+begin
+    query := "insert into Empresa (Razon, Address, RUC, Telefono, EIP, NPL, Ticket) values (";
+    query := query + "'"+ empresa.Razon +"', ";
+    query := query + "'"+ empresa.Direccion +"', ";
+    query := query + "'"+ empresa.RUC +"', ";
+    query := query + "'"+ empresa.Telefono +"', ";
+    query := query + "'"+ empresa.EIP +"', ";
+    query := query + "'"+ empresa.NPL +"',";
+    query := query + IntegerToString(empresa.Ticket, 0) +")";
+    codeResult := DBExec(query, identifier);
+    Logger("insert:"+ syscodetostring(codeResult)+",ident:"+integertostring(identifier,0));
+    
+    if (codeResult = SysOk) then
+        result:= GetEmpresa;
+    else
+        Logger("inserterror:"+ DBErrMsg);
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+
+function PutEmpresa(empresa: typEmpresa) : typResponseEmpresa;
+identifier : integer;
+result : typResponseEmpresa;
+codeResult : SysCode; 
+query : string;
+begin
+    query := "update Empresa set ";
+    query := query + "Razon = '"+ empresa.Razon +"', ";
+    query := query + "Address = '"+ empresa.Direccion +"', ";
+    query := query + "RUC = '"+ empresa.RUC +"', ";
+    query := query + "Telefono = '"+ empresa.Telefono +"', ";
+    query := query + "EIP = "+ empresa.EIP +", ";
+    query := query + "NPL = '"+ empresa.NPL +"'";
+    codeResult := DBExec(query, identifier);
+    
+    if (codeResult = SysOk) then
+        Logger("Update ok:"+ integertostring(identifier,0));
+        result:= GetEmpresa;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;
+
+function PutTicketEmpresa(empresa: typEmpresa) : typResponseEmpresa;
+identifier : integer;
+result : typResponseEmpresa;
+codeResult : SysCode; 
+query : string;
+begin
+    query := "update Empresa set ";
+    query := query + "Ticket = "+ IntegerToString(empresa.Ticket, 0);
+    codeResult := DBExec(query, identifier);
+    
+    if (codeResult = SysOk) then
+        Logger("Update ok:"+ integertostring(identifier,0));
+        result:= GetEmpresa;
+    else
+        result.HasError := BoolTrue;
+        result.ErrorMessage := DBErrMsg; 
+    end if;
+    DBFinalize(identifier);
+    return result;
+end;

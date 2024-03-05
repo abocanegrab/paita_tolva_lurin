@@ -1,0 +1,11 @@
+handler DigInS0B3Activate;       --compuertas abiertas
+begin
+    GetDigin(0, 3, gbStatusCompAb);
+    DefineAndStartTimer(2, gbConfig.TError1 * 100, TimerOneShot);
+end;
+
+handler DigInS0B4Activate;       --intervencion no autorizada
+begin
+    GetDigin(0, 4, gbStatusIntNoAut);
+    DefineAndStartTimer(3, gbConfig.TError2 * 100, TimerOneShot);
+end;
