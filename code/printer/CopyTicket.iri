@@ -72,7 +72,7 @@ begin
     SendToUSBPrinterLn("MATRICULA       : "+ obePesaje.codEmbarca);                           
     end if;
     SendToUSBPrinterLn("ESPECIE         : "+ obePesaje.Especie); --ANCHOVETA   
-    SendToUSBPrinterLn("PROVEEDOR       : "+ obePesaje.Proveedor);                            
+    --SendToUSBPrinterLn("PROVEEDOR       : "+ obePesaje.Proveedor);                            
     SendToUSBPrinterLn("TIPO DE USO     : "+ obePesaje.Uso); -- CONSERVA                         
     SendToUSBPrinterLn("FECHA DE INICIO : "+ Date$(obePesaje.FechaInicio));  -- 14/03/2000                           
     SendToUSBPrinterLn("HORA DE INICIO  : "+ Time$(obePesaje.FechaInicio));  --19:58                   

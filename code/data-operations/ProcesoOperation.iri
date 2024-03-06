@@ -100,7 +100,7 @@ begin
             if (uso.HasData = BoolTrue and uso.HasError = BoolFalse) then
                 gbTemporal.codUso:=  uso.Data.Codigo;
                 gbTemporal.nomUso:=  uso.Data.Nombre;
-                gbTemporal.Proveedor :=  val;
+                --gbTemporal.Proveedor :=  val;
                 gbTemporal.estado:=  1;
                 DisplayTemporal;
                 SetActionButtons;  

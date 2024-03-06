@@ -3107,7 +3107,7 @@ begin
     SendToUSBPrinterLn("MATRICULA       : "+ T_Pesaje.codEmbar);                           
     end if;
     SendToUSBPrinterLn("ESPECIE         : "+ especie); --ANCHOVETA   
-    SendToUSBPrinterLn("PROVEEDOR       : "+ T_Pesaje.Prove);                            
+    --SendToUSBPrinterLn("PROVEEDOR       : "+ T_Pesaje.Prove);                            
     SendToUSBPrinterLn("TIPO DE USO     : "+ uso); -- CONSERVA                         
     SendToUSBPrinterLn("FECHA DE INICIO : "+ Date$(T_Pesaje.FechaIni));  -- 14/03/2000                           
     SendToUSBPrinterLn("HORA DE INICIO  : "+ Time$(T_Pesaje.FechaIni));  --19:58                   
@@ -3316,7 +3316,7 @@ begin
     SendToUSBPrinterLn("MATRICULA       : "+ obePesaje.codEmbarca);                           
     end if;
     SendToUSBPrinterLn("ESPECIE         : "+ obePesaje.Especie); --ANCHOVETA   
-    SendToUSBPrinterLn("PROVEEDOR       : "+ obePesaje.Proveedor);                            
+    --SendToUSBPrinterLn("PROVEEDOR       : "+ obePesaje.Proveedor);                            
     SendToUSBPrinterLn("TIPO DE USO     : "+ obePesaje.Uso); -- CONSERVA                         
     SendToUSBPrinterLn("FECHA DE INICIO : "+ Date$(obePesaje.FechaInicio));  -- 14/03/2000                           
     SendToUSBPrinterLn("HORA DE INICIO  : "+ Time$(obePesaje.FechaInicio));  --19:58                   
@@ -4360,7 +4360,7 @@ begin
     SendToUSBPrinterLn("MATRICULA       : "+ gbRecupera.codEmbarca);                           
     end if;
     SendToUSBPrinterLn("ESPECIE         : "+ gbRecupera.nomEspecie);  
-    SendToUSBPrinterLn("PROVEEDOR       : "+ gbRecupera.Proveedor);                        
+    --SendToUSBPrinterLn("PROVEEDOR       : "+ gbRecupera.Proveedor);                        
     SendToUSBPrinterLn("TIPO DE USO     : "+ gbRecupera.nomUso);               
     SendToUSBPrinterLn("FECHA DE INICIO : "+ Date$(gbRecupera.fecInicio));                      
     SendToUSBPrinterLn("HORA DE INICIO  : "+ Time$(gbRecupera.fecInicio));             
@@ -5222,7 +5222,7 @@ begin
             if (uso.HasData = BoolTrue and uso.HasError = BoolFalse) then
                 gbTemporal.codUso:=  uso.Data.Codigo;
                 gbTemporal.nomUso:=  uso.Data.Nombre;
-                gbTemporal.Proveedor :=  val;
+                --gbTemporal.Proveedor :=  val;
                 gbTemporal.estado:=  1;
                 DisplayTemporal;
                 SetActionButtons;  

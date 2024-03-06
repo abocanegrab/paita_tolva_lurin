@@ -65,7 +65,7 @@ begin
     SendToUSBPrinterLn("MATRICULA       : "+ gbRecupera.codEmbarca);                           
     end if;
     SendToUSBPrinterLn("ESPECIE         : "+ gbRecupera.nomEspecie);  
-    SendToUSBPrinterLn("PROVEEDOR       : "+ gbRecupera.Proveedor);                        
+    --SendToUSBPrinterLn("PROVEEDOR       : "+ gbRecupera.Proveedor);                        
     SendToUSBPrinterLn("TIPO DE USO     : "+ gbRecupera.nomUso);               
     SendToUSBPrinterLn("FECHA DE INICIO : "+ Date$(gbRecupera.fecInicio));                      
     SendToUSBPrinterLn("HORA DE INICIO  : "+ Time$(gbRecupera.fecInicio));             
