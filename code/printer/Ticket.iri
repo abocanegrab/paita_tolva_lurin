@@ -1,7 +1,7 @@
 procedure PrintDetalle(lFecha : datetime; currentCal: typCalibracion);
 begin
-   SendToUSBPrinter(IntegerToString(gbRecupera.batch,4)+Space$(1)); 
-   SendToUSBPrinter(IntegerToString(gbPesoCaptura,6)+Space$(2));
+   SendToUSBPrinter(IntegerToString(gbRecupera.batch,3)+Space$(1)); 
+   SendToUSBPrinter(RealToString(gbPesoCaptura,6,1)+Space$(2));
    SendToUSBPrinter(Redondea(gbRecupera.acumulado)+Space$(2));
    SendToUSBPrinter(Time$(lFecha));  
    SendToUSBPrinterLn(RealToString(currentCal.Factor,8,2));   

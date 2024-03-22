@@ -59,7 +59,7 @@ begin
     DBColumnInt(identifier, 1, total);
     DBFinalize(identifier);
 
-    if (total <> CONST_MAX_TICKETEMB) then return; end if;
+    if (total < CONST_MAX_TICKETEMB) then return; end if;
 
     query := "delete from TicketEm where ticket = (Select ticket from TicketEm order by fecha asc limit 1)";
     codeResult := DBExec(query, identifier);

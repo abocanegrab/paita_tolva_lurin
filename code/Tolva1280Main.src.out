@@ -2982,7 +2982,7 @@ begin
     DBColumnInt(identifier, 1, total);
     DBFinalize(identifier);
 
-    if (total <> CONST_MAX_TICKETEMB) then return; end if;
+    if (total < CONST_MAX_TICKETEMB) then return; end if;
 
     query := "delete from TicketEm where ticket = (Select ticket from TicketEm order by fecha asc limit 1)";
     codeResult := DBExec(query, identifier);
@@ -4295,8 +4295,8 @@ end;
 --$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\printer\Ticket.iri 
  procedure PrintDetalle(lFecha : datetime; currentCal: typCalibracion);
 begin
-   SendToUSBPrinter(IntegerToString(gbRecupera.batch,4)+Space$(1)); 
-   SendToUSBPrinter(IntegerToString(gbPesoCaptura,6)+Space$(2));
+   SendToUSBPrinter(IntegerToString(gbRecupera.batch,3)+Space$(1)); 
+   SendToUSBPrinter(RealToString(gbPesoCaptura,6,1)+Space$(2));
    SendToUSBPrinter(Redondea(gbRecupera.acumulado)+Space$(2));
    SendToUSBPrinter(Time$(lFecha));  
    SendToUSBPrinterLn(RealToString(currentCal.Factor,8,2));   
