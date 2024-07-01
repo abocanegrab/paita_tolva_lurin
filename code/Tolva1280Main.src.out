@@ -1,7 +1,7 @@
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\Tolva1280Main.src
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\Tolva1280Main.src
 program Tolva1280Main;
 
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\Tolva1280Main.iri 
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\Tolva1280Main.iri 
  -- Scale Aliases
 Scale1    : constant integer := 1;
 
@@ -403,8 +403,8 @@ lbl145    : constant integer := 145;
 USBPRN    : constant string := "USBPRN";
 ADVPRN    : constant string := "ADVPRN";
  
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\Tolva1280Main.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\utils\Trim.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\Tolva1280Main.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\utils\Trim.iri 
  --We have a function to convert a hex string to an integer:
 
   ----------------------------------------------------------------------------
@@ -604,8 +604,8 @@ ADVPRN    : constant string := "ADVPRN";
 
   end;
  
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\utils\Trim.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\constants\constants.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\utils\Trim.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\constants\constants.iri 
  CONST_ERROR_GETTING_DATA: string := "No se pudo obtener la información";
 CONST_MAIN_MESSAGE: string := "Sistema de Pesaje Flores";
 CONST_CRUD_CODE: string := "Codigo";
@@ -734,10 +734,10 @@ CONST_PRINT_ON_DEMAND_ERROR : string := "Numero de ticket incorrecto";
 CONST_PRINT_ON_DEMAND_ERROR_SEARCH : string := "Ticket no existe para reimpresion";
 
 CONST_MAX_TICKETEMB : integer := 300; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\constants\constants.iri
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\constants\constants.iri
 
 --Entities
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\entities\Balanza.iri 
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\entities\Balanza.iri 
  type typBalanza is record 
    Serie : string;
    Modelo  : string;
@@ -752,8 +752,8 @@ type typResponseBalanza is record
     ErrorMessage: string;
     data: typBalanza;
 end record; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\entities\Balanza.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\entities\Configuracion.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\entities\Balanza.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\entities\Configuracion.iri 
  type typConfiguracion is record 
    Objetivo : real;
    Minimo  : real;
@@ -770,8 +770,8 @@ type typResponseConfiguracion is record
     ErrorMessage: string;
     data: typConfiguracion;
 end record; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\entities\Configuracion.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\entities\Empresa.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\entities\Configuracion.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\entities\Empresa.iri 
  type typEmpresa is record 
    Razon : string;
    Direccion   : string;
@@ -788,8 +788,8 @@ type typResponseEmpresa is record
     ErrorMessage: string;
     data: typEmpresa;
 end record; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\entities\Empresa.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\entities\Embarcacion.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\entities\Empresa.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\entities\Embarcacion.iri 
  type typEmbarcacion is record 
    id: integer;
    codigo : string;
@@ -811,8 +811,8 @@ type typResponseEmbarcaciones is record
     ErrorMessage: string;
     data: typEmbarcaciones;
 end record; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\entities\Embarcacion.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\entities\Especie.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\entities\Embarcacion.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\entities\Especie.iri 
  type typEspecie is record 
    codigo : integer;
    nombre  : string;
@@ -834,8 +834,8 @@ type typResponseEspecies is record
     ErrorMessage: string;
     data: typEspecies;
 end record; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\entities\Especie.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\entities\Recupera.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\entities\Especie.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\entities\Recupera.iri 
  type typRecupera is record 
     ticket : integer;
     codEmbarca   : string;
@@ -868,8 +868,8 @@ end record;
 --     ErrorMessage: string;
 --     data: typRecupera;
 -- end record; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\entities\Recupera.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\entities\TipoTransporte.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\entities\Recupera.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\entities\TipoTransporte.iri 
  type typTransporte is record 
    codigo : integer;
    nombre  : string;
@@ -891,8 +891,8 @@ type typResponseTransportes is record
     ErrorMessage: string;
     data: typTransportes;
 end record; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\entities\TipoTransporte.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\entities\Uso.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\entities\TipoTransporte.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\entities\Uso.iri 
  type typUso is record 
    codigo : integer;
    nombre  : string;
@@ -915,8 +915,8 @@ type typResponseUsos is record
     ErrorMessage: string;
     data: typUsos;
 end record; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\entities\Uso.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\entities\Calibracion.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\entities\Uso.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\entities\Calibracion.iri 
  type typCalibracion is record 
    Wzero : integer;
    Wval  : real;
@@ -931,8 +931,8 @@ type typResponseCalibracion is record
     ErrorMessage: string;
     data: typCalibracion;
 end record; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\entities\Calibracion.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\entities\Temporal.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\entities\Calibracion.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\entities\Temporal.iri 
  type typTemporal is record
     codEmbarca   : string;
     nomEmbarca   : string;
@@ -946,8 +946,8 @@ end record;
     Proveedor : string;
     estado: integer;
 end record; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\entities\Temporal.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\entities\Detalle.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\entities\Temporal.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\entities\Detalle.iri 
  type typDetalle is record 
    Ticket  : integer;
    Batch  : integer;
@@ -973,8 +973,8 @@ type typResponseDetalles is record
     data: typDetalles;
     Count: integer;
 end record; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\entities\Detalle.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\entities\Pesaje.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\entities\Detalle.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\entities\Pesaje.iri 
  type typPesaje is record 
    Ticket : integer;
    CodEmbarca   : string;
@@ -1014,8 +1014,8 @@ type typResponsePesajes is record
     ErrorMessage: string;
     data: typPesajes;
 end record; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\entities\Pesaje.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\entities\Alerta.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\entities\Pesaje.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\entities\Alerta.iri 
  type typAlerta is record 
    Ticket : integer;
    Orden   : integer;
@@ -1041,8 +1041,8 @@ type typResponseAlertas is record
     data: typAlertas;
     Count: integer;
 end record; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\entities\Alerta.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\entities\TicketEmbarca.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\entities\Alerta.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\entities\TicketEmbarca.iri 
  type typTicketEmbarca is record 
    ticket: integer;
    codEmbar : string;
@@ -1066,10 +1066,10 @@ type typResponseTicketEmbarcas is record
     data: typTicketEmbarcas;
     Count: integer;
 end record; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\entities\TicketEmbarca.iri
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\entities\TicketEmbarca.iri
 
 --Global vars
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\global\enums.iri 
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\global\enums.iri 
  type enumEstado is (Activo, Inactivo, Pausado);
 
 type enumCrudActions is (InitCrud, CodigoCrud, NombreCrud, IncluyeCrud);
@@ -1117,8 +1117,8 @@ type enumAsociaEmbarcaActions is (
 );
 
 type enumPrinterActions is ( InitPrinter, ImprimirPrinter, InitSearchPrinter, ImprimirOnlyOne ); 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\global\enums.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\global\vars.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\global\enums.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\global\vars.iri 
  gbEmpresa   : typEmpresa;
 gbConfig    : typConfiguracion;
 gbBalanza   : typBalanza; 
@@ -1160,8 +1160,8 @@ gbActionLimpia : enumLimpiaTolvaActions;
 gbCalibraProceso : enumCalibracionActions;
 gbAsociaProceso : enumAsociaEmbarcaActions;
 gbActionPrinter : enumPrinterActions; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\global\vars.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\global\temps.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\global\vars.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\global\temps.iri 
  tmpEmpresa   : typEmpresa;
 tmpConfig    : typConfiguracion;
 tmpBalanza   : typBalanza;
@@ -1174,8 +1174,8 @@ tmpTiempoLimpiezaInSeconds : integer;
 
 tmpTicketEmbarca : typTicketEmbarca;
 tmpMatriEmbAsocia : string; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\global\temps.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\utils\Commons.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\global\temps.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\utils\Commons.iri 
  procedure Logger(message : string);
 begin
     -- DisplayStatus(message);
@@ -1305,9 +1305,9 @@ begin
     result:=RealToString(peso, 8, 4);
     return result; 
 end; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\utils\Commons.iri
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\utils\Commons.iri
 
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\constants\DefaultDbValues.iri 
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\constants\DefaultDbValues.iri 
  --Empresa
 function defBdEmpresa: typEmpresa;
 local : typEmpresa;
@@ -1414,10 +1414,10 @@ begin
 
     return local;
 end; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\constants\DefaultDbValues.iri
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\constants\DefaultDbValues.iri
 
 --Database connections
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\database\Retro.iri 
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\database\Retro.iri 
  T_Pesaje : PesadasDatabase;
 T_Detalle : DetalleDatabase;
 T_Embarcacion : EmbarcaDatabase;
@@ -1495,8 +1495,8 @@ begin
         T_Embarcacion.getLast;
     end if;
 end; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\database\Retro.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\database\dbBalanza.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\database\Retro.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\database\dbBalanza.iri 
  function GetBalanza : typResponseBalanza;
 identifier : integer;
 data : typBalanza;
@@ -1581,8 +1581,8 @@ end;
 
 
  
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\database\dbBalanza.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\database\dbConfiguracion.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\database\dbBalanza.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\database\dbConfiguracion.iri 
  function GetConfig : typResponseConfiguracion;
 identifier : integer;
 data : typConfiguracion;
@@ -1782,8 +1782,8 @@ begin
     DBFinalize(identifier);
     return result;
 end; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\database\dbConfiguracion.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\database\dbEmpresa.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\database\dbConfiguracion.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\database\dbEmpresa.iri 
  function GetEmpresa : typResponseEmpresa;
 identifier : integer;
 data : typEmpresa;
@@ -1895,8 +1895,8 @@ begin
     return result;
 end;
  
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\database\dbEmpresa.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\database\dbEspecie.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\database\dbEmpresa.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\database\dbEspecie.iri 
  function GetEspecie(id: integer) : typResponseEspecie;
 identifier : integer;
 data : typEspecie;
@@ -2025,8 +2025,8 @@ begin
     return result;
 end;
  
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\database\dbEspecie.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\database\dbUso.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\database\dbEspecie.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\database\dbUso.iri 
  function GetUso(id: integer) : typResponseUso;
 identifier : integer;
 data : typUso;
@@ -2153,8 +2153,8 @@ begin
     DBFinalize(identifier);
     return result;
 end; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\database\dbUso.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\database\dbEmbarcacion.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\database\dbUso.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\database\dbEmbarcacion.iri 
  function GetNextId : integer;
 identifier : integer;
 nextId : integer;
@@ -2309,8 +2309,8 @@ begin
     return result;
 end;
  
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\database\dbEmbarcacion.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\database\dbTransporte.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\database\dbEmbarcacion.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\database\dbTransporte.iri 
  function GetTransporte(id: integer) : typResponseTransporte;
 identifier : integer;
 data : typTransporte;
@@ -2446,8 +2446,8 @@ begin
     return result;
 end;
  
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\database\dbTransporte.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\database\dbCalibracion.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\database\dbTransporte.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\database\dbCalibracion.iri 
  function GetCalibracion : typResponseCalibracion;
 identifier : integer;
 data : typCalibracion;
@@ -2554,8 +2554,8 @@ begin
     return result;
 end;
  
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\database\dbCalibracion.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\database\dbRecupera.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\database\dbCalibracion.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\database\dbRecupera.iri 
  -- function GetRecupera : typResponseRecupera;
 -- identifier : integer;
 -- data : typRecupera;
@@ -2766,8 +2766,8 @@ begin
 end;
 
  
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\database\dbRecupera.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\database\dbAlerta.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\database\dbRecupera.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\database\dbAlerta.iri 
  function GetAlerta(id: integer) : typResponseAlerta;
 identifier : integer;
 data : typAlerta;
@@ -2919,8 +2919,8 @@ begin
     return result;
 end;
  
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\database\dbAlerta.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\database\dbTicketEmbarca.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\database\dbAlerta.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\database\dbTicketEmbarca.iri 
  function ListTicketEmbarca(ticket : integer) : typResponseTicketEmbarcas;
 identifier : integer;
 data : typTicketEmbarcas;
@@ -2937,9 +2937,6 @@ begin
     codeResult := DBExec(query, identifier);
     Logger("list asocia:"+ syscodetostring(codeResult)+",ident:"+integertostring(identifier,0));
 
-    DisplayStatus("Res:"+SysCodeToString(codeResult)+"Id:"+integertostring(identifier,0)+"--ErDb:" + DBErrMsg);
-    ProgramDelay(300);
-    
     if (codeResult = SysOk) then
         if (identifier > 0) then
             while (codeResult = SysOk) 
@@ -2981,26 +2978,19 @@ begin
     query := query +" from TicketEm";
     codeResult := DBExec(query, identifier);
     
-    DisplayStatus("FREE1-Res:"+SysCodeToString(codeResult)+"Id:"+integertostring(identifier,0)+"--ErDb:" + DBErrMsg);
-    ProgramDelay(200);
-    
-
-    if (codeResult = SysOk) then return; end if;
-    if (identifier = 0) then return; end if;
+    if (codeResult <> SysOk
+        or identifier = 0) then 
+        return; 
+    end if;
     
     DBColumnInt(identifier, 1, total);
     DBFinalize(identifier);
     
-    DisplayStatus("FREE-Total:"+integertostring(total,0));
-    ProgramDelay(300);
-
     if (total < CONST_MAX_TICKETEMB) then return; end if;
 
     query := "delete from TicketEm where ticket = (Select ticket from TicketEm order by fecha asc limit 1)";
     codeResult := DBExec(query, identifier);
 
-    DisplayStatus("FREE2-Res:"+SysCodeToString(codeResult)+"Id:"+integertostring(identifier,0)+"--ErDb:" + DBErrMsg);
-    ProgramDelay(200);
     DBFinalize(identifier);
 end;
 
@@ -3019,8 +3009,6 @@ begin
     query := query + DTToString(fecha) +") ";
     codeResult := DBExec(query, identifier);
     Logger("insert TicketEm:"+ syscodetostring(codeResult)+",ident:"+integertostring(identifier,0));
-    DisplayStatus("Res:"+SysCodeToString(codeResult)+"--ErDb:" + DBErrMsg);
-    ProgramDelay(300);
     
     if (codeResult = SysOk) then
         result.HasError := BoolFalse;
@@ -3033,10 +3021,10 @@ begin
     return result;
 end;
  
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\database\dbTicketEmbarca.iri
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\database\dbTicketEmbarca.iri
 
 --Impresion directa de bd
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\printer\CopyTicketRetro.iri 
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\printer\CopyTicketRetro.iri 
  procedure PrinterHeaderMultiTicketRetro;
 begin
     
@@ -3257,8 +3245,8 @@ begin
     SendToUSBPrinterLn(Time$(detalle.fecha)+Space$(2));
 end;
  
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\printer\CopyTicketRetro.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\printer\CopyTicket.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\printer\CopyTicketRetro.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\printer\CopyTicket.iri 
  procedure PrinterHeaderMultiTicket;
 begin
     
@@ -3456,9 +3444,9 @@ begin
    SendToUSBPrinterLn(RealToString(detalle.Factor,8,2));  
 end;
  
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\printer\CopyTicket.iri
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\printer\CopyTicket.iri
 
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\database\dbDetalle.iri 
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\database\dbDetalle.iri 
  function PostDetalle(lFecha: datetime; currentCal: typCalibracion) : typResponseDetalle;
 identifier : integer;
 result : typResponseDetalle;
@@ -3571,8 +3559,8 @@ begin
     end if;
     DBFinalize(identifier);
 end; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\database\dbDetalle.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\database\dbPesaje.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\database\dbDetalle.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\database\dbPesaje.iri 
  function GetPesaje(id: integer) : typResponsePesaje;
 identifier : integer;
 data : typPesaje;
@@ -3818,9 +3806,9 @@ begin
     return result;
 end;
  
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\database\dbPesaje.iri
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\database\dbPesaje.iri
 
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\utils\Screens.iri 
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\utils\Screens.iri 
  procedure DisplayTemporal;
 begin
     if (gbTemporal.estado = 1) then
@@ -4185,8 +4173,8 @@ begin
     FillPesajeRetro;
     BusyHide;
 end; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\utils\Screens.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\process\CleanTolva.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\utils\Screens.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\process\CleanTolva.iri 
  procedure ShowRemainingTime( timeInSeconds : integer);
 minutes : integer; 
 seconds : integer;
@@ -4240,9 +4228,9 @@ begin
     end if;
 end;
  
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\process\CleanTolva.iri
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\process\CleanTolva.iri
 
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\printer\Alert.iri 
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\printer\Alert.iri 
  function GenerateAlertObject(date: datetime; tipo: integer): typAlerta;
 alerta: typAlerta;
 begin
@@ -4308,8 +4296,8 @@ begin
     SendToUSBPrinterLn("HORA: "+Time$(lFecha) +" FECHA: "+Date$(lFecha));  --19:58    
     SendToUSBPrinterLn("=================================");   
 end;       
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\printer\Alert.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\printer\Ticket.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\printer\Alert.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\printer\Ticket.iri 
  procedure PrintDetalle(lFecha : datetime; currentCal: typCalibracion);
 begin
    SendToUSBPrinter(IntegerToString(gbRecupera.batch,3)+Space$(1)); 
@@ -4515,8 +4503,8 @@ end;
 
 
  
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\printer\Ticket.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\printer\Calibra.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\printer\Ticket.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\printer\Calibra.iri 
  procedure PrintCalibracion;
 response : typResponseCalibracion;
 dbCal : typCalibracion;
@@ -4539,9 +4527,9 @@ begin
         DisplayAndClean("No se pudo recuperar la calibracion");
     end if;
 end; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\printer\Calibra.iri
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\printer\Calibra.iri
 
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\handlers\FlechasHandler.iri 
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\handlers\FlechasHandler.iri 
  procedure DisplayFromArrows;
 begin
     if (gbScreenActive=ReporteSc) then
@@ -4623,8 +4611,8 @@ handler NavDownKeyPressed;
 begin 
     MoverAdelante;
 end;     
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\handlers\FlechasHandler.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\handlers\IOProgramming.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\handlers\FlechasHandler.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\handlers\IOProgramming.iri 
  handler DigInS0B3Activate;       --compuertas abiertas
 begin
     GetDigin(0, 3, gbStatusCompAb);
@@ -4636,9 +4624,9 @@ begin
     GetDigin(0, 4, gbStatusIntNoAut);
     DefineAndStartTimer(3, gbConfig.TError2 * 100, TimerOneShot);
 end; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\handlers\IOProgramming.iri
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\handlers\IOProgramming.iri
 
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\data-operations\CrudOperation.iri 
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\data-operations\CrudOperation.iri 
  procedure SaveCrud;
 begin
     if (gbScreenActive=EmbarcaSc) then
@@ -4867,8 +4855,8 @@ begin
         end if;
     end if;
 end; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\data-operations\CrudOperation.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\data-operations\ConfigOperation.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\data-operations\CrudOperation.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\data-operations\ConfigOperation.iri 
  function CambiaValorSP (sp :integer; valor: real ): syscode;
 retorna : syscode;   
 bs      : batchstatus;
@@ -4985,8 +4973,8 @@ begin
     
     end if;
 end; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\data-operations\ConfigOperation.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\data-operations\EmpresaOperation.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\data-operations\ConfigOperation.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\data-operations\EmpresaOperation.iri 
  procedure CrudEmpresa(val : string);
 response: typResponseEmpresa;
 begin
@@ -5072,8 +5060,8 @@ begin
         end if;
     end if;
 end; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\data-operations\EmpresaOperation.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\data-operations\BalanzaOperation.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\data-operations\EmpresaOperation.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\data-operations\BalanzaOperation.iri 
  procedure CrudBalanza(val : string);
 response: typResponseBalanza;
 begin
@@ -5135,8 +5123,8 @@ begin
         end if;
     end if;
 end; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\data-operations\BalanzaOperation.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\data-operations\ProcesoOperation.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\data-operations\BalanzaOperation.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\data-operations\ProcesoOperation.iri 
  procedure ProcesoOperacion(val : string);
 response: typResponseEmpresa;
 transporte : typResponseTransporte;
@@ -5252,8 +5240,8 @@ begin
         end if;
     end if;
 end; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\data-operations\ProcesoOperation.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\data-operations\CalibraOperation.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\data-operations\ProcesoOperation.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\data-operations\CalibraOperation.iri 
  procedure CrudCalibracion(val : string);
 response: typResponseCalibracion;
 fecha : string;
@@ -5266,8 +5254,8 @@ begin
         response := PutFechaCalibracion(val);
     end if;
 end; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\data-operations\CalibraOperation.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\data-operations\PrinterOperation.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\data-operations\CalibraOperation.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\data-operations\PrinterOperation.iri 
  procedure PrintCopyRetro;
 begin
     PrinterCopyHeaderRetro;
@@ -5375,9 +5363,9 @@ begin
         end if;
     end if;
 end; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\data-operations\PrinterOperation.iri
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\data-operations\PrinterOperation.iri
 
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\process\IniciaFinaliza.iri 
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\process\IniciaFinaliza.iri 
  procedure GrabaPesada;
 pesaje : typPesaje;
 lFechaFin : datetime;
@@ -5578,8 +5566,8 @@ begin
         SetActionButtons;
     end if;
 end; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\process\IniciaFinaliza.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\process\GetBatch.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\process\IniciaFinaliza.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\process\GetBatch.iri 
  procedure ProcesaBatch;
 residuo : real;                                         
 lFecha : datetime; 
@@ -5614,9 +5602,9 @@ begin
         DisplayStatus(CONST_MESSAGE_REINI);
     end if;
 end; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\process\GetBatch.iri
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\process\GetBatch.iri
 
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\handlers\SetPoints.iri 
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\handlers\SetPoints.iri 
  handler SP1Trip; 
 begin
     DeshabilitarSP(1);
@@ -5635,8 +5623,8 @@ begin
     DisplayAndClean("ALCANZA SP2");
 end;   
  
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\handlers\SetPoints.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\handlers\Timers.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\handlers\SetPoints.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\handlers\Timers.iri 
  handler timer1trip;
 begin
     DisplayStatus("");
@@ -5717,14 +5705,14 @@ handler Timer20Trip;
 begin
     DisplayStatus("incluye->"+integertostring(gbRecupera.incluyeTransporte, 0));
 end; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\handlers\Timers.iri
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\handlers\Timers.iri
 
 handler WidgetClicked;
 sys : SysCode;
 begin
     if 1 = 0 then
         return;
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\touch\navigation.iri 
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\touch\navigation.iri 
  elsif (EventWidget = img8 or EventWidget = img52 or EventWidget = img99 or EventWidget = img119 or EventWidget = img126) then -- menu principal
     PrincipalMenuScreen;
 elsif (EventWidget = img51) then -- pantalla proceso
@@ -5749,8 +5737,8 @@ elsif (EventWidget = img26 or EventWidget = lbl27)  then -- utiles
     UtilesScreen;
 elsif (EventWidget = img24 or EventWidget = lbl25)  then -- utiles
     ReporteScreen; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\touch\navigation.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\touch\actions.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\touch\navigation.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\touch\actions.iri 
  elsif (EventWidget = img31) then -- datos / finalizar
     if (gbProceso = Inactivo) then
         gbButtonProceso := DataButtonProceso;
@@ -5808,8 +5796,8 @@ elsif (EventWidget = lbl127) then
 elsif (EventWidget = lbl63) then
     gbActionPrinter := InitSearchPrinter;  
     RePrinterOperation(""); 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\touch\actions.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\touch\crud-actions.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\touch\actions.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\touch\crud-actions.iri 
  elsif (EventWidget = img61) then -- agregar crud
     gbActionCrud := InitCrud;
     gbTypeCrud := AddCrud;
@@ -5842,11 +5830,11 @@ elsif (EventWidget = lbl116)  then -- editar tiempos
 elsif (EventWidget = lbl117)  then -- editar errores
     gbActionConfig:=InitErrorConfig;
     CrudConfig(""); 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\touch\crud-actions.iri
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\touch\crud-actions.iri
     end if;
 end;
 
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\handlers\UserEntryHandler.iri 
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\handlers\UserEntryHandler.iri 
  handler UserEntry;
 userValue : string; 
 begin    
@@ -5889,9 +5877,9 @@ begin
         end if;
     end if;                                          
 end;  
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\handlers\UserEntryHandler.iri
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\handlers\UserEntryHandler.iri
 
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\init\FillFirstData.iri 
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\init\FillFirstData.iri 
  function FillEmpresaData : typEmpresa;
 existData: typResponseEmpresa;
 begin
@@ -5981,8 +5969,8 @@ begin
     FillTransporteData;
     FillCalibracionData;
 end; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\init\FillFirstData.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\init\ValidRestart.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\init\FillFirstData.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\init\ValidRestart.iri 
  procedure CheckRestart;
 begin
     DeshabilitarSP(1);
@@ -6022,8 +6010,8 @@ begin
     end if;
     ProcesoScreen;
 end; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\init\ValidRestart.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\init\ValidCalibration.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\init\ValidRestart.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\init\ValidCalibration.iri 
  procedure CheckCalibracion;
 currentCal : typCalibracion;
 responseCal : typResponseCalibracion;
@@ -6036,15 +6024,15 @@ begin
         PutCalibracion(defDbCalibra);
     end if;
 end; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\init\ValidCalibration.iri
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\init\InitSystem.iri 
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\init\ValidCalibration.iri
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\init\InitSystem.iri 
  procedure InitSystem;
 begin
     FillFirstData;
     CheckCalibracion;
     CheckRestart; 
 end;   
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\init\InitSystem.iri
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\init\InitSystem.iri
 
 handler zerokeypressed; 
 scode : syscode;
@@ -6058,7 +6046,7 @@ begin
 end;  
 
 begin
---$START  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\init\Start1280.iri 
+--$START  e:\Pesacon\1280\1280-paita_tolva_lurin\code\init\Start1280.iri 
  BusyShow;
 DeshabilitarSP(1);
 DeshabilitarSP(2);
@@ -6066,6 +6054,6 @@ gbLimpieza := Inactivo;
 gbProceso := Inactivo;
 InitSystem;
 ClosePrompt; 
- --$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\init\Start1280.iri
+ --$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\init\Start1280.iri
 end Tolva1280Main;
---$END  d:\Proyectos Personales\Desarrollo\git\paita_tolva_lurin\code\Tolva1280Main.src
+--$END  e:\Pesacon\1280\1280-paita_tolva_lurin\code\Tolva1280Main.src
