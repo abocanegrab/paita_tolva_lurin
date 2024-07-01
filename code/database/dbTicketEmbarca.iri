@@ -14,7 +14,7 @@ begin
     codeResult := DBExec(query, identifier);
     Logger("list asocia:"+ syscodetostring(codeResult)+",ident:"+integertostring(identifier,0));
 
-    DisplayStatus("Res:"+SysCodeToString(codeResult)+"Id:"+integertostring(identifier)+"--ErDb:" + DBErrMsg);
+    DisplayStatus("Res:"+SysCodeToString(codeResult)+"Id:"+integertostring(identifier,0)+"--ErDb:" + DBErrMsg);
     ProgramDelay(300);
     
     if (codeResult = SysOk) then
@@ -58,7 +58,7 @@ begin
     query := query +" from TicketEm";
     codeResult := DBExec(query, identifier);
     
-    DisplayStatus("FREE1-Res:"+SysCodeToString(codeResult)+"Id:"+integertostring(identifier)+"--ErDb:" + DBErrMsg);
+    DisplayStatus("FREE1-Res:"+SysCodeToString(codeResult)+"Id:"+integertostring(identifier,0)+"--ErDb:" + DBErrMsg);
     ProgramDelay(200);
     
 
@@ -68,7 +68,7 @@ begin
     DBColumnInt(identifier, 1, total);
     DBFinalize(identifier);
     
-    DisplayStatus("FREE-Total:"+integertostring(total));
+    DisplayStatus("FREE-Total:"+integertostring(total,0));
     ProgramDelay(300);
 
     if (total < CONST_MAX_TICKETEMB) then return; end if;
@@ -76,7 +76,7 @@ begin
     query := "delete from TicketEm where ticket = (Select ticket from TicketEm order by fecha asc limit 1)";
     codeResult := DBExec(query, identifier);
 
-    DisplayStatus("FREE2-Res:"+SysCodeToString(codeResult)+"Id:"+integertostring(identifier)+"--ErDb:" + DBErrMsg);
+    DisplayStatus("FREE2-Res:"+SysCodeToString(codeResult)+"Id:"+integertostring(identifier,0)+"--ErDb:" + DBErrMsg);
     ProgramDelay(200);
     DBFinalize(identifier);
 end;
