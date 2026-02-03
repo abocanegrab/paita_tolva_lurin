@@ -1,3 +1,28 @@
+procedure FreePesajeSpace;
+identifier : integer;
+query : string;
+codeResult : SysCode;
+total : integer;
+begin
+    query := "Select count(1) ";
+    query := query +" from Pesadas";
+    codeResult := DBExec(query, identifier);
+    
+    if (codeResult <> SysOk or identifier = 0) then 
+        return; 
+    end if;
+    
+    DBColumnInt(identifier, 1, total);
+    DBFinalize(identifier);
+    if (total < 2000) then 
+        return; 
+    end if;
+
+    query := "delete from Pesadas where ticket = (Select ticket from Pesadas order by ticket asc limit 1)";
+    codeResult := DBExec(query, identifier);
+    DBFinalize(identifier);
+end;
+
 function GetPesaje(id: integer) : typResponsePesaje;
 identifier : integer;
 data : typPesaje;
@@ -209,6 +234,7 @@ result : typResponsePesaje;
 codeResult : SysCode; 
 query : string;
 begin
+    FreePesajeSpace;
     query := "Insert into Pesadas (Ticket, codEmbar, codEspec,";
     query := query +"codUso, codTrans, fechaIni, batch, ";
     query := query +"acum, fechaFin, objetivo, wzero, wval, wspan, ";

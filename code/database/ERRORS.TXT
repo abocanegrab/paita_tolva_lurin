@@ -1,0 +1,1 @@
+d:\Proyectos\Desarrollo\git\paita_tolva_lurin\code\database\dbDetalle.iri:1:10:: syntax error

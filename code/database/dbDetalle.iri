@@ -1,9 +1,35 @@
+procedure FreeDetalleSpace;
+identifier : integer;
+query : string;
+codeResult : SysCode;
+total : integer;
+begin
+    query := "Select count(1) ";
+    query := query +" from Detalle";
+    codeResult := DBExec(query, identifier);
+    
+    if (codeResult <> SysOk or identifier = 0) then 
+        return; 
+    end if;
+    
+    DBColumnInt(identifier, 1, total);
+    DBFinalize(identifier);
+    
+    if (total < 1000) then return; end if;
+
+    query := "delete from Detalle where ticket = (Select ticket from Detalle order by fecha asc limit 1)";
+    codeResult := DBExec(query, identifier);
+
+    DBFinalize(identifier);
+end;
+
 function PostDetalle(lFecha: datetime; currentCal: typCalibracion) : typResponseDetalle;
 identifier : integer;
 result : typResponseDetalle;
 codeResult : SysCode; 
 query : string;
 begin
+    FreeDetalleSpace;
     query := "insert into Detalle (Ticket, Batch, Peso, Fecha, Objetivo, Factor) values (";
     query := query + IntegerToString(gbRecupera.Ticket, 0) +",";
     query := query + IntegerToString(gbRecupera.Batch, 0) +",";
